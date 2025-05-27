@@ -6,7 +6,7 @@ import asyncio
 import copy # 用于深拷贝
 import logging
 import random
-import datetime
+import datetime # Import the datetime module
 from pathlib import Path # uuid was missing
 from typing import List, Optional, Dict, Any, Union
 from uuid import UUID
@@ -19,7 +19,7 @@ from ..models.paper_models import (
     PaperAdminView, PaperQuestionInternalDetail, PaperFullDetailModel
 )
 import uuid # Import the uuid module
-from ..models.qb_models import QuestionModel # 用于类型提示
+from ..models.qb_models import QuestionModel # 用于类型提示 # timezone was missing
 from ..core.config import settings, DifficultyLevel, CODE_SUCCESS, CODE_INFO_OR_SPECIFIC_CONDITION
 from ..utils.helpers import (
     get_client_ip_from_request,
@@ -27,6 +27,7 @@ from ..utils.helpers import (
     shuffle_dictionary_items,
     generate_random_hex_string_of_bytes
 )
+from datetime import timezone # Import timezone
 # qb_crud 实例将在主应用或依赖注入系统中创建并传递进来，或通过全局实例访问
 # from .qb_crud import QuestionBankCRUD # 避免直接导入实例，以防循环依赖
 # 更好的方式是在 __init__ 中接收 qb_crud 实例
@@ -214,7 +215,7 @@ class PaperCRUD:
         num_questions_in_paper = len(target_paper_record.get("paper_questions", []))
         if len(submitted_answers) > num_questions_in_paper: return {"code": CODE_INFO_OR_SPECIFIC_CONDITION, "status_code": "INVALID_ANSWERS_LENGTH", "message": "Number of submitted answers exceeds total questions in the paper."} # type: ignore
         update_time = datetime.datetime.now(timezone.utc).isoformat()
-        target_paper_record["submitted_answers_card"] = submitted_answers; target_paper_record["last_update_time_utc"] = update_time; target_paper_record["last_update_ip"] = get_client_ip(request=request) # 移除CF参数，让其使用全局
+        target_paper_record["submitted_answers_card"] = submitted_answers; target_paper_record["last_update_time_utc"] = update_time; target_paper_record["last_update_ip"] = get_client_ip_from_request(request=request) # 移除CF参数，让其使用全局
         _paper_crud_logger.debug(f"用户 '{user_uid}' 的试卷 {paper_id} 进度已在内存中更新。")
         return {"code": CODE_SUCCESS, "status_code": "PROGRESS_SAVED", "message": "Paper progress saved successfully.", "paper_id": str(paper_id), "last_update_time_utc": update_time}
 
