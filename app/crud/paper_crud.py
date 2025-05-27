@@ -20,7 +20,7 @@ from ..models.paper_models import (
 )
 import uuid # Import the uuid module
 from ..models.qb_models import QuestionModel # 用于类型提示
-from ..core.config import settings, DifficultyLevel, CODE_SUCCESS, CODE_INFO_OR_SPECIFIC_CONDITION # This is correct
+from ..core.config import settings, DifficultyLevel, CODE_SUCCESS, CODE_INFO_OR_SPECIFIC_CONDITION
 from ..utils.helpers import (
     get_client_ip_from_request,
     format_short_uuid,

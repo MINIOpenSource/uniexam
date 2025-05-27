@@ -87,6 +87,11 @@ else:
 CODE_AUTH_SUCCESS: str = "SUCCESS"
 CODE_AUTH_WRONG: str = "WRONG"
 CODE_AUTH_DUPLICATE: str = "DUPLICATE"
+
+# General API Status Codes (can be used by CRUD operations)
+CODE_SUCCESS: int = 200  # Or a more specific success code if needed, e.g., for creation 201
+CODE_NOT_FOUND: int = 404
+CODE_INFO_OR_SPECIFIC_CONDITION: int = 299 # Example custom code for informational/specific non-error conditions
 # endregion
 
 # region 配置模型定义 (Pydantic模型)

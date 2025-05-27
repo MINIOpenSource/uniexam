@@ -9,8 +9,8 @@ from pathlib import Path
 from typing import List, Optional, Dict, Any
 
 # 使用相对导入
-from .models.qb_models import QuestionModel, LibraryIndexItem, QuestionBank
-from .core.config import settings, DifficultyLevel # 导入全局配置和难度枚举
+from ..models.qb_models import QuestionModel, LibraryIndexItem, QuestionBank
+from ..core.config import settings, DifficultyLevel # 导入全局配置和难度枚举
 # 注意：不直接从这里导入 paper_crud 来避免循环依赖。
 # 题库内容更新后，重新加载 paper_crud 内存中题库的逻辑应由调用方（如admin_routes）协调。
 # endregion

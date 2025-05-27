@@ -7,7 +7,7 @@ from typing import Dict, Any, Optional
 import logging
 
 # 使用相对导入从同级 core 包导入配置管理功能
-from .core.config import settings, update_and_persist_settings, Settings
+from ..core.config import settings, update_and_persist_settings, Settings
 # endregion
 
 # region 全局变量与初始化
