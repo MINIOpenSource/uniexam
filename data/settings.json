@@ -1,0 +1,49 @@
+{
+    "app_name": "在线考试系统",
+    "default_admin_password_override": null,
+    "token_expiry_hours": 24,
+    "num_questions_per_paper_default": 50,
+    "passing_score_percentage": 60.0,
+    "db_persist_interval_seconds": 60,
+    "rate_limits": {
+        "default_user": {
+            "get_exam": {
+                "limit": 3,
+                "window": 120
+            },
+            "auth_attempts": {
+                "limit": 5,
+                "window": 60
+            }
+        },
+        "limited_user": {
+            "get_exam": {
+                "limit": 1,
+                "window": 300
+            },
+            "auth_attempts": {
+                "limit": 2,
+                "window": 300
+            }
+        }
+    },
+    "cloudflare_ips": {
+        "v4_url": "https://www.cloudflare.com/ips-v4/",
+        "v6_url": "https://www.cloudflare.com/ips-v6/",
+        "fetch_interval_seconds": 86400
+    },
+    "log_file_name": "exam_app.log",
+    "database_files": {
+        "papers": "db.json",
+        "users": "users_db.json"
+    },
+    "question_library_path": "library",
+    "question_library_index_file": "index.json",
+    "user_config": {
+        "uid_min_len": 5,
+        "uid_max_len": 16,
+        "password_min_len": 8,
+        "password_max_len": 48,
+        "uid_regex": "^[a-z0-9_]+$"
+    }
+}

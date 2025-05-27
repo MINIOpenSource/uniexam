@@ -1,0 +1,9 @@
+fastapi>=0.115.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.5.0
+passlib[bcrypt]>=1.7.4
+python-dotenv>=0.21.0
+httpx>=0.25.0
+python-jose[cryptography]>=3.3.0 # 用于未来可能的JWT Token增强 (当前Token方案不直接使用)
+email-validator>=2.2.0
+# email-validator # 如果需要更严格的邮箱格式验证，可以取消注释并安装

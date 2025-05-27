@@ -1,0 +1,13 @@
+[
+    {
+        "uid": "admin",
+        "nickname": "管理员",
+        "email": "admin@9000-firebase-studio-1747058610165.cluster-3ch54x2epbcnetrm6ivbqqebjk.cloudworkstations.dev",
+        "qq": null,
+        "tags": [
+            "admin",
+            "user"
+        ],
+        "hashed_password": "$2b$12$Nh2/tYwVFSvUzUDSg8O6cuwfLJSdTZQAh58JdJrMkOF/Jm8UzIJqG"
+    }
+]
