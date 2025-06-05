@@ -1,13 +1,54 @@
-# -*- coding: utf-8 -*-
 """
-app.core 包初始化文件。
-这个文件使得 'core' 目录可以被Python视为一个包，
-从而允许在包内和包外使用相对导入和绝对导入。
+核心模块，包含应用配置、安全功能、接口定义和速率限制等。
 """
 
-# 通常这个文件可以为空，或者用于暴露包级别的变量或执行包初始化代码。
-# 例如，可以从子模块中导入一些常用的名称，方便外部调用：
-# from .config import settings
-# from .security import get_current_active_user_uid, require_admin
+from . import config, interfaces, rate_limiter, security
 
-# 目前保持为空，按需添加。
+__all__ = [
+    "config",
+    "settings",  # from config
+    "interfaces",
+    "IDataStorageRepository",  # from interfaces
+    "rate_limiter",
+    "RateLimiter",  # from rate_limiter
+    "security",
+    "create_access_token",  # from security
+    "get_current_active_user",  # from security (assuming it's there or will be)
+    "get_password_hash",  # from security
+    "verify_password",  # from security
+    "UserTag",  # from security
+    "pwd_context",  # from security
+]
+
+# Re-export specific important names for easier access
+settings = config.settings
+IDataStorageRepository = interfaces.IDataStorageRepository
+RateLimiter = rate_limiter.RateLimiter
+create_access_token = security.create_access_token
+get_password_hash = security.get_password_hash
+verify_password = security.verify_password
+UserTag = security.UserTag
+pwd_context = security.pwd_context
+
+# Placeholder for get_current_active_user if it's defined in security.py
+# This is often a dependency for FastAPI routes.
+if hasattr(security, "get_current_active_user"):
+    get_current_active_user = security.get_current_active_user
+else:
+    # If it's not defined, remove it from __all__ to avoid runtime errors on import *
+    if "get_current_active_user" in __all__:
+        __all__.remove("get_current_active_user")
+
+    async def get_current_active_user():  # type: ignore
+        """
+        Placeholder for dependency injection.
+        Actual implementation should be in security.py.
+        """
+        raise NotImplementedError(
+            "get_current_active_user is not implemented in security.py"
+        )
+
+
+# Ensure __all__ only contains names that are actually available
+_available_names = [name for name in __all__ if name in globals() or name in locals()]
+__all__ = _available_names

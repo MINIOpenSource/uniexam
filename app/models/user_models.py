@@ -1,220 +1,281 @@
 # -*- coding: utf-8 -*-
-# region 模块导入
-from enum import Enum
-from typing import List, Optional, Dict, Any # 确保导入了 Dict, Any
-from pydantic import BaseModel, Field, EmailStr, validator, field_validator
-import re # 用于正则表达式验证
+"""
+用户相关的Pydantic模型模块。
+(Pydantic Models Module for User-related Data.)
 
-# 使用相对导入从同级 core 包导入配置和枚举
-# 假设 settings 从 app.core.config 导入，用于获取验证规则
-from ..core.config import settings 
+此模块定义了用于处理用户账户、认证、个人资料以及管理员操作所需的数据结构。
+这些模型广泛应用于API的请求体、响应体、数据库存储以及内部数据传递。
+(This module defines data structures required for handling user accounts,
+authentication, profiles, and administrative operations. These models are
+extensively used in API request/response bodies, database storage, and
+for internal data transfer.)
+"""
+# region 模块导入 (Module Imports)
+import re  # 用于正则表达式验证 (For regular expression validation)
+from enum import Enum
+from typing import List, Optional
+
+from pydantic import BaseModel, EmailStr, Field, field_validator
+
+from ..core.config import settings  # 导入全局配置 (Import global settings)
+
 # endregion
 
-# region 用户标签枚举 (UserTag)
+
+# region 用户标签枚举 (UserTag Enum)
 class UserTag(str, Enum):
     """
     用户标签枚举，定义了不同用户角色的权限级别。
-    这些标签用于权限控制和应用特定策略。
+    (User tag enum, defining permission levels for different user roles.)
     """
-    ADMIN = "admin"        # 管理员：最高权限，可访问后台，通常无速率限制
-    USER = "user"          # 普通用户：应用标准用户策略
-    BANNED = "banned"      # 禁用用户：所有请求被禁止（除特定解封接口外）
-    LIMITED = "limited"    # 受限用户：应用更严格的速率限制策略
-    GRADER = "grader"      # 批阅者：可批阅主观题
-    EXAMINER = "examiner"  # 出题者/题库管理员：Grader权限 + 访问和修改题库
-    MANAGER = "manager"    # 运营管理员：Examiner权限 + 试卷管理（例如删除、查看所有试卷）
+
+    ADMIN = "admin"  # 管理员：最高权限 (Admin: Highest privileges)
+    USER = "user"  # 普通用户 (Regular user)
+    BANNED = "banned"  # 禁用用户 (Banned user)
+    LIMITED = "limited"  # 受限用户 (Limited user with stricter rate limits)
+    GRADER = "grader"  # 批阅者 (Grader for subjective questions)
+    EXAMINER = "examiner"  # 出题者/题库管理员 (Question creator/bank admin)
+    MANAGER = "manager"  # 运营管理员 (Operational manager)
 
     @classmethod
-    def get_default_tags(cls) -> List['UserTag']:
-        """获取新注册用户的默认标签列表。"""
+    def get_default_tags(cls) -> List["UserTag"]:
+        """获取新注册用户的默认标签列表。(Gets the default list of tags for new users.)"""
         return [cls.USER]
+
+
 # endregion
 
-# region 用户基础模型 (UserBase)
+
+# region 用户基础模型 (UserBase Model)
 class UserBase(BaseModel):
     """
-    用户基础信息模型，用于API请求体和作为其他用户模型的基类。
-    包含用户通用的、可公开或可编辑的个人信息字段。
+    用户基础信息模型，API请求体和其它用户模型的基类。
+    (Base model for user information, used in API request bodies and as a base for other user models.)
     """
+
     uid: str = Field(
-        ..., # 表示此字段是必需的
+        ...,
         min_length=settings.user_config.uid_min_len,
         max_length=settings.user_config.uid_max_len,
-        # pattern=settings.user_config.uid_regex, # pattern已通过下面的validator实现
-        description=(
-            f"用户名 ({settings.user_config.uid_min_len}-"
-            f"{settings.user_config.uid_max_len}位，"
-            f"只能是小写字母、数字或下划线)"
-        )
+        description=f"用户名 ({settings.user_config.uid_min_len}-{settings.user_config.uid_max_len}位，只能是小写字母、数字或下划线)。(Username ({settings.user_config.uid_min_len}-{settings.user_config.uid_max_len} chars, lowercase letters, numbers, or underscores only).)",
     )
-    nickname: Optional[str] = Field(
-        None, # 默认为None，表示可选
-        max_length=50,
-        description="用户昵称 (可选, 最长50个字符)"
-    )
-    email: Optional[EmailStr] = Field(
-        None, # 默认为None，表示可选
-        description="电子邮箱 (可选, 必须是有效的邮箱格式)"
-    ) # Pydantic 会自动验证邮箱格式
-    qq: Optional[str] = Field(
-        None, # 默认为None，表示可选
-        max_length=15,
-        pattern=r"^[1-9][0-9]{4,14}$", # QQ号通常是5到15位数字，首位不为0
-        description="QQ号码 (可选, 5-15位数字)"
-    )
-
-    # 使用 Pydantic v2 的 field_validator 来验证 uid 格式
-    @field_validator('uid')
-    @classmethod
-    def uid_must_match_regex(cls, value: str) -> str:
-        """验证UID是否符合配置中定义的正则表达式和长度。"""
-        uid_config = settings.user_config
-        if not (uid_config.uid_min_len <= len(value) <= uid_config.uid_max_len):
-            raise ValueError(
-                f"用户名的长度必须在 {uid_config.uid_min_len} 和 "
-                f"{uid_config.uid_max_len} 之间。"
-            )
-        if not re.match(uid_config.uid_regex, value):
-            raise ValueError("用户名只能包含小写字母、数字或下划线。")
-        return value
-# endregion
-
-# region 用户创建模型 (UserCreate)
-class UserCreate(UserBase):
-    """用户注册时使用的模型，继承自UserBase并添加了密码字段。"""
-    password: str = Field(
-        ..., # 密码是必需的
-        min_length=settings.user_config.password_min_len,
-        max_length=settings.user_config.password_max_len,
-        description=(
-            f"密码 ({settings.user_config.password_min_len}-"
-            f"{settings.user_config.password_max_len} 位)"
-        )
-    )
-# endregion
-
-# region 用户个人资料更新模型 (UserProfileUpdate)
-class UserProfileUpdate(BaseModel):
-    """用户更新个人资料时使用的模型，所有字段都是可选的。"""
     nickname: Optional[str] = Field(
         None,
         max_length=50,
-        description="新的用户昵称 (可选)"
+        description="用户昵称 (可选, 最长50个字符)。(User nickname (optional, max 50 chars).)",
     )
     email: Optional[EmailStr] = Field(
         None,
-        description="新的电子邮箱 (可选)"
+        description="电子邮箱 (可选, 必须是有效的邮箱格式)。(Email (optional, must be a valid email format).)",
     )
     qq: Optional[str] = Field(
         None,
         max_length=15,
         pattern=r"^[1-9][0-9]{4,14}$",
-        description="新的QQ号码 (可选)"
+        description="QQ号码 (可选, 5-15位数字)。(QQ number (optional, 5-15 digits).)",
     )
 
-    # 可以添加一个模型验证器 (model_validator) 来确保至少提供了一个字段进行更新，
-    # 但这通常在API路由处理函数中更容易检查（例如，检查请求体是否为空）。
-    # @model_validator(mode='before') # Pydantic v2
-    # def check_at_least_one_value(cls, data: Any) -> Any:
-    #     if isinstance(data, dict) and not any(data.values()):
-    #         raise ValueError("至少需要提供一个字段进行更新。")
-    #     return data
+    @field_validator("uid")
+    @classmethod
+    def uid_must_match_regex_and_length(
+        cls, value: str
+    ) -> str:  # Renamed validator for clarity
+        """
+        验证UID是否符合配置中定义的正则表达式和长度。
+        (Validates if UID conforms to the regex and length defined in settings.)
+        """
+        uid_config = settings.user_config
+        if not (uid_config.uid_min_len <= len(value) <= uid_config.uid_max_len):
+            raise ValueError(
+                f"用户名的长度必须在 {uid_config.uid_min_len} 和 {uid_config.uid_max_len} 之间。(Username length must be between {uid_config.uid_min_len} and {uid_config.uid_max_len}.)"
+            )
+        if not re.match(uid_config.uid_regex, value):
+            raise ValueError(
+                "用户名只能包含小写字母、数字或下划线。(Username can only contain lowercase letters, numbers, or underscores.)"
+            )
+        return value
+
+
 # endregion
 
-# region 用户密码更新模型 (UserPasswordUpdate)
+
+# region 用户创建模型 (UserCreate Model)
+class UserCreate(UserBase):
+    """
+    用户注册时使用的模型，继承自UserBase并添加了密码字段。
+    (Model used for user registration, inherits from UserBase and adds a password field.)
+    """
+
+    password: str = Field(
+        ...,
+        min_length=settings.user_config.password_min_len,
+        max_length=settings.user_config.password_max_len,
+        description=f"密码 ({settings.user_config.password_min_len}-{settings.user_config.password_max_len} 位)。(Password ({settings.user_config.password_min_len}-{settings.user_config.password_max_len} chars).)",
+    )
+
+
+# endregion
+
+
+# region 用户个人资料更新模型 (UserProfileUpdate Model)
+class UserProfileUpdate(BaseModel):
+    """
+    用户更新个人资料时使用的模型，所有字段都是可选的。
+    (Model used when a user updates their profile, all fields are optional.)
+    """
+
+    nickname: Optional[str] = Field(
+        None,
+        max_length=50,
+        description="新的用户昵称 (可选)。(New user nickname (optional).)",
+    )
+    email: Optional[EmailStr] = Field(
+        None, description="新的电子邮箱 (可选)。(New email (optional).)"
+    )
+    qq: Optional[str] = Field(
+        None,
+        max_length=15,
+        pattern=r"^[1-9][0-9]{4,14}$",
+        description="新的QQ号码 (可选)。(New QQ number (optional).)",
+    )
+
+
+# endregion
+
+
+# region 用户密码更新模型 (UserPasswordUpdate Model)
 class UserPasswordUpdate(BaseModel):
-    """用户更新密码时使用的模型。"""
-    current_password: str = Field(..., description="当前密码")
+    """
+    用户更新密码时使用的模型。
+    (Model used when a user updates their password.)
+    """
+
+    current_password: str = Field(..., description="当前密码。(Current password.)")
     new_password: str = Field(
         ...,
         min_length=settings.user_config.password_min_len,
         max_length=settings.user_config.password_max_len,
-        description=(
-            f"新密码 ({settings.user_config.password_min_len}-"
-            f"{settings.user_config.password_max_len} 位)"
-        )
+        description=f"新密码 ({settings.user_config.password_min_len}-{settings.user_config.password_max_len} 位)。(New password ({settings.user_config.password_min_len}-{settings.user_config.password_max_len} chars).)",
     )
+
+
 # endregion
 
-# region 数据库中存储的用户模型 (UserInDBBase 和 UserInDB)
+
+# region 数据库中存储的用户模型 (UserInDBBase and UserInDB Models)
 class UserInDBBase(UserBase):
     """
     数据库中存储的用户基础模型，在UserBase基础上添加了标签。
-    这个模型主要用于类型提示和作为 UserInDB 的基类。
+    (Base model for users stored in the database, adds tags to UserBase.)
     """
+
     tags: List[UserTag] = Field(
-        default_factory=UserTag.get_default_tags, # 新用户默认拥有 "user" 标签
-        description="用户标签列表，决定用户权限和行为"
+        default_factory=UserTag.get_default_tags,
+        description="用户标签列表，决定用户权限和行为。(List of user tags, determining permissions and behavior.)",
     )
-    
-    model_config = { # Pydantic v2 配置方式
-        "from_attributes": True # 允许从ORM对象或其他属性对象创建模型实例 (旧称 orm_mode)
-    }
+    model_config = {"from_attributes": True}  # Pydantic v2 orm_mode equivalent
+
 
 class UserInDB(UserInDBBase):
     """
     数据库中存储的完整用户模型，继承自UserInDBBase并添加了哈希后的密码。
-    这是实际存储在 users_db.json 中的用户对象结构。
+    (Complete model for users stored in the database, inherits from UserInDBBase and adds hashed password.)
     """
-    hashed_password: str = Field(..., description="哈希后的用户密码")
+
+    hashed_password: str = Field(
+        ..., description="哈希后的用户密码。(Hashed user password.)"
+    )
+
+
 # endregion
 
-# region 用于API响应的用户信息模型 (UserPublicProfile)
+
+# region 用于API响应的用户信息模型 (UserPublicProfile Model)
 class UserPublicProfile(UserBase):
     """
-    作为API响应返回给客户端的用户公开信息模型。
-    不包含密码等敏感信息。
+    作为API响应返回给客户端的用户公开信息模型。不包含密码等敏感信息。
+    (Public user information model returned to clients in API responses. Excludes sensitive info like passwords.)
     """
-    tags: List[UserTag] = Field(description="用户标签列表")
-    # 可以根据需要添加其他希望公开的字段，例如注册时间、最后登录时间等，
-    # 这些字段需要先在 UserInDB 中定义和存储。
-    
-    model_config = {
-        "from_attributes": True
-    }
+
+    tags: List[UserTag] = Field(description="用户标签列表。(List of user tags.)")
+    model_config = {"from_attributes": True}
+
+
 # endregion
 
-# region Admin 编辑用户时使用的模型 (AdminUserUpdate)
+
+# region Admin 编辑用户时使用的模型 (AdminUserUpdate Model)
 class AdminUserUpdate(BaseModel):
-    """管理员编辑用户信息时使用的模型。允许修改更多字段。"""
+    """
+    管理员编辑用户信息时使用的模型。允许修改更多字段。
+    (Model used when an admin edits user information. Allows modification of more fields.)
+    """
+
     nickname: Optional[str] = Field(
         None,
         max_length=50,
-        description="新的用户昵称 (可选)"
+        description="新的用户昵称 (可选)。(New user nickname (optional).)",
     )
     email: Optional[EmailStr] = Field(
-        None,
-        description="新的电子邮箱 (可选)"
+        None, description="新的电子邮箱 (可选)。(New email (optional).)"
     )
     qq: Optional[str] = Field(
         None,
         max_length=15,
         pattern=r"^[1-9][0-9]{4,14}$",
-        description="新的QQ号码 (可选)"
+        description="新的QQ号码 (可选)。(New QQ number (optional).)",
     )
     tags: Optional[List[UserTag]] = Field(
         None,
-        description="新的用户标签列表 (可选, 如果提供则完全替换旧标签)"
+        description="新的用户标签列表 (可选, 如果提供则完全替换旧标签)。(New list of user tags (optional, replaces old tags if provided).)",
     )
-    # 管理员通常不直接修改用户密码，而是提供重置密码功能。
-    # 如果需要管理员直接设置新密码，可以取消注释此字段。
     new_password: Optional[str] = Field(
         None,
         min_length=settings.user_config.password_min_len,
         max_length=settings.user_config.password_max_len,
-        description=(
-            f"(可选) 为用户设置新密码 ({settings.user_config.password_min_len}-"
-            f"{settings.user_config.password_max_len} 位)。如果提供，将覆盖用户现有密码。"
-        )
+        description=f"(可选) 为用户设置新密码 ({settings.user_config.password_min_len}-{settings.user_config.password_max_len} 位)。如果提供，将覆盖用户现有密码。((Optional) Set a new password for the user ({settings.user_config.password_min_len}-{settings.user_config.password_max_len} chars). Overwrites existing password if provided.)",
     )
+
+
 # endregion
 
-# region User Directory Entry Model
+
+# region 用户目录条目模型 (UserDirectoryEntry Model)
 class UserDirectoryEntry(BaseModel):
     """
-    Model for listing users with special roles in a public directory.
+    用于在公共名录中列出具有特殊角色的用户的模型。
+    (Model for listing users with special roles in a public directory.)
     """
-    uid: str = Field(description="User ID (username)")
-    nickname: Optional[str] = Field(None, description="User nickname (if available)")
-    tags: List[UserTag] = Field(description="User tags indicating their roles/categories")
+
+    uid: str = Field(description="用户ID (用户名)。(User ID (username).)")
+    nickname: Optional[str] = Field(
+        None, description="用户昵称 (如果可用)。(User nickname (if available).)"
+    )
+    tags: List[UserTag] = Field(
+        description="用户标签，指示其角色/类别。(User tags indicating their roles/categories.)"
+    )
+
+
 # endregion
+
+__all__ = [
+    "UserTag",
+    "UserBase",
+    "UserCreate",
+    "UserProfileUpdate",
+    "UserPasswordUpdate",
+    "UserInDBBase",
+    "UserInDB",
+    "UserPublicProfile",
+    "AdminUserUpdate",
+    "UserDirectoryEntry",
+]
+
+if __name__ == "__main__":
+    # 此模块不应作为主脚本执行。它定义了与用户相关的Pydantic模型。
+    # (This module should not be executed as the main script. It defines Pydantic models
+    #  related to users.)
+    print(f"此模块 ({__name__}) 定义了与用户相关的Pydantic模型，不应直接执行。")
+    print(
+        f"(This module ({__name__}) defines Pydantic models related to users and should not be executed directly.)"
+    )

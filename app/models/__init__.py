@@ -1,89 +1,122 @@
 # -*- coding: utf-8 -*-
-# region 包初始化
 """
 app.models 包初始化文件。
+(app.models package initialization file.)
 
-此包包含应用中所有核心数据结构的 Pydantic 模型定义。
-这些模型用于数据验证、序列化以及API接口的请求和响应类型提示。
+此包集中了应用中所有 Pydantic 数据模型。这些模型用于：
+- API 请求体验证与序列化。
+- API 响应体验证与序列化。
+- 内部数据结构定义。
+(This package centralizes all Pydantic data models in the application. These models are used for:
+- API request body validation and serialization.
+- API response body validation and serialization.
+- Internal data structure definition.)
 
-通过从子模块中导入主要模型，可以简化其他模块对这些模型的访问路径，
-例如，可以直接使用 `from app.models import UserCreate` 而不是
-`from app.models.user_models import UserCreate`。
+通过从各个子模块导入模型，使得可以直接从 `app.models` 导入所需的任何模型。
+例如 (e.g.): `from app.models import UserCreate, Token, ExamPaperResponse`
 """
 
-# 从 user_models.py 导入核心用户相关模型
-from .user_models import (
-    UserTag,
-    UserBase,
-    UserCreate,
-    UserProfileUpdate,
-    UserPasswordUpdate,
-    UserInDBBase,
-    UserInDB,
-    UserPublicProfile,
-    AdminUserUpdate,
-    UserDirectoryEntry # New model for user directory
-)
+# Explicitly import models from submodules to avoid F403 and F405 errors from ruff/pyflakes
+# and to make it clear what is being exported.
 
-# 从 token_models.py 导入Token相关模型
+from .config_models import (
+    CloudflareIPsConfigPayload,
+    DatabaseFilesConfigPayload,
+    RateLimitConfigPayload,
+    SettingsResponseModel,
+    SettingsUpdatePayload,
+    UserTypeRateLimitsPayload,
+    UserValidationConfigPayload,
+)
+from .paper_models import (
+    ExamPaperResponse,
+    GradingResultResponse,
+    HistoryItem,
+    HistoryPaperDetailResponse,
+    HistoryPaperQuestionClientView,
+    PaperAdminView,
+    PaperFullDetailModel,
+    # UserAnswer, # Not defined in paper_models.py
+    # PaperProgressData, # Not defined in paper_models.py
+    PaperQuestionInternalDetail,
+    PaperSubmissionPayload,
+    UpdateProgressResponse,
+)
+from .qb_models import (
+    DifficultyLevel,  # Enum
+    LibraryIndexItem,
+    QuestionBank,  # This is a model, not QuestionBankContent or QuestionBankMetadata directly
+    # QuestionBankContent, # This is a concept, represented by QuestionBank.questions
+    # QuestionBankMetadata, # This is a concept, represented by QuestionBank.metadata (which is LibraryIndexItem)
+    # QuestionType, # Not defined as a separate enum in qb_models.py, part of QuestionModel
+    QuestionModel,
+)
 from .token_models import (
+    AuthStatusResponse,
     Token,
     TokenData,
-    AuthStatusResponse # 新增导入
+)
+from .user_models import (
+    AdminUserUpdate,
+    UserBase,
+    UserCreate,
+    UserDirectoryEntry,  # Added
+    UserInDB,
+    UserInDBBase,
+    UserPasswordUpdate,
+    UserProfileUpdate,
+    UserPublicProfile,
+    UserTag,  # Enum
+    # UserUpdate, # Not actually defined in user_models.py, removed from import and __all__
 )
 
-# 从 qb_models.py 导入题库相关模型
-from .qb_models import (
-    QuestionModel,       # 单个题目的详细模型 (包含多种题型)
-    LibraryIndexItem,    # 题库索引 (index.json) 中的条目模型
-    QuestionBank         # 完整的题库模型 (元数据 + 题目列表)
-)
-
-# 从 paper_models.py 导入试卷和答题相关模型
-from .paper_models import (
-    PaperSubmissionPayload,          # 用户提交试卷/更新进度的请求体
-    ExamPaperResponse,             # /get_exam 接口的响应体 (新试卷)
-    GradingResultResponse,         # /finish 接口的响应体 (批改结果)
-    UpdateProgressResponse,        # /update 接口的响应体 (进度保存结果)
-    HistoryItem,                   # /history 接口中单个历史记录的摘要
-    HistoryPaperQuestionClientView,    # /history_paper 接口中单个问题的结构
-    HistoryPaperDetailResponse,    # /history_paper 接口的响应体 (历史试卷详情)
-    PaperAdminView,                # Admin API /admin/paper/all 的试卷摘要
-    PaperQuestionInternalDetail,   # Admin API /admin/paper/ 试卷详情中单个问题的内部结构
-    PaperFullDetailModel           # Admin API /admin/paper/ 的完整试卷详情
-)
-
-# 可以定义 __all__ 变量来明确指定 `from app.models import *` 时应导入哪些名称
 __all__ = [
-    # User Models
-    "UserTag",
-    "UserBase",
-    "UserCreate",
-    "UserProfileUpdate",
-    "UserPasswordUpdate",
-    "UserInDBBase",
-    "UserInDB",
-    "UserPublicProfile",
-    "AdminUserUpdate",
-    "UserDirectoryEntry",
-    # Token Models
+    # from config_models.py
+    "RateLimitConfigPayload",
+    "UserTypeRateLimitsPayload",
+    "CloudflareIPsConfigPayload",
+    "DatabaseFilesConfigPayload",
+    "UserValidationConfigPayload",
+    "SettingsResponseModel",
+    "SettingsUpdatePayload",
+    # from paper_models.py
+    "ExamPaperResponse",
+    "PaperSubmissionPayload",
+    "UpdateProgressResponse",
+    "GradingResultResponse",
+    "HistoryItem",
+    "HistoryPaperDetailResponse",
+    "HistoryPaperQuestionClientView",
+    "PaperAdminView",
+    "PaperFullDetailModel",
+    "PaperQuestionInternalDetail",
+    # "UserAnswer", # Ensure this is defined in paper_models.py if exported
+    # "PaperProgressData", # Ensure this is defined in paper_models.py if exported
+    # from qb_models.py
+    "DifficultyLevel",
+    # "QuestionType", # If it's a separate Enum
+    "QuestionModel",
+    "LibraryIndexItem",
+    "QuestionBank",  # Represents the full bank with metadata and questions
+    # from token_models.py
     "Token",
     "TokenData",
     "AuthStatusResponse",
-    # Question Bank Models
-    "QuestionModel",
-    "LibraryIndexItem",
-    "QuestionBank",
-    # Paper Models
-    "PaperSubmissionPayload",
-    "ExamPaperResponse",
-    "GradingResultResponse",
-    "UpdateProgressResponse",
-    "HistoryItem",
-    "HistoryPaperQuestionClientView",
-    "HistoryPaperDetailResponse",
-    "PaperAdminView",
-    "PaperQuestionInternalDetail",
-    "PaperFullDetailModel",
+    # from user_models.py
+    "UserBase",
+    "UserCreate",
+    # "UserUpdate", # Removed as it's not defined
+    "UserInDBBase",
+    "UserInDB",
+    "UserPublicProfile",
+    "UserProfileUpdate",
+    "UserPasswordUpdate",
+    "AdminUserUpdate",
+    "UserTag",
+    "UserDirectoryEntry",  # Added
 ]
-# endregion
+
+# Dynamically clean up __all__ to ensure no undefined names are listed,
+# though with explicit imports this should be less of an issue.
+_imported_items = globals()
+__all__ = sorted([name for name in __all__ if name in _imported_items])
