@@ -1,282 +1,596 @@
 # -*- coding: utf-8 -*-
+"""
+管理员后台 API 路由模块。
+
+此模块定义了所有与管理员操作相关的API端点，例如：
+- 应用配置管理 (获取、更新)
+- 用户管理 (列表、详情、更新)
+- 试卷管理 (列表、详情、删除)
+- 题库管理 (查看题库、添加题目、删除题目)
+
+所有此模块下的路由都需要管理员权限（通过 `require_admin` 依赖项进行验证）。
+"""
 # region 模块导入
 import logging
-from typing import List, Dict, Any, Optional
+from typing import List
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status as http_status
+from fastapi import (
+    APIRouter,
+    Depends,
+    HTTPException,
+    Path,  # 确保导入Path
+    Query,
+    status as http_status,
+)
 
-# 使用相对导入从同级或父级包导入
-from .core.security import require_admin # 依赖项，确保用户有admin标签
-from .core.config import settings, DifficultyLevel # 全局配置和难度枚举
-from .models.user_models import UserPublicProfile, AdminUserUpdate, UserInDB # 用户模型
-from .models.paper_models import PaperAdminView, PaperFullDetailModel # 试卷模型
-from .models.qb_models import QuestionModel, LibraryIndexItem, QuestionBank # 题库模型
-from .models.config_models import SettingsResponseModel, SettingsUpdatePayload # 配置模型 (需要创建)
+from .core.config import DifficultyLevel  # 全局配置和难度枚举
+from .core.security import require_admin  # 依赖项，确保用户有admin标签
+from .crud import (  # CRUD 操作实例导入
+    paper_crud_instance as paper_crud,
+    qb_crud_instance as qb_crud,
+    settings_crud_instance as settings_crud,
+    user_crud_instance as user_crud,
+)
+from .models.config_models import (  # 配置相关的Pydantic模型
+    SettingsResponseModel,
+    SettingsUpdatePayload,
+)
+from .models.paper_models import (
+    PaperAdminView,
+    PaperFullDetailModel,
+)  # 试卷相关的Pydantic模型
+from .models.qb_models import QuestionModel  # 题库相关的Pydantic模型
+from .models.user_models import (
+    AdminUserUpdate,
+    UserPublicProfile,
+)  # 用户相关的Pydantic模型
 
-# CRUD操作实例将在主应用 (main.py) 中创建并作为依赖项传入，或通过全局变量访问
-# 为避免循环导入，这里假设它们可以通过某种方式在运行时获得
-# 例如，通过 Depends 获取，或者从一个集中的地方导入 (如 app.main)
-# from ..main import user_crud, paper_crud, qb_crud, settings_crud
-# 更好的方式是通过依赖注入或在 main.py 中将 crud 实例附加到 app.state
-
-# 暂时通过全局变量方式获取 (在 main.py 中定义这些实例)
-# from ..main import user_crud_instance, paper_crud_instance, qb_crud_instance, settings_crud_instance
-# 为了模块的独立性，更好的做法是在路由函数中通过 Depends 获取 CRUD 实例
-# 但为了简化当前步骤，我们将假设这些实例在 app.crud.__init__.py 中被正确初始化并可访问
-# (实际项目中，应使用更健壮的依赖注入模式)
-from .crud import user_crud_instance as user_crud, paper_crud_instance as paper_crud, qb_crud_instance as qb_crud, settings_crud_instance as settings_crud # 假设这些实例在 __init__.py 中暴露或直接导入
 # endregion
 
 # region 全局变量与初始化
-_admin_routes_logger = logging.getLogger(__name__)
+_admin_routes_logger = logging.getLogger(__name__)  # 获取模块特定的日志记录器实例
 
-admin_router = APIRouter(
-    prefix="/admin",  # 所有此路由下的端点都以 /admin 开头
-    tags=["Admin"],  # API文档中的标签分组
-    dependencies=[Depends(require_admin)],  # 应用Token认证和admin标签检查到所有路由
-    responses={
-        http_status.HTTP_401_UNAUTHORIZED: {"description": "Token missing or invalid"},
-        http_status.HTTP_403_FORBIDDEN: {"description": "Insufficient permissions (not an admin)"}
-    }
+admin_router = APIRouter(  # FastAPI APIRouter 实例，用于组织管理员相关路由
+    # prefix="/admin",  # 所有此路由下的端点都以 /admin 作为URL前缀 (已在app.main中挂载时指定)
+    tags=[
+        "管理员接口 (Admin)"
+    ],  # 在OpenAPI文档中将这些端点分组到 "管理员接口 (Admin)" 标签下
+    dependencies=[
+        Depends(require_admin)
+    ],  # 对此路由器下的所有路由应用 `require_admin` 依赖项 (验证管理员权限)
+    responses={  # 为此路由器下的所有路由统一定义可能的错误响应
+        http_status.HTTP_401_UNAUTHORIZED: {
+            "description": "Token缺失或无效 (Unauthorized)"
+        },
+        http_status.HTTP_403_FORBIDDEN: {
+            "description": "权限不足 (非管理员用户) (Forbidden)"
+        },
+    },
 )
 # endregion
 
-# region Admin Settings API 端点
+
+# region Admin Settings API 端点 (管理员设置接口)
 @admin_router.get(
     "/settings",
-    response_model=SettingsResponseModel, # SettingsResponseModel 需要在 config_models.py 中定义
-    summary="获取当前应用配置"
+    response_model=SettingsResponseModel,
+    summary="获取当前系统配置",
+    description="管理员获取当前应用的主要配置项信息。注意：此接口返回的配置主要反映 `settings.json` 文件的内容，可能不完全包含通过环境变量最终生效的配置值。敏感信息（如数据库密码）不会在此接口返回。",
+    responses={
+        http_status.HTTP_200_OK: {"description": "成功获取配置信息"},
+        # 401/403 are handled by router dependency
+        http_status.HTTP_500_INTERNAL_SERVER_ERROR: {
+            "description": "服务器内部错误导致无法获取配置"
+        },
+    },
 )
 async def admin_get_settings():
     """
-    获取当前应用的配置信息 (settings.json 的内容，可能不包含.env覆盖项)。
-    实际生效的配置是内存中的 `settings` 对象，它已合并.env。
-    此接口返回 `settings.json` 的原始内容，用于展示和编辑。
+    获取当前应用的配置信息 (主要反映 `settings.json` 的内容)。
+    实际生效的配置是合并了环境变量后的内存中 `settings` 对象。
+    此接口旨在提供 `settings.json` 的可编辑视图（尽管环境变量优先级更高）。
     """
-    _admin_routes_logger.info("Admin请求获取应用配置。")
-    # settings_crud 实例应该在 main.py 中初始化并可访问
+    _admin_routes_logger.info("管理员请求获取应用配置。")
+    # 从 SettingsCRUD 获取文件中的配置
     current_settings_from_file = settings_crud.get_current_settings_from_file()
-    # 注意：返回的是 SettingsResponseModel，它应该只包含可以被admin修改的字段
-    # 或者，如果Settings模型本身就是用于settings.json的，可以直接返回settings对象
-    # 但更安全的做法是定义一个专门的响应模型。
-    # 为简单起见，如果 SettingsResponseModel 与 Settings 结构一致（排除敏感或不可改字段）
-    # 我们可以尝试直接用全局 settings，但 get_current_settings_from_file 更准确反映文件内容
-    
-    # SettingsResponseModel 应与 Settings 结构类似，但不包含如 data_dir 等内部字段
-    # 并且，它应该反映 settings.json 的内容，而不是内存中被 .env 覆盖后的内容
-    # 所以，直接用 get_current_settings_from_file() 返回的字典创建 SettingsResponseModel
     try:
-        # 确保 SettingsResponseModel 能够从字典初始化
+        # 转换为响应模型
         return SettingsResponseModel(**current_settings_from_file)
-    except Exception as e: # Pydantic ValidationError
+    except Exception as e:
         _admin_routes_logger.error(f"将文件配置转换为SettingsResponseModel时出错: {e}")
-        # 返回一个表示错误的默认或空配置
-        return SettingsResponseModel()
+        # 在转换失败时返回一个空的或默认的响应模型，避免直接暴露错误细节
+        return SettingsResponseModel()  # 或者可以抛出500错误
 
 
 @admin_router.post(
     "/settings",
-    response_model=SettingsResponseModel, # 返回更新后的配置 (settings.json 的目标状态)
-    summary="更新应用配置"
+    response_model=SettingsResponseModel,
+    summary="更新系统配置",
+    description="管理员更新应用的部分或全部可配置项。请求体中仅需包含需要修改的字段及其新值。更新操作会写入 `settings.json` 文件并尝试动态重新加载配置到应用内存。注意：通过环境变量设置的配置项具有最高优先级，其在内存中的值不会被此API调用修改，但 `settings.json` 文件中的对应值会被更新。",
+    responses={
+        http_status.HTTP_200_OK: {
+            "description": "配置成功更新并已重新加载，返回更新后的配置状态"
+        },
+        http_status.HTTP_400_BAD_REQUEST: {
+            "description": "提供的配置数据无效或不符合约束"
+        },
+        http_status.HTTP_422_UNPROCESSABLE_ENTITY: {
+            "description": "请求体验证失败 (FastAPI自动处理)"
+        },
+        # 401/403 are handled by router dependency
+        http_status.HTTP_500_INTERNAL_SERVER_ERROR: {
+            "description": "配置文件写入失败或更新时发生未知服务器错误"
+        },
+    },
 )
-async def admin_update_settings(payload: SettingsUpdatePayload): # SettingsUpdatePayload 需定义
+async def admin_update_settings(
+    payload: SettingsUpdatePayload,
+):
     """
-    更新应用的配置项 (写入 settings.json 并重新加载全局配置)。
+    更新应用的配置项 (写入 `settings.json` 并重新加载全局配置)。
     注意：.env 文件中的配置项优先级更高，不会被此接口的更新覆盖内存中的实际生效值，
-    但 settings.json 文件会被更新。
+    但 `settings.json` 文件会被更新。部分配置项可能需要重启应用才能完全生效。
     """
-    _admin_routes_logger.info(f"Admin尝试更新应用配置，数据: {payload.model_dump_json(indent=2)}")
-    # from ..main import settings_crud_instance
+    _admin_routes_logger.info(
+        f"管理员尝试更新应用配置，数据: {payload.model_dump_json(indent=2)}"
+    )
     try:
-        # payload.model_dump(exclude_unset=True)确保只传递实际提供的字段
-        updated_settings_obj = await settings_crud.update_settings_file_and_reload(
+        # `exclude_unset=True` 确保只传递请求体中实际提供的字段进行更新
+        await settings_crud.update_settings_file_and_reload(
             payload.model_dump(exclude_unset=True)
         )
-        # 返回更新后，从文件重新加载（并被.env覆盖）的配置
-        # 或者，更准确地返回被写入到 settings.json 的目标状态
-        # 这里我们返回实际写入 settings.json 的内容（payload 应用到现有文件内容后）
+        # 返回更新后从文件（可能被.env部分覆盖后）重新加载的配置的目标状态
         settings_from_file_after_update = settings_crud.get_current_settings_from_file()
+        _admin_routes_logger.info("应用配置已成功更新并重新加载。")
         return SettingsResponseModel(**settings_from_file_after_update)
+    except ValueError as e_val:  # 通常是Pydantic验证错误或业务逻辑错误
+        _admin_routes_logger.warning(f"管理员更新配置失败 (数据验证错误): {e_val}")
+        raise HTTPException(
+            status_code=http_status.HTTP_400_BAD_REQUEST, detail=str(e_val)
+        ) from e_val
+    except IOError as e_io:  # 文件读写错误
+        _admin_routes_logger.error(f"管理员更新配置失败 (文件写入错误): {e_io}")
+        raise HTTPException(
+            status_code=http_status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="配置文件写入失败。",
+        ) from e_io
+    except RuntimeError as e_rt:  # 其他在CRUD层定义的运行时错误
+        _admin_routes_logger.error(f"管理员更新配置失败 (运行时错误): {e_rt}")
+        raise HTTPException(
+            status_code=http_status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e_rt)
+        ) from e_rt
+    except Exception as e:  # 未知错误
+        _admin_routes_logger.error(f"管理员更新配置时发生未知错误: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=http_status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="更新配置时发生意外错误。",
+        ) from e
 
-    except ValueError as e_val: # 来自 update_and_persist_settings 的验证错误
-        _admin_routes_logger.warning(f"Admin更新配置失败 (数据验证错误): {e_val}")
-        raise HTTPException(status_code=http_status.HTTP_400_BAD_REQUEST, detail=str(e_val))
-    except IOError as e_io:
-        _admin_routes_logger.error(f"Admin更新配置失败 (文件写入错误): {e_io}")
-        raise HTTPException(status_code=http_status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to write settings to file.")
-    except RuntimeError as e_rt: # 其他 update_and_persist_settings 抛出的错误
-        _admin_routes_logger.error(f"Admin更新配置失败 (运行时错误): {e_rt}")
-        raise HTTPException(status_code=http_status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e_rt))
-    except Exception as e:
-        _admin_routes_logger.error(f"Admin更新配置时发生未知错误: {e}", exc_info=True)
-        raise HTTPException(status_code=http_status.HTTP_500_INTERNAL_SERVER_ERROR, detail="An unexpected error occurred while updating settings.")
+
 # endregion
 
-# region Admin User Management API 端点
+
+# region Admin User Management API 端点 (管理员用户管理接口)
 @admin_router.get(
     "/users",
-    response_model=List[UserPublicProfile], # 返回用户公开信息列表
-    summary="获取所有用户列表 (Admin)"
+    response_model=List[UserPublicProfile],
+    summary="管理员获取用户列表",
+    description="获取系统中的用户账户列表，支持分页查询。返回的用户信息不包含敏感数据（如哈希密码）。",
+    responses={
+        http_status.HTTP_200_OK: {"description": "成功获取用户列表"},
+        # 401/403 handled by router dependency
+        http_status.HTTP_500_INTERNAL_SERVER_ERROR: {
+            "description": "获取用户列表时发生服务器内部错误"
+        },
+    },
 )
-async def admin_get_all_users(skip: int = 0, limit: int = 100):
-    """管理员获取系统中的所有用户列表（分页）。"""
-    # from ..main import user_crud_instance
-    users_in_db = user_crud.admin_get_all_users(skip=skip, limit=limit)
-    # 将 UserInDB 转换为 UserPublicProfile 以隐藏密码等敏感信息
+async def admin_get_all_users(
+    skip: int = Query(0, ge=0, description="跳过的记录数，用于分页"),
+    limit: int = Query(
+        100, ge=1, le=200, description="返回的最大记录数，用于分页 (最大200)"
+    ),
+):
+    """
+    管理员获取系统中的所有用户列表（分页）。
+    返回的用户信息是公开的个人资料，不包含敏感数据如哈希密码。
+    参数:
+        skip (int): 跳过的记录数，用于分页。
+        limit (int): 返回的最大记录数，用于分页。
+    """
+    _admin_routes_logger.info(f"管理员请求用户列表，skip={skip}, limit={limit}。")
+    users_in_db = await user_crud.admin_get_all_users(skip=skip, limit=limit)
+    # 将数据库模型转换为公开的Pydantic模型列表
     return [UserPublicProfile.model_validate(user) for user in users_in_db]
+
 
 @admin_router.get(
     "/users/{user_uid}",
-    response_model=UserPublicProfile, # 或更详细的Admin特定用户视图
-    summary="获取特定用户详情 (Admin)"
+    response_model=UserPublicProfile,
+    summary="管理员获取特定用户信息",
+    description="根据用户UID（用户名）获取其公开的详细信息，不包括密码等敏感内容。",
+    responses={
+        http_status.HTTP_200_OK: {"description": "成功获取用户信息"},
+        http_status.HTTP_404_NOT_FOUND: {"description": "指定UID的用户未找到"},
+        # 401/403 handled by router dependency
+    },
 )
-async def admin_get_user(user_uid: str):
+async def admin_get_user(
+    *, user_uid: str = Path(..., description="要获取详情的用户的UID")
+):
     """管理员获取指定UID用户的详细信息。"""
-    # from ..main import user_crud_instance
-    user = user_crud.get_user_by_uid(user_uid)
-    if not user:
-        raise HTTPException(status_code=http_status.HTTP_404_NOT_FOUND, detail="User not found")
+    _admin_routes_logger.info(f"管理员请求用户 '{user_uid}' 的详细信息。")
+    user = await user_crud.get_user_by_uid(user_uid)
+    if not user:  # 如果用户未找到
+        _admin_routes_logger.warning(f"管理员请求用户 '{user_uid}' 失败：用户未找到。")
+        raise HTTPException(
+            status_code=http_status.HTTP_404_NOT_FOUND, detail="用户未找到"
+        )
     return UserPublicProfile.model_validate(user)
+
 
 @admin_router.put(
     "/users/{user_uid}",
     response_model=UserPublicProfile,
-    summary="更新特定用户信息 (Admin)"
+    summary="管理员更新特定用户信息",
+    description="管理员修改用户的昵称、邮箱、QQ、用户标签，或为其重置密码。请求体中仅需包含需要修改的字段。",
+    responses={
+        http_status.HTTP_200_OK: {"description": "用户信息成功更新"},
+        http_status.HTTP_400_BAD_REQUEST: {
+            "description": "提供的更新数据无效（例如，无效的标签值）"
+        },
+        http_status.HTTP_404_NOT_FOUND: {"description": "指定UID的用户未找到"},
+        http_status.HTTP_422_UNPROCESSABLE_ENTITY: {"description": "请求体验证失败"},
+        # 401/403 handled by router dependency
+    },
 )
-async def admin_update_user_info(user_uid: str, update_payload: AdminUserUpdate):
+async def admin_update_user_info(
+    *,
+    user_uid: str = Path(..., description="要更新信息的用户的UID"),
+    update_payload: AdminUserUpdate,
+):
     """
     管理员更新指定UID用户的信息，包括昵称、邮箱、QQ、标签和可选的密码重置。
     """
-    # from ..main import user_crud_instance
+    _admin_routes_logger.info(
+        f"管理员尝试更新用户 '{user_uid}' 的信息，数据: {update_payload.model_dump_json(exclude_none=True)}"
+    )
     updated_user = await user_crud.admin_update_user(user_uid, update_payload)
     if not updated_user:
-        # 原因可能是用户不存在，或更新数据验证失败 (已在CRUD层处理并记录日志)
-        raise HTTPException(status_code=http_status.HTTP_404_NOT_FOUND, detail="User not found or update failed")
-    
-    # 如果更新了密码，可能需要让用户的现有Token失效，但这需要更复杂的Token管理
-    # 目前简单返回更新后的用户信息
+        # 失败原因可能包括用户不存在或更新数据验证失败，具体已在CRUD层记录日志
+        _admin_routes_logger.warning(
+            f"管理员更新用户 '{user_uid}' 失败：用户未找到或更新无效。"
+        )
+        raise HTTPException(
+            status_code=http_status.HTTP_404_NOT_FOUND,  # 或400，取决于具体失败原因
+            detail="用户未找到或更新失败。",
+        )
+    _admin_routes_logger.info(f"管理员成功更新用户 '{user_uid}' 的信息。")
+    # 注意：如果管理员更新了用户密码，理想情况下可能需要使用户所有现有Token失效，
+    # 这需要更复杂的Token管理机制（例如，Token黑名单或版本控制）。当前实现较为简单。
     return UserPublicProfile.model_validate(updated_user)
 
-# TODO: 可能需要一个专门的接口来“封禁”或“解封”用户，即修改其BANNED标签
-# 例如 POST /admin/users/{user_uid}/ban 和 POST /admin/users/{user_uid}/unban
 
 # endregion
 
-# region Admin Paper Management API 端点 (与之前类似，但使用Token认证)
-@admin_router.get("/paper/all", response_model=List[PaperAdminView], summary="获取所有试卷摘要")
-def admin_get_all_papers_summary(skip: int = 0, limit: int = 100):
-    """获取内存中所有试卷的摘要信息列表，按创建时间倒序排列。"""
-    # from ..main import paper_crud_instance
-    try:
-        all_papers_data = paper_crud.admin_get_all_papers_summary_from_memory(skip, limit)
-        summaries = []
-        for paper_data in all_papers_data:
-            count = len(paper_data.get("paper_questions", []))
-            submitted_card = paper_data.get("submitted_answers_card")
-            finished_count = len(submitted_card) if isinstance(submitted_card, list) else None
-            correct_count = paper_data.get("score") # score 即为正确题数
 
-            summaries.append(PaperAdminView(
-                paper_id=str(paper_data.get("paper_id", "N/A")),
-                user_uid=paper_data.get("user_uid"),
-                creation_time_utc=paper_data.get("creation_time_utc", "N/A"),
-                creation_ip=paper_data.get("creation_ip", "N/A"),
-                difficulty=paper_data.get("difficulty"),
-                count=count,
-                finished_count=finished_count,
-                correct_count=correct_count,
-                score=paper_data.get("score"),
-                submission_time_utc=paper_data.get("submission_time_utc"),
-                submission_ip=paper_data.get("submission_ip"),
-                pass_status=paper_data.get("pass_status"),
-                passcode=paper_data.get("passcode"),
-                last_update_time_utc=paper_data.get("last_update_time_utc"),
-                last_update_ip=paper_data.get("last_update_ip")
-            ))
-        return summaries
-    except Exception as e:
-        _admin_routes_logger.error(f"[AdminAPI] /paper/all: 获取试卷列表时发生意外错误: {e}", exc_info=True)
-        raise HTTPException(status_code=http_status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Error fetching paper list: {str(e)}")
-
-@admin_router.get("/paper/", response_model=PaperFullDetailModel, summary="获取指定试卷的详细信息")
-def admin_get_paper_detail(paper_id: str = Query(..., description="要获取详情的试卷ID")):
-    """获取内存中指定 `paper_id` 的试卷的完整详细信息。"""
-    # from ..main import paper_crud_instance
-    paper_data = paper_crud.admin_get_paper_detail_from_memory(paper_id)
-    if not paper_data:
-        _admin_routes_logger.warning(f"[AdminAPI] /paper/?paper_id={paper_id}: 试卷未找到。")
-        raise HTTPException(status_code=http_status.HTTP_404_NOT_FOUND, detail=f"Paper ID '{paper_id}' not found.")
-    try:
-        if "paper_questions" not in paper_data or not isinstance(paper_data["paper_questions"], list):
-            paper_data["paper_questions"] = [] 
-        return PaperFullDetailModel(**paper_data)
-    except Exception as e:
-        _admin_routes_logger.error(f"[AdminAPI] /paper/?paper_id={paper_id}: 转换试卷数据为详细模型时出错: {e}", exc_info=True)
-        raise HTTPException(status_code=http_status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Paper data format error: {str(e)}")
-
-@admin_router.delete("/paper/", status_code=http_status.HTTP_200_OK, summary="删除指定的试卷")
-def admin_delete_paper(paper_id: str = Query(..., description="要删除的试卷ID")):
-    """从内存中删除指定 `paper_id` 的试卷记录。更改将在下次持久化时写入文件。"""
-    # from ..main import paper_crud_instance
-    deleted = paper_crud.admin_delete_paper_from_memory(paper_id)
-    if not deleted:
-        _admin_routes_logger.warning(f"[AdminAPI] DELETE /paper/?paper_id={paper_id}: 试卷未找到，无法删除。")
-        raise HTTPException(status_code=http_status.HTTP_404_NOT_FOUND, detail=f"Paper ID '{paper_id}' not found, cannot delete.")
-    _admin_routes_logger.info(f"[AdminAPI] 已删除试卷 (内存): {paper_id}。")
-    return {"message": f"Paper {paper_id} successfully deleted from memory."}
-# endregion
-
-# region Admin Question Bank Management API 端点
-@admin_router.get("/question/", response_model=List[QuestionModel], summary="获取指定难度的题库")
-async def admin_get_question_bank(difficulty: DifficultyLevel = Query(..., description="题库难度")):
-    """获取指定难度题库的所有题目。"""
-    # from ..main import qb_crud_instance
-    full_bank = await qb_crud.get_question_bank_with_content(difficulty)
-    
-    if not full_bank or not full_bank.questions:
-        _admin_routes_logger.error(
-            f"[AdminAPI] /question/?difficulty={difficulty.value}: "
-            f"难度题库内容未加载或为空。"
-        )
-        raise HTTPException(status_code=http_status.HTTP_404_NOT_FOUND, detail=f"Question bank for difficulty '{difficulty.value}' not loaded or does not exist.")
-
-    try:
-        # full_bank.questions 已经是 List[QuestionModel]
-        return full_bank.questions
-    except Exception as e:
-        _admin_routes_logger.error(f"[AdminAPI] /question/?difficulty={difficulty.value}: 转换题库数据时出错: {e}", exc_info=True)
-        raise HTTPException(status_code=http_status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Question bank data format error.")
-
-@admin_router.post("/question/", status_code=http_status.HTTP_201_CREATED, response_model=QuestionModel, summary="为指定难度的题库添加题目")
-async def admin_add_question_to_bank(question: QuestionModel, difficulty: DifficultyLevel = Query(..., description="题库难度")):
-    """向指定难度的题库JSON文件添加一个新题目，并触发内存中题库的重新加载。"""
-    # from ..main import qb_crud_instance
-    added_question = await qb_crud.add_question_to_bank(difficulty, question)
-    if not added_question:
-        _admin_routes_logger.error(f"[AdminAPI] 向题库 '{difficulty.value}' 添加题目失败。")
-        raise HTTPException(status_code=http_status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to add question to bank.")
-    
-    _admin_routes_logger.info(f"[AdminAPI] 已向题库 '{difficulty.value}' 添加新题目: {question.body[:50]}...")
-    return added_question
-
-@admin_router.delete("/question/", status_code=http_status.HTTP_200_OK, summary="删除指定题库的指定题目")
-async def admin_delete_question_from_bank(
-    difficulty: DifficultyLevel = Query(..., description="题库难度"),
-    _index: int = Query(..., alias="index", description="要删除的题目索引 (从0开始)")
+# region Admin Paper Management API 端点 (管理员试卷管理接口)
+@admin_router.get(
+    "/papers",  # RESTful: 使用复数名词 (papers)
+    response_model=List[PaperAdminView],
+    summary="管理员获取所有试卷摘要列表",
+    description="获取系统生成的所有试卷的摘要信息列表，支持分页。摘要信息包括试卷ID、用户UID、创建时间、题目数、得分等。",
+    responses={
+        http_status.HTTP_200_OK: {"description": "成功获取试卷摘要列表"},
+        # 401/403 handled by router dependency
+        http_status.HTTP_500_INTERNAL_SERVER_ERROR: {
+            "description": "获取试卷列表时发生服务器内部错误"
+        },
+    },
+)
+async def admin_get_all_papers_summary(
+    skip: int = Query(0, ge=0, description="跳过的记录数，用于分页"),
+    limit: int = Query(100, ge=1, le=200, description="返回的最大记录数 (最大200)"),
 ):
-    """根据索引从指定难度的题库JSON文件中删除一个题目，并触发内存中题库的重新加载。"""
-    # from ..main import qb_crud_instance
-    deleted_question_data = await qb_crud.delete_question_from_bank(difficulty, _index)
-    if deleted_question_data is None: # None 表示删除失败（例如索引无效或文件操作错误）
-        # qb_crud 内部已记录具体错误
-        # 此处需要判断是404还是500，但qb_crud不直接抛HTTPException
-        # 假设如果返回None，通常是索引问题或文件未找到
-        raise HTTPException(status_code=http_status.HTTP_404_NOT_FOUND, detail=f"Question at index {_index} in bank '{difficulty.value}' not found or deletion failed.")
+    """获取存储中所有试卷的摘要信息列表，按创建时间倒序排列。"""
+    _admin_routes_logger.info(f"管理员请求试卷摘要列表，skip={skip}, limit={limit}。")
+    try:
+        # 从PaperCRUD获取试卷摘要数据
+        all_papers_data = await paper_crud.admin_get_all_papers_summary(skip, limit)
+        # PaperAdminView 模型应该能直接从 paper_crud 返回的数据进行实例化
+        return [PaperAdminView(**paper_data) for paper_data in all_papers_data]
+    except Exception as e:
+        _admin_routes_logger.error(
+            f"管理员获取试卷列表时发生意外错误: {e}", exc_info=True
+        )
+        raise HTTPException(
+            status_code=http_status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"获取试卷列表时发生错误: {str(e)}",
+        ) from e
 
-    deleted_body = deleted_question_data.get("body", "N/A")
-    _admin_routes_logger.info(f"[AdminAPI] 已从题库 '{difficulty.value}' 删除索引为 {_index} 的题目: {deleted_body[:50]}...")
-    return {
-        "message": f"Successfully deleted question at index {_index} from bank '{difficulty.value}'.",
-        "deleted_question_body": deleted_body
-    }
+
+@admin_router.get(
+    "/papers/{paper_id}",  # RESTful: 使用路径参数
+    response_model=PaperFullDetailModel,
+    summary="管理员获取特定试卷的完整信息",
+    description="根据试卷ID获取其完整详细信息，包括所有题目、正确答案映射、用户作答情况等。",
+    responses={
+        http_status.HTTP_200_OK: {"description": "成功获取试卷详细信息"},
+        http_status.HTTP_404_NOT_FOUND: {"description": "指定ID的试卷未找到"},
+        # 401/403 handled by router dependency
+        http_status.HTTP_500_INTERNAL_SERVER_ERROR: {
+            "description": "获取试卷详情时发生服务器内部错误"
+        },
+    },
+)
+async def admin_get_paper_detail(
+    paper_id: str = Path(
+        ..., description="要获取详情的试卷ID (UUID格式)"
+    )  # 改为路径参数
+):
+    """获取指定 `paper_id` 的试卷的完整详细信息。"""
+    _admin_routes_logger.info(f"管理员请求试卷 '{paper_id}' 的详细信息。")
+    paper_data = await paper_crud.admin_get_paper_detail(paper_id)
+    if not paper_data:
+        _admin_routes_logger.warning(f"管理员请求试卷 '{paper_id}' 失败：试卷未找到。")
+        raise HTTPException(
+            status_code=http_status.HTTP_404_NOT_FOUND,
+            detail=f"试卷ID '{paper_id}' 未找到。",
+        )
+    try:
+        # 确保 paper_questions 字段存在且为列表，以防数据损坏或不一致
+        if "paper_questions" not in paper_data or not isinstance(
+            paper_data["paper_questions"], list
+        ):
+            paper_data["paper_questions"] = []  # 如果缺失，则设置为空列表
+        return PaperFullDetailModel(**paper_data)  # 转换为响应模型
+    except Exception as e:  # 通常是 Pydantic ValidationError
+        _admin_routes_logger.error(
+            f"管理员获取试卷 '{paper_id}' 详情时，转换数据模型失败: {e}", exc_info=True
+        )
+        raise HTTPException(
+            status_code=http_status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"试卷数据格式错误或不完整: {str(e)}",
+        ) from e
+
+
+@admin_router.delete(
+    "/papers/{paper_id}",  # RESTful: 使用路径参数
+    status_code=http_status.HTTP_204_NO_CONTENT,  # 成功删除通常返回 204
+    summary="管理员删除特定试卷",
+    description="根据试卷ID永久删除一份试卷及其所有相关数据。此操作需谨慎，成功时无内容返回。",
+    responses={
+        http_status.HTTP_204_NO_CONTENT: {"description": "试卷成功删除"},
+        http_status.HTTP_404_NOT_FOUND: {"description": "指定ID的试卷未找到"},
+        # 401/403 handled by router dependency
+        http_status.HTTP_500_INTERNAL_SERVER_ERROR: {
+            "description": "删除试卷时发生服务器内部错误"
+        },
+    },
+)
+async def admin_delete_paper(
+    paper_id: str = Path(..., description="要删除的试卷ID (UUID格式)")  # 改为路径参数
+):
+    """从数据存储中删除指定 `paper_id` 的试卷记录。"""
+    _admin_routes_logger.info(f"管理员尝试删除试卷 '{paper_id}'。")
+    deleted = await paper_crud.admin_delete_paper(paper_id)
+    if not deleted:
+        _admin_routes_logger.warning(f"管理员删除试卷 '{paper_id}' 失败：试卷未找到。")
+        raise HTTPException(
+            status_code=http_status.HTTP_404_NOT_FOUND,
+            detail=f"试卷ID '{paper_id}' 未找到，无法删除。",
+        )
+    _admin_routes_logger.info(f"管理员已成功删除试卷: {paper_id}。")
+    return None  # 对于 204 No Content，不应返回任何内容
+
+
 # endregion
+
+
+# region Admin Question Bank Management API 端点 (管理员题库管理接口)
+
+
+@admin_router.get(
+    "/question-banks",
+    response_model=List[LibraryIndexItem],
+    summary="管理员获取所有题库的元数据列表",
+    description="获取系统中所有题库的元数据信息列表，包括ID、名称、描述、题目总数等。这与公共的 `/difficulties` 接口类似，但处于管理员路径下。",
+    responses={
+        http_status.HTTP_200_OK: {"description": "成功获取题库元数据列表"},
+        # 401/403 handled by router dependency
+        http_status.HTTP_500_INTERNAL_SERVER_ERROR: {
+            "description": "获取题库元数据时发生服务器内部错误"
+        },
+    },
+)
+async def admin_get_all_qbank_metadata():
+    """管理员获取所有题库的元数据列表。"""
+    _admin_routes_logger.info("管理员请求获取所有题库的元数据。")
+    try:
+        metadata_list = await qb_crud.get_all_library_metadatas()
+        return metadata_list
+    except Exception as e:
+        _admin_routes_logger.error(
+            f"管理员获取题库元数据列表时发生错误: {e}", exc_info=True
+        )
+        raise HTTPException(
+            status_code=http_status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"获取题库元数据列表时发生错误: {str(e)}",
+        )
+
+
+@admin_router.get(
+    "/question-banks/{difficulty_id}/content",
+    response_model=QuestionBank,  # 返回包含元数据和题目列表的完整题库模型
+    summary="管理员获取特定难度题库的完整内容",
+    description="根据难度ID（例如 'easy', 'hard'）获取指定题库的元数据及其包含的所有题目详情。",
+    responses={
+        http_status.HTTP_200_OK: {"description": "成功获取题库内容"},
+        http_status.HTTP_404_NOT_FOUND: {"description": "指定难度的题库未找到"},
+        # 401/403 handled by router dependency
+        http_status.HTTP_500_INTERNAL_SERVER_ERROR: {
+            "description": "获取题库内容时发生服务器内部错误"
+        },
+    },
+)
+async def admin_get_question_bank_content(  # 函数名修改以反映其行为
+    difficulty_id: DifficultyLevel = Path(
+        ..., description="要获取内容的题库难度ID (例如: easy, hybrid, hard)"
+    )
+):
+    """获取指定难度题库的元数据和所有题目。"""
+    _admin_routes_logger.info(
+        f"管理员请求获取难度为 '{difficulty_id.value}' 的题库内容。"
+    )
+    try:
+        full_bank = await qb_crud.get_question_bank_with_content(difficulty_id)
+        if not full_bank:
+            _admin_routes_logger.warning(
+                f"管理员请求难度 '{difficulty_id.value}' 的题库内容失败：题库未找到或为空。"
+            )
+            raise HTTPException(
+                status_code=http_status.HTTP_404_NOT_FOUND,
+                detail=f"难度为 '{difficulty_id.value}' 的题库未加载或不存在。",
+            )
+        return full_bank  # 直接返回 QuestionBank 对象
+    except HTTPException:
+        raise
+    except Exception as e:
+        _admin_routes_logger.error(
+            f"管理员获取题库 '{difficulty_id.value}' 内容时发生意外错误: {e}",
+            exc_info=True,
+        )
+        raise HTTPException(
+            status_code=http_status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"获取题库 '{difficulty_id.value}' 内容时发生服务器错误。",
+        ) from e
+
+
+@admin_router.post(
+    "/question-banks/{difficulty_id}/questions",
+    response_model=QuestionModel,
+    status_code=http_status.HTTP_201_CREATED,
+    summary="管理员向特定题库添加新题目",
+    description="向指定难度的题库中添加一道新的题目。请求体应为单个题目的完整数据结构。",
+    responses={
+        http_status.HTTP_201_CREATED: {"description": "题目成功添加到题库"},
+        http_status.HTTP_400_BAD_REQUEST: {
+            "description": "提供的题目数据无效或不符合约束"
+        },
+        http_status.HTTP_404_NOT_FOUND: {"description": "指定难度的题库未找到"},
+        http_status.HTTP_422_UNPROCESSABLE_ENTITY: {"description": "请求体验证失败"},
+        # 401/403 handled by router dependency
+        http_status.HTTP_500_INTERNAL_SERVER_ERROR: {
+            "description": "添加题目到题库时发生服务器内部错误"
+        },
+    },
+)
+async def admin_add_question_to_bank(
+    question: QuestionModel,  # 请求体包含新题目数据
+    difficulty_id: DifficultyLevel = Path(..., description="要添加题目的题库难度ID"),
+):
+    """向指定难度的题库添加一个新题目。"""
+    _admin_routes_logger.info(
+        f"管理员尝试向题库 '{difficulty_id.value}' 添加新题目: {question.body[:50]}..."
+    )
+    try:
+        added_question = await qb_crud.add_question_to_bank(difficulty_id, question)
+        if not added_question:
+            _admin_routes_logger.error(
+                f"管理员向题库 '{difficulty_id.value}' 添加题目失败（CRUD层返回None）。"
+            )
+            # CRUD层应在失败时抛出异常，如果返回None则表示一种未预期的成功指示失败
+            raise HTTPException(
+                status_code=http_status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="添加题目到题库失败，但CRUD未明确报告错误原因。",
+            )
+        _admin_routes_logger.info(
+            f"管理员已成功向题库 '{difficulty_id.value}' 添加新题目。"
+        )
+        return added_question
+    except ValueError as ve:  # 例如，如果CRUD层在找不到元数据时抛出ValueError
+        _admin_routes_logger.warning(
+            f"向题库 '{difficulty_id.value}' 添加题目失败: {ve}"
+        )
+        raise HTTPException(status_code=http_status.HTTP_404_NOT_FOUND, detail=str(ve))
+    except Exception as e:
+        _admin_routes_logger.error(
+            f"向题库 '{difficulty_id.value}' 添加题目时发生意外错误: {e}", exc_info=True
+        )
+        raise HTTPException(
+            status_code=http_status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"向题库 '{difficulty_id.value}' 添加题目时发生服务器错误。",
+        )
+
+
+@admin_router.delete(
+    "/question-banks/{difficulty_id}/questions",
+    status_code=http_status.HTTP_204_NO_CONTENT,  # 成功删除通常返回204 No Content
+    summary="管理员从特定题库删除题目",
+    description="根据题目在题库列表中的索引，从指定难度的题库中删除一道题目。成功时无内容返回。",
+    responses={
+        http_status.HTTP_204_NO_CONTENT: {"description": "题目成功删除"},
+        http_status.HTTP_400_BAD_REQUEST: {"description": "提供的索引无效"},
+        http_status.HTTP_404_NOT_FOUND: {
+            "description": "指定难度的题库或指定索引的题目未找到"
+        },
+        # 401/403 handled by router dependency
+        http_status.HTTP_500_INTERNAL_SERVER_ERROR: {
+            "description": "删除题目时发生服务器内部错误"
+        },
+    },
+)
+async def admin_delete_question_from_bank(
+    difficulty_id: DifficultyLevel = Path(..., description="要删除题目的题库难度ID"),
+    question_index: int = Query(
+        ..., alias="index", ge=0, description="要删除的题目在列表中的索引 (从0开始)"
+    ),
+):
+    """根据索引从指定难度的题库中删除一个题目。"""
+    _admin_routes_logger.info(
+        f"管理员尝试从题库 '{difficulty_id.value}' 删除索引为 {question_index} 的题目。"
+    )
+    try:
+        deleted_question_data = await qb_crud.delete_question_from_bank(
+            difficulty_id, question_index
+        )
+        if deleted_question_data is None:
+            _admin_routes_logger.warning(
+                f"管理员删除题库 '{difficulty_id.value}' 索引 {question_index} 的题目失败（可能索引无效或题目不存在）。"
+            )
+            # 根据CRUD返回None的具体原因，可能404更合适
+            raise HTTPException(
+                status_code=http_status.HTTP_404_NOT_FOUND,  # 假设索引不存在或题库不存在
+                detail=f"在题库 '{difficulty_id.value}' 中未找到索引为 {question_index} 的题目，或题库本身不存在。",
+            )
+        deleted_body = deleted_question_data.get("body", "N/A")
+        _admin_routes_logger.info(
+            f"管理员已成功从题库 '{difficulty_id.value}' 删除索引为 {question_index} 的题目: {deleted_body[:50]}..."
+        )
+        return None  # 对于 204 No Content，不应返回任何内容
+    except ValueError as ve:  # CRUD层可能因无法找到元数据而抛出ValueError
+        _admin_routes_logger.warning(
+            f"从题库 '{difficulty_id.value}' 删除题目失败: {ve}"
+        )
+        raise HTTPException(status_code=http_status.HTTP_404_NOT_FOUND, detail=str(ve))
+    except Exception as e:
+        _admin_routes_logger.error(
+            f"从题库 '{difficulty_id.value}' 删除题目时发生意外错误: {e}", exc_info=True
+        )
+        raise HTTPException(
+            status_code=http_status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"从题库 '{difficulty_id.value}' 删除题目时发生服务器错误。",
+        )
+
+
+# endregion
+
+__all__ = ["admin_router"]  # 导出管理员路由实例，供 app.main 挂载
+
+if __name__ == "__main__":
+    # 此模块不应作为主脚本执行。它定义API路由，应由FastAPI应用实例导入和使用。
+    _admin_routes_logger.info(
+        f"模块 {__name__} 定义了管理员相关的API路由，不应直接执行。它应被 FastAPI 应用导入。"
+    )
+    print(
+        f"模块 {__name__} 定义了管理员相关的API路由，不应直接执行。它应被 FastAPI 应用导入。"
+    )

@@ -4,6 +4,13 @@ pydantic>=2.5.0
 passlib[bcrypt]>=1.7.4
 python-dotenv>=0.21.0
 httpx>=0.25.0
-python-jose[cryptography]>=3.3.0 # 用于未来可能的JWT Token增强 (当前Token方案不直接使用)
-email-validator>=2.2.0
-# email-validator # 如果需要更严格的邮箱格式验证，可以取消注释并安装
+python-jose[cryptography]>=3.3.0 # For potential future JWT token enhancement (currently not used)
+email-validator>=2.2.0 # For enhanced email validation by Pydantic's EmailStr
+asyncpg>=0.29.0 # For PostgreSQL adapter
+aiomysql>=0.2.0 # For MySQL adapter (also needs PyMySQL)
+aioredis>=2.0.0 # For Redis adapter
+aiosqlite>=0.19.0 # For SQLite adapter
+
+# Documentation tools
+mkdocs>=1.5.0
+mkdocs-material>=9.0.0

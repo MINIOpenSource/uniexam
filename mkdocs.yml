@@ -1,0 +1,84 @@
+site_name: "在线考试系统 文档"
+# site_url: "" # 可选，如果部署到特定URL (Optional, if deploying to a specific URL)
+
+docs_dir: docs
+
+theme:
+  name: material
+  language: zh
+  features:
+    - navigation.tabs  # 启用顶部导航标签 (Enable top navigation tabs)
+    - navigation.sections # 在左侧导航中将顶级页面分组为区域 (Group top-level pages into sections in left nav)
+    # - navigation.expand # 左侧导航自动展开 (Optional: auto-expand left navigation)
+    - navigation.indexes # 允许目录的 index.md 文件作为该目录的索引页 (Allow index.md in dirs as index page)
+    - navigation.top # 返回顶部按钮 (Back-to-top button)
+    - search.suggest # 搜索建议 (Search suggestions)
+    - search.highlight # 搜索结果高亮 (Search result highlighting)
+    - content.code.annotate # 代码块注释功能 (Code block annotation feature)
+    - content.code.copy # 代码块复制按钮 (Code block copy button)
+  palette: # 主题颜色配置 (Optional: theme color configuration)
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo # 主色调 (Primary color)
+      accent: blue # 强调色 (Accent color)
+      toggle:
+        icon: material/brightness-7
+        name: 切换到深色模式 (Switch to dark mode)
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue
+      accent: light-blue
+      toggle:
+        icon: material/brightness-4
+        name: 切换到浅色模式 (Switch to light mode)
+  font: # 字体配置 (Optional: font configuration)
+    text: Roboto, "Noto Sans SC", sans-serif
+    code: Roboto Mono, "Droid Sans Mono", monospace
+  icon: # 图标配置 (Optional: icon configuration)
+    logo: material/school # 站点Logo (Site logo)
+
+# 插件配置 (Plugin configuration)
+plugins:
+  - search # 内建搜索插件 (Built-in search plugin)
+  # 可以添加其他插件，例如：
+  # - mermaid2 # 用于Mermaid图表
+  # - mkdocstrings # 用于从代码docstrings生成文档 (需要额外安装和配置)
+
+# 导航菜单配置 (Navigation menu configuration)
+nav:
+  - 首页: index.md
+  - API文档:
+    - 总览: api/index.md
+    - 用户与考试API: api/user_exam.md
+    - 管理员API: api/admin.md
+  - 贡献指南: CONTRIBUTING.md
+  # 可以添加更多顶级或嵌套的导航项
+  # - 部署指南: deployment.md
+  # - 开发参考:
+  #   - 本地环境设置: dev/local_setup.md
+  #   - 代码规范: dev/code_style.md
+
+# Markdown扩展配置 (Markdown extensions configuration)
+markdown_extensions:
+  - admonition # 警告、提示等块状内容的扩展
+  - pymdownx.details # 可折叠块
+  - pymdownx.superfences # 嵌套代码块和Mermaid图表支持
+  - pymdownx.highlight: # 代码高亮配置
+      anchor_linenums: true
+      line_spans: __span
+      pygments_style: tango
+  - pymdownx.inlinehilite # 内联代码高亮
+  - toc: # 目录生成
+      permalink: true # 为标题添加永久链接
+      toc_depth: "2-3" # 生成2到3级标题的目录
+
+# 版权信息 (Optional: copyright information)
+copyright: "版权所有 &copy; 2024 在线考试系统项目"
+
+# 额外自定义 (Optional: extra customizations)
+# extra_css:
+#   - stylesheets/extra.css
+# extra_javascript:
+#   - javascripts/extra.js
