@@ -12,7 +12,9 @@
             "制作教学课件",
             "学校的官方网站系统",
             "家校沟通软件"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的名称灵感来源于什么？",
@@ -26,7 +28,9 @@
             "一种热带岛屿",
             "某款游戏的地名",
             "一本名为《课程之岛》的书"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "运行 ClassIsland 推荐的 .NET 版本是什么？",
@@ -40,7 +44,9 @@
             "Java 11",
             "Python 3.9",
             ".NET Core 3.1"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 在 Windows 7 上运行时可能出现什么主要问题？",
@@ -54,7 +60,9 @@
             "无法播放声音",
             "CPU占用过高",
             "无法保存配置文件"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的官方文档网站域名是什么？",
@@ -68,7 +76,9 @@
             "classisland.org/documentation",
             "help.classisland.net",
             "classisland.github.io/docs"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的主菜单通常通过什么方式访问？",
@@ -82,7 +92,9 @@
             "使用特定的快捷键组合",
             "通过命令行启动",
             "在浏览器中输入特定网址"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 主界面默认停靠在屏幕的哪个位置？",
@@ -96,7 +108,9 @@
             "屏幕底部中央",
             "随鼠标位置动态变化",
             "用户上次关闭时的位置"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 中，“组件”的主要作用是什么？",
@@ -111,7 +125,9 @@
             "处理应用的更新逻辑",
             "备份和恢复用户数据",
             "播放提醒音效"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“档案”主要存储什么信息？",
@@ -126,7 +142,9 @@
             "窗口的停靠位置设置",
             "主题颜色设置",
             "用户的登录凭据"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 中的“时间表”定义了什么？",
@@ -141,7 +159,9 @@
             "节假日的放假安排",
             "教师的排班信息",
             "不同学期的课程计划"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的时间点类型中，哪种类型仅在主界面上显示一条分割线？",
@@ -155,7 +175,9 @@
             "行动",
             "午休",
             "自习"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“临时课表”设置会在什么时候清除？",
@@ -170,7 +192,9 @@
             "用户注销时",
             "月底自动清除",
             "学期结束后"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动化”功能主要目的是什么？",
@@ -185,7 +209,9 @@
             "自动备份用户数据",
             "自动调整屏幕亮度",
             "自动清理系统垃圾文件"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 使用什么 UI 框架开发？",
@@ -199,7 +225,9 @@
             "MAUI (.NET Multi-platform App UI)",
             "Electron",
             "Qt"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 使用的 UI 主题库是什么？",
@@ -213,7 +241,9 @@
             "MahApps.Metro",
             "Telerik UI for WPF",
             "DevExpress WPF Controls"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的应用设置文件通常命名为什么？",
@@ -226,7 +256,9 @@
             "ClassIsland.cfg",
             "UserPreferences.dat",
             "GlobalSettings.yaml"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的档案文件默认存储在哪个子目录下？",
@@ -240,7 +272,9 @@
             "UserData/",
             "Schedules/",
             "Backups/"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 应用图标的 SVG 文件名是什么？",
@@ -253,7 +287,9 @@
             "Icon.svg",
             "AppIcon.svg",
             "MainLogo.svg"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“回声洞”内容存储在哪个文本文件中？",
@@ -266,7 +302,9 @@
             "UserSayings.json",
             "Feedback.log",
             "Quotes.xml"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 中，`TimeLayoutItem` 的 `TimeType` 为 0 代表什么？",
@@ -280,7 +318,9 @@
             "行动时间点",
             "午休时间",
             "自习课"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 应用的开源许可证是什么？",
@@ -294,7 +334,9 @@
             "BSD 3-Clause License",
             "Mozilla Public License 2.0",
             "LGPLv3 (Lesser General Public License)"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 核心库 (ClassIsland.Core) 的开源许可证是什么？",
@@ -308,7 +350,9 @@
             "BSD 3-Clause License",
             "Mozilla Public License 2.0",
             "GPLv3 (General Public License)"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 使用哪个库来进行 YAML 解析？",
@@ -321,7 +365,9 @@
             "SharpYaml",
             "LibYAMLSharp",
             "AngleSharp (用于 HTML/XML)"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 中用于显示 Markdown 内容的库是？",
@@ -334,7 +380,9 @@
             "CommonMark.NET",
             "Markdown.XAML",
             "FlexMark.NET"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 中，哪个服务负责管理当前课表状态与信息？",
@@ -348,7 +396,9 @@
             "NotificationHostService",
             "ThemeService",
             "PluginService"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的插件清单文件通常命名为什么？",
@@ -361,7 +411,9 @@
             "PluginManifest.xml",
             "extension.yaml",
             "plugin.ini"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的插件包文件扩展名是什么？",
@@ -374,7 +426,9 @@
             ".plugin",
             ".jar",
             ".csx"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 IPC (跨进程通信) 服务基于什么技术？",
@@ -388,7 +442,9 @@
             "gRPC (本身不是基础，但 ClassIsland 也用 gRPC)",
             "WCF (Windows Communication Foundation)",
             "Message Queues"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的自动化功能中，“规则集” (Ruleset) 的作用是什么？",
@@ -402,7 +458,9 @@
             "管理插件的加载顺序",
             "设置应用的视觉主题",
             "记录自动化执行的日志"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `AttachedSettings` (附加设置) 主要用于什么目的？",
@@ -416,7 +474,9 @@
             "定义窗口的停靠位置",
             "控制应用是否开机自启",
             "设置主界面的字体和颜色"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的设置页面基类是什么？",
@@ -430,7 +490,9 @@
             "Window",
             "PluginSettingsPage",
             "ConfigPageBase"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 使用哪个库处理应用的更新下载？",
@@ -444,7 +506,9 @@
             "SharpCompress (用于解压缩)",
             "WebClient",
             "NuGet.Client"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 使用哪个库与 GitHub API 交互（例如，检查更新）？",
@@ -457,7 +521,9 @@
             "Flurl.Http",
             "GitHubSharp",
             "GraphQL.Client"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 中，用于显示任务栏托盘图标的库是什么？",
@@ -471,7 +537,9 @@
             "ToastNotifications.Wpf",
             "MahApps.Metro.Controls",
             "WPF Extended Toolkit"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的文档使用什么工具构建？",
@@ -485,7 +553,9 @@
             "Sphinx",
             "Jekyll",
             "Hugo"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 文档使用了哪个 VuePress 主题？",
@@ -498,7 +568,9 @@
             "Docute",
             "Material for MkDocs (非 VuePress)",
             "Just the Docs (Jekyll theme)"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的设置中，`WindowDockingLocation` 属性控制什么？",
@@ -512,7 +584,9 @@
             "提醒通知的弹出位置",
             "任务栏图标的位置",
             "窗口的层级（置顶或置底）"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 中的 `ILessonsService.CurrentSubject` 属性在课间休息时，其 `Name` 属性通常是什么？",
@@ -526,7 +600,9 @@
             "下一节课的科目名称",
             "上一节课的科目名称",
             "\"BreakTime\""
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ProfileService` 主要负责什么？",
@@ -540,7 +616,9 @@
             "控制应用的主题和外观",
             "提供天气信息",
             "注册和管理插件"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `UpdateService` 使用哪个 NuGet 包进行版本信息索引的发布？",
@@ -554,7 +632,9 @@
             "ClickOnce",
             "Nexus Repository Manager",
             "Artifactory"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 插件的入口类需要继承哪个基类？",
@@ -568,7 +648,9 @@
             "UserControl",
             "DependencyObject",
             "IPlugin"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 插件的入口类需要使用哪个特性 (Attribute) 标记？",
@@ -583,7 +665,9 @@
             "ServiceContractAttribute",
             "PluginManifestAttribute",
             "ExtensionAttribute"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的主窗口 (`MainWindow.xaml.cs`) 使用哪个服务来处理主题变化？",
@@ -597,7 +681,9 @@
             "PaletteHelper (MaterialDesignThemes)",
             "AppearanceService",
             "StyleManager"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `ComponentSettings` 模型中，`HideOnRule` 属性的作用是什么？",
@@ -611,7 +697,9 @@
             "指定组件在鼠标移入时是否淡化",
             "控制组件是否可以被用户手动隐藏",
             "标记组件是否为容器组件"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 中的 `FileFolderService` 主要用于什么？",
@@ -626,7 +714,9 @@
             "解析 Excel 文件以导入课表",
             "存储和读取用户设置",
             "提供天气数据缓存"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的哪个服务负责从NTP服务器同步精确时间？",
@@ -640,7 +730,9 @@
             "SystemTimeService (虚构)",
             "NtpSyncService (虚构)",
             "Windows Time Service (系统服务，但非 CI 内部服务)"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `WallpaperPickingService` 的主要功能是什么？",
@@ -654,7 +746,9 @@
             "提供动态壁纸效果",
             "设置主窗口的背景图片",
             "调整屏幕的显示参数"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `App.xaml.cs` 文件中，`App_OnDispatcherUnhandledException` 方法的作用是什么？",
@@ -668,7 +762,9 @@
             "注册应用内导航的URI协议",
             "处理应用的更新逻辑",
             "初始化插件服务"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 中，`AutomationService` 存储自动化配置的默认文件夹路径是什么？",
@@ -682,7 +778,9 @@
             "Data/Automations/",
             "Cache/Automations/",
             "AutomationRules/"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 中，`IpcRoutedNotifyIds` 类包含什么内容？",
@@ -696,7 +794,9 @@
             "用于序列化 IPC 消息的 Protobuf 定义",
             "IPC 连接的管道名称",
             "IPC 错误代码列表"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ComponentPresenter.xaml.cs` 中，`IsOnMainWindow` 依赖属性的作用是什么？",
@@ -710,7 +810,9 @@
             "标记组件是否应该随主窗口一起移动",
             "控制组件是否在主窗口启动时自动加载",
             "指定组件在主窗口中的停靠位置"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的文档使用什么工具生成 PDF 版本？",
@@ -724,7 +826,9 @@
             "Adobe Acrobat Pro",
             "wkhtmltopdf",
             "Chrome 浏览器的打印到 PDF 功能 (直接)"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 GitHub Actions 工作流程中，`deploy-docs.yml` 的主要目的是什么？",
@@ -738,7 +842,9 @@
             "自动生成插件包 (.cipx 文件)",
             "检查代码格式和静态分析",
             "更新项目的依赖项"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 项目的 `.gitattributes` 文件中，`* text=auto` 的作用是什么？",
@@ -752,7 +858,9 @@
             "配置特定文件类型的合并策略",
             "忽略所有二进制文件的行尾转换",
             "指定文本文件的默认编辑器"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 项目的 `cliff.toml` 文件主要用于什么？",
@@ -766,7 +874,9 @@
             "配置持续集成 (CI) 服务器的行为",
             "管理项目的版本控制标签",
             "设置代码编辑器的格式化规则"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `App.xaml.cs` 中的 `Mutex` 对象主要用于什么目的？",
@@ -780,7 +890,9 @@
             "控制对共享资源的访问",
             "实现跨进程通信的锁定机制",
             "确保应用更新过程的原子性"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 中，`TimeRule` 类定义了什么？",
@@ -794,7 +906,9 @@
             "自动化任务的定时执行规则",
             "课程提醒的提前通知时间",
             "主界面组件的显示/隐藏规则"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `WeatherService` 使用哪个 API 获取天气信息？",
@@ -808,7 +922,9 @@
             "AccuWeather API",
             "中国天气网 API",
             "彩云天气 API"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `AttachedSettingsControlInfo` 特性用于什么？",
@@ -822,7 +938,9 @@
             "指定附加设置可以附加到的目标类型 (如科目、时间点)",
             "存储附加设置的当前值",
             "处理附加设置的依赖关系"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 中，`ComponentInfo` 特性的 `Guid` 属性的作用是什么？",
@@ -836,7 +954,9 @@
             "描述组件的功能",
             "链接到组件的设置界面类型",
             "标记组件是否为容器组件"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ProfileAnalyzeService` 主要解决什么问题？",
@@ -850,7 +970,9 @@
             "提供档案文件的导入导出功能",
             "自动修复档案中的错误配置",
             "分析用户对档案的使用频率"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `PluginService.cs` 中，`PluginsRootPath` 常量指向哪个目录？",
@@ -864,7 +986,9 @@
             "系统 Program Files 下的 ClassIsland Plugins 目录",
             "用户文档目录下的 ClassIsland Plugins 文件夹",
             "插件包所在的临时解压目录"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `SpeechService` 支持哪些语音合成源（TTS）？",
@@ -879,7 +1003,9 @@
             "谷歌云TTS",
             "亚马逊Polly",
             "Azure认知服务TTS"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `UpdateService` 在检查更新时，元数据索引文件的主要来源是？",
@@ -893,7 +1019,9 @@
             "本地配置文件",
             "内置的更新服务器地址列表",
             "通过 P2P 网络分发的更新信息"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `MainWindow.xaml.cs` 中，`SetBottom()` 方法的主要作用是什么？",
@@ -907,7 +1035,9 @@
             "设置主窗口的背景为透明",
             "在主窗口底部显示通知栏",
             "调整主窗口内容使其底部对齐"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ConsoleService.cs` 中的 `AsciiLogo` 是从哪个文件加载的？",
@@ -920,7 +1050,9 @@
             "Config/Branding.txt",
             "Branding/AppLogo.ascii",
             "Data/StartupLogo.txt"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 中的 `NumbericTextBox` 控件与普通 `TextBox` 相比，主要增加了什么功能？",
@@ -934,7 +1066,9 @@
             "可以绑定到数据库字段",
             "提供密码输入模式",
             "内置多行文本编辑功能"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ExcelImportWindow.xaml.cs` 中，`LoadExcelWorkbook` 方法使用了哪个库来加载 Excel 文件？",
@@ -948,7 +1082,9 @@
             "ClosedXML",
             "Microsoft.Office.Interop.Excel (COM)",
             "OpenXML SDK"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ColorOctTreeNode.cs` 文件实现了一种什么算法或数据结构？",
@@ -962,7 +1098,9 @@
             "图像的快速傅里叶变换",
             "基于直方图的颜色分析",
             "图像超分辨率算法"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的主题定义中，`MaterialDesignPaper` 通常代表什么颜色？",
@@ -976,7 +1114,9 @@
             "文本和图标的颜色",
             "窗口边框的颜色",
             "禁用状态下控件的颜色"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `IUriNavigationService.UriScheme` 常量定义的值是什么？",
@@ -989,7 +1129,9 @@
             "cisland",
             "app",
             "plugin"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的组件模型中，如果一个组件被标记为容器组件 (ContainerComponent)，它通常具有什么能力？",
@@ -1003,7 +1145,9 @@
             "具有独立的更新机制",
             "不能被用户自定义设置",
             "负责处理应用的全局事件"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 使用什么技术实现后台 UI 线程的异步操作，例如在 `AsyncBox.cs` 中？",
@@ -1017,7 +1161,9 @@
             "Control.Invoke/BeginInvoke (Windows Forms 概念)",
             "Web Workers (浏览器技术)",
             "Actor Model"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ViewModel` 通常基于哪个 MVVM 框架或库？",
@@ -1031,7 +1177,9 @@
             "Caliburn.Micro",
             "ReactiveUI",
             "手写 INotifyPropertyChanged 实现"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `SettingsPageInfo` 特性中，`Category` 属性的作用是什么？",
@@ -1045,7 +1193,9 @@
             "指定设置页面关联的图标",
             "控制设置页面是否可以被集控策略禁用",
             "标记设置页面是否为插件提供"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的文档 (`classisland-docs-next`) 中，导航栏和侧边栏的配置通常在哪个目录下？",
@@ -1059,7 +1209,9 @@
             "theme/layout/",
             "content/menus/",
             "src/.vuepress/components/"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 文档部署到 GitHub Pages 时，`.github/workflows/deploy-docs.yml` 工作流程中使用了哪个包管理器来安装依赖？",
@@ -1072,7 +1224,9 @@
             "bower",
             "nuget (用于 .NET)",
             "pip (用于 Python)"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的自动备份功能默认的备份间隔是多少天？",
@@ -1086,7 +1240,9 @@
             "14 天",
             "30 天",
             "每次启动时"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的自动化功能中，“行动 (Action)”和“触发器 (Trigger)”的关系是什么？",
@@ -1100,7 +1256,9 @@
             "行动和触发器是相互独立的，没有直接关系",
             "一个行动只能被一个特定的触发器激活",
             "触发器是行动执行后的结果反馈"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 中，如果一个组件的 `IsResourceOverridingEnabled` 设置为 true，会发生什么？",
@@ -1114,7 +1272,9 @@
             "该组件将以管理员权限运行",
             "该组件会独占一个 UI 线程进行渲染",
             "该组件将忽略鼠标穿透设置"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的主程序集名称是什么？",
@@ -1128,7 +1288,9 @@
             "MainApp",
             "ClassIsland.UI",
             "IslandCore"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 中，`TimeLayout` 的 `Layouts` 集合发生变化时，会如何影响关联的 `ClassPlan`？",
@@ -1142,7 +1304,9 @@
             "`TimeLayout` 的更改不会影响已关联的 `ClassPlan`",
             "所有关联的 `ClassPlan` 会被标记为禁用",
             "会弹出一个警告提示用户手动更新 `ClassPlan`"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `Default.json` 档案文件如果不存在，应用启动时会发生什么？",
@@ -1156,7 +1320,9 @@
             "应用会进入恢复模式",
             "应用会提示用户选择一个已存在的档案或创建新档案",
             "应用会加载一个完全空白的档案，不包含任何科目或时间表"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `MemoryWatchDogService` 的主要作用是什么？",
@@ -1170,7 +1336,9 @@
             "记录应用的内存使用历史供分析",
             "提供内存调试工具给开发者",
             "限制插件的内存使用上限"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `SentryLoggerProvider` 的用途是什么？",
@@ -1184,7 +1352,9 @@
             "过滤和格式化日志消息",
             "提供日志的远程查看功能",
             "管理日志的保留策略"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 中，如果用户在设置中启用了“兼容透明模式”，会对窗口产生什么影响？",
@@ -1198,7 +1368,9 @@
             "窗口的透明度设置将被忽略",
             "只有提醒窗口会应用此模式",
             "窗口将能够更好地穿透其他置顶窗口"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `App.xaml.cs` 中，`App_OnStartup` 方法在应用启动时执行了哪些关键操作？",
@@ -1214,7 +1386,9 @@
             "直接连接到更新服务器检查更新",
             "清空所有缓存文件",
             "注册所有系统全局快捷键"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 中，`TimeLayoutItem` 的 `IsHideDefault` 属性如果为 true，会有什么效果？",
@@ -1228,7 +1402,9 @@
             "该时间点将不会触发任何提醒",
             "该时间点在课表编辑界面中不可见",
             "该时间点会被标记为“自习”"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `NotificationHostService` 如何决定提醒的显示顺序？",
@@ -1242,7 +1418,9 @@
             "根据提醒内容的紧急程度（由提供方定义）",
             "按照提醒提供方 GUID 的字母顺序",
             "用户手动选择下一个要显示的提醒"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ActionService` 中，`Invoke` 和 `Revert` 方法的主要区别是什么？",
@@ -1256,7 +1434,9 @@
             "`Invoke` 只能执行单个行动，`Revert` 可以执行多个",
             "`Revert` 会记录行动的执行历史，`Invoke` 不会",
             "`Invoke` 是同步执行，`Revert` 是异步执行"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `MainWindow.xaml.cs` 中，如果 `ViewModel.Settings.WindowLayer` 设置为 0，主窗口通常会处于什么状态？",
@@ -1270,7 +1450,9 @@
             "窗口将被隐藏",
             "窗口会变为全屏模式",
             "窗口会固定在任务栏上方"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ProfileService` 在加载管理档案时，版本信息存储在哪个对象中？",
@@ -1284,7 +1466,9 @@
             "ManagementSettings",
             "本地的 manifest.json 文件",
             "Settings.json 文件"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 中，`TopmostEffectWindow` 的主要用途是什么？",
@@ -1298,7 +1482,9 @@
             "播放背景音乐或音效",
             "处理应用的更新进度显示",
             "管理窗口的停靠和布局"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的项目结构中，`Walterlv` 文件夹下的代码主要提供了什么功能？",
@@ -1312,7 +1498,9 @@
             "应用的国际化和本地化支持",
             "插件系统的基础架构",
             "数据存储和数据库交互"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 中，如果一个 `AttachedSettingsControlInfo` 的 `HasEnabledState` 属性为 false，通常意味着什么？",
@@ -1326,7 +1514,9 @@
             "该附加设置是全局唯一的，不能在多个对象上附加",
             "该附加设置不需要用户配置，会自动应用默认值",
             "该附加设置仅用于显示信息，不包含可配置项"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ClassPlanGroup` 模型中，`DefaultGroupGuid` 代表什么？",
@@ -1340,7 +1530,9 @@
             "临时课表群的 GUID",
             "一个用于生成新课表群 GUID 的模板",
             "与课表群相关的错误代码"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 使用哪个 NuGet 包来处理Excel文件的读写（如在 ExcelImportWindow 中）？",
@@ -1354,7 +1546,9 @@
             "ExcelDataReader",
             "Microsoft.Office.Interop.Excel (COM)",
             "ReoGrid (用于界面显示和编辑)"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `AttachedSettingsControlPresenter` 控件中，`IsDependencyMode` 属性为 true 时，控件通常用于什么场景？",
@@ -1368,7 +1562,9 @@
             "使控件以只读模式运行，禁止用户修改",
             "强制控件使用全局设置，忽略局部覆盖",
             "允许控件动态加载其依赖的资源"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `SettingsWindowNew.xaml.cs` 中，`LaunchSettingsPage` 属性的作用是什么？",
@@ -1382,7 +1578,9 @@
             "定义设置页面导航栏的布局",
             "缓存所有已加载的设置页面实例",
             "设置一个备用页面，在导航失败时显示"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 项目的 `.github/workflows` 目录下，`close_stale_issues.yml` 文件定义的工作流程的主要目的是什么？",
@@ -1396,7 +1594,9 @@
             "在每次代码提交时运行单元测试",
             "分析 Issues 的相似度以避免重复提交",
             "自动为新的 Issues 添加标签和分配处理人"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ClassPlan` 模型中，`OverlaySourceId` 属性通常在什么情况下被设置？",
@@ -1410,7 +1610,9 @@
             "记录创建该课表的用户的 ID",
             "链接到外部课表数据源的 ID",
             "当课表被集控覆盖时，存储原始本地课表的 ID"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `DetachedSignatureProcessor.cs` 文件提供了什么功能？",
@@ -1424,7 +1626,9 @@
             "处理 HTTPS 连接的 SSL/TLS 证书验证",
             "加密和解密敏感数据",
             "管理应用的数字版权 (DRM)"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 中，`TimeLayoutItem` 的 `ActionSet` 属性用于什么？",
@@ -1438,7 +1642,9 @@
             "存储与该时间点相关的提醒设置",
             "链接到该时间点对应的课程的详细信息",
             "控制该时间点在多周轮换中的行为"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `PluginLoadContext.cs` 文件实现了一个自定义的 `AssemblyLoadContext`，其主要目的是什么？",
@@ -1452,7 +1658,9 @@
             "允许插件访问 ClassIsland 的内部 API",
             "管理插件的配置文件和数据存储",
             "提供一个安全的沙箱环境来运行插件代码"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `App.ApplicationCommand` 属性存储了什么类型的信息？",
@@ -1466,7 +1674,9 @@
             "IPC 通信中使用的命令列表",
             "自动化流程中定义的命令序列",
             "集控服务器下发的命令"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 WPF 控件样式中，`DynamicResource MaterialDesignPaper` 通常用于什么元素的背景？",
@@ -1480,7 +1690,9 @@
             "应用的主题强调色",
             "文本和图标的前景色",
             "滚动条和分隔线等辅助元素的颜色"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的文档仓库中，`src/.vuepress/config.ts` 文件主要定义了什么？",
@@ -1494,7 +1706,9 @@
             "自定义 Vue 组件",
             "站点的 CSS 样式",
             "部署到 GitHub Pages 的工作流程"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `SettingsService.AddSettingsOverlay` 方法中，“叠层 (Overlay)”的目的是什么？",
@@ -1508,7 +1722,9 @@
             "将多组设置合并为一个统一的配置视图",
             "在不修改主配置文件的情况下，加载额外的设置项",
             "为不同用户提供个性化的设置档案"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ProfileService` 中，`ManagementClassPlanPath` 常量指向哪个文件的路径？",
@@ -1522,7 +1738,9 @@
             "应用内置的示例课表文件路径",
             "课表导入功能使用的临时文件路径",
             "当前活动课表的快捷方式路径"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `AppLogsWindow.xaml.cs` 中，日志条目的筛选逻辑主要依据哪些条件？",
@@ -1536,7 +1754,9 @@
             "日志是否包含异常信息",
             "日志的来源模块或插件名称",
             "用户为日志条目设置的标签"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `CrashWindow.xaml.cs` 中，`IsCritical` 属性为 true 时，对用户界面有什么影响？",
@@ -1550,7 +1770,9 @@
             "窗口将以全屏模式显示，阻止其他操作",
             "会播放警告音效",
             "将禁用“反馈问题”按钮"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `HangService` 是如何检测应用主 UI 线程是否挂起的？",
@@ -1564,7 +1786,9 @@
             "使用 Windows API 查询窗口的响应状态 (IsHungAppWindow)",
             "定期向主窗口发送一个自定义消息并等待回复",
             "分析应用的内存转储 (Memory Dump)"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `ExcelImportWindow.xaml.cs` 中，`ParseTimeLayoutItem` 方法的主要功能是什么？",
@@ -1578,7 +1802,9 @@
             "根据 Excel 中的数据自动生成完整的时间表",
             "验证导入的时间表是否与现有时间表冲突",
             "将导入的时间点数据保存到用户档案"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ConsoleService.InitializeConsole()` 方法在 Debug 构建下通常会做什么？",
@@ -1592,7 +1818,9 @@
             "启动一个远程调试控制台",
             "配置控制台窗口的颜色和字体",
             "仅在发生错误时才显示控制台"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `WindowRuleService` 中，`IsForegroundWindowClassIsland()` 方法的目的是什么？",
@@ -1606,7 +1834,9 @@
             "检查是否有其他 ClassIsland 实例正在运行",
             "设置 ClassIsland 窗口为焦点窗口",
             "查询特定 ClassIsland 窗口的类名"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `UpdateService` 在下载更新包后，会使用哪个文件进行更新？",
@@ -1620,7 +1850,9 @@
             "AppRoot/update_package.msi",
             "Temp/patch.diff",
             "Config/update_info.json"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `RegistryNotifier.cs` 中，`RegNotifyChangeKeyValue` Win32 API 函数用于什么目的？",
@@ -1634,7 +1866,9 @@
             "创建新的注册表项或删除现有项",
             "枚举指定注册表项下的所有子项和值",
             "检查用户是否有权限访问特定的注册表项"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ThemeService` 在设置主题时，如果主题模式设置为“跟随系统”，它会如何确定实际应用的明暗主题？",
@@ -1648,7 +1882,9 @@
             "总是默认为亮色主题，除非用户在 ClassIsland 设置中覆盖",
             "检测当前时间，白天使用亮色主题，夜晚使用暗色主题",
             "依赖于 `WallpaperPickingService` 提供的颜色信息"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `AutomationService` 中，如果一个 `Workflow` 的 `IsConditionEnabled` 属性为 false，会发生什么？",
@@ -1662,7 +1898,9 @@
             "该工作流的规则集将被视为总是满足",
             "该工作流的规则集将被视为总是不满足",
             "该工作流会等待用户手动确认条件是否满足"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `TopmostEffectWindow` 在非兼容透明模式下，如何实现窗口的鼠标穿透效果？",
@@ -1676,7 +1914,9 @@
             "捕获鼠标事件并在事件处理器中将其转发到底层窗口",
             "使用一个透明的覆盖层来接收鼠标事件",
             "将窗口的 `IsHitTestVisible` 属性设置为 false"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `DiagnosticService` 提供的 `GetDeviceInfo` 方法尝试从哪里获取设备名称和供应商信息？",
@@ -1690,7 +1930,9 @@
             "调用 `GetComputerNameEx` Win32 API",
             "读取系统信息文件 (如 msinfo32.exe 生成的报告)",
             "通过网络查询设备制造商的数据库"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `ProfileService` 中，`MergeManagementProfileAsync` 方法的主要职责是什么？",
@@ -1704,7 +1946,9 @@
             "将集控档案转换为普通用户档案格式",
             "比较集控档案和本地用户档案的差异，并生成报告",
             "仅下载集控清单文件，不处理具体的档案内容"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ComponentSettings` 类中，`AssociatedComponentInfo` 属性是如何获取其值的？",
@@ -1718,7 +1962,9 @@
             "通过反射读取组件类上的 `ComponentInfoAttribute` (间接相关，但属性本身是查找结果)",
             "由父容器组件在添加子组件时设置",
             "从组件的配置文件（如 `MyComponent.settings.json`）中加载"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 使用的 `Walterlv.Windows.AsyncBox` 控件，其 `LoadingViewType` 属性有什么作用？",
@@ -1732,7 +1978,9 @@
             "指定子内容加载完成后要导航到的视图类型",
             "定义加载失败时显示的错误提示信息类型",
             "配置异步操作的超时时间"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `StringMatchingSettings` 模型中，如果 `UseRegex` 为 true，`IsMatching` 方法会如何判断匹配？",
@@ -1746,7 +1994,9 @@
             "检查输入字符串是否以 `Text` 属性开头或结尾",
             "使用模糊匹配算法（如 Levenshtein 距离）进行相似度比较",
             "将 `Text` 属性分割为多个关键词，检查输入字符串是否包含所有关键词"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `AttachedSettingsControlPresenter` 控件是如何决定要显示哪个具体的附加设置控件的？",
@@ -1760,7 +2010,9 @@
             "依赖于父控件传递一个预先创建好的附加设置控件实例",
             "通过反射扫描当前程序集，查找名称与 `ContentId` 匹配的控件类型",
             "从配置文件中读取控件的 XAML 定义并动态加载"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `SpeechService` 在初始化时，如果系统不支持 System.Speech (例如在某些 Windows Server 版本或 N SKU 上)，会默认使用哪个 TTS 引擎？",
@@ -1774,7 +2026,9 @@
             "尝试下载并安装 System.Speech 依赖",
             "回退到一个内置的简单语音提示音",
             "提示用户手动选择一个可用的 TTS 引擎"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `TimeRuleEditControl.xaml.cs` 中，`UpdateWeekCountDivs` 方法的作用是什么？",
@@ -1788,7 +2042,9 @@
             "将星期的数字索引（0-6）转换为中文名称（周日-周六）",
             "保存用户对多周轮换设置的修改",
             "从课表数据中提取所有用到的多周轮换配置"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `FileFolderService.CreateBackupAsync` 方法在创建备份时，会包含哪些主要内容？",
@@ -1803,7 +2059,9 @@
             "已安装的插件文件 (`Plugins/`)",
             "应用的临时文件 (`Temp/`)",
             "ClassIsland.exe 可执行文件本身"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `ExcelImportWindow` 中，如果导入的 Excel 文件包含不兼容的格式或字体，应用会如何处理？",
@@ -1817,7 +2075,9 @@
             "忽略不兼容的内容，只加载可识别的部分",
             "要求用户手动将文件转换为标准 XLSX 格式",
             "将文件发送到云端服务进行转换和修复"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ManagementService` 中，`AuthorizeByLevel` 方法的主要作用是什么？",
@@ -1831,7 +2091,9 @@
             "记录用户的授权操作日志",
             "管理不同授权等级对应的密码或凭据",
             "检查本地集控策略是否允许该授权等级的操作"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `UpdateService.RestartAppToUpdateAsync()` 方法在准备重启应用以进行更新前，会执行哪些关键步骤？",
@@ -1846,7 +2108,9 @@
             "提示用户手动关闭正在运行的 ClassIsland 实例",
             "下载最新的更新元数据以确认更新包的正确性",
             "修改系统注册表以在下次启动时执行更新程序"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 中，`ActionControl.xaml` 控件主要用于什么？",
@@ -1860,7 +2124,9 @@
             "管理插件提供的自定义操作按钮",
             "配置应用快捷键和全局热键",
             "作为主界面组件，显示可交互的按钮或控件"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `TopmostEffectWindow` 是如何实现不影响主窗口的 BitmapCache 缩放的？",
@@ -1874,7 +2140,9 @@
             "它不使用 BitmapCache，直接在屏幕上绘制特效",
             "它会临时修改主窗口的 CacheMode，在特效播放完毕后恢复",
             "特效渲染精度设置会自动调整 BitmapCache 的 RenderAtScale"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `RawInputEventArgs` 类中，`Data` 属性的类型是什么？",
@@ -1888,7 +2156,9 @@
             "Windows.UI.Input.PointerPoint",
             "ClassIsland.Models.RawInput.CustomRawInputData",
             "byte[] (原始字节数据)"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 中，`ObservableDictionary` 类与标准的 `Dictionary` 相比，主要增加了什么特性？",
@@ -1902,7 +2172,9 @@
             "可以存储重复的键",
             "内置了序列化到 JSON 或 XML 的功能",
             "允许通过索引访问元素 (除了通过键)"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `GptSoVitsService` 在生成语音前，如果设置了 `IsInternal` 为 true 且 `GptSovitsSecrets.IsSecretsFilled` 为 true，会执行什么额外操作？",
@@ -1916,7 +2188,9 @@
             "记录语音合成请求到审计日志",
             "使用一个预共享密钥对请求进行 HMAC 校验",
             "从 ClassIsland 的服务器获取临时的 API 访问令牌"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `PluginMarketService` 在刷新插件源时，默认的官方插件源索引文件从哪里下载？",
@@ -1930,7 +2204,9 @@
             "ClassIsland 安装目录下的本地索引文件",
             "Microsoft App Center 的分发组",
             "一个内置的 P2P 网络"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ProfileSettingsWindow.xaml.cs` 中，`OpenTimeLayoutEdit` 方法的作用是什么？",
@@ -1944,7 +2220,9 @@
             "将当前选中的时间表导出为 JSON 文件",
             "验证当前所有时间表的格式是否正确",
             "为所有课表应用选定的时间表"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `SettingsWindowNew.xaml.cs` 中，`CoreNavigate` 方法在导航到新的设置页面前，会执行什么动画（如果未禁用过渡动画）？",
@@ -1958,7 +2236,9 @@
             "没有预定义的导航动画，依赖于页面的自定义过渡效果",
             "一个全局的窗口淡入淡出效果",
             "一个基于 MaterialDesignThemes.Wpf.Transitioner 的切换效果"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `WeatherService` 在获取天气信息时，如果无法连接到 API 或解析数据失败，它会如何处理？",
@@ -1972,7 +2252,9 @@
             "向用户显示一个模态错误对话框，并暂停天气更新",
             "尝试从本地缓存的天气文件中加载数据",
             "无限次重试直到成功获取数据"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `WindowRuleService` 使用了哪个 Win32 API 函数来设置窗口事件钩子？",
@@ -1985,7 +2267,9 @@
             "CreateWindowEx",
             "GetMessage",
             "AttachThreadInput"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `UpdateService.RestartAppToUpdateAsync` 方法中，新版本的 ClassIsland.exe 是如何被启动的？",
@@ -1999,7 +2283,9 @@
             "使用 MSIX 包的更新机制自动替换应用文件",
             "将新版本文件复制到应用目录，然后调用 `Application.Restart()`",
             "下载一个独立的更新程序来执行文件替换和重启操作"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `MiniInfoProviderHostService` 的主要职责是什么？",
@@ -2013,7 +2299,9 @@
             "提供一个统一的 API 供快速信息提供方获取系统信息",
             "自动更新快速信息提供方插件",
             "管理快速信息提供方的显示顺序和布局"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `AccentColorPicker.cs` 文件（虽然内容为空）从其命名推断，最初可能打算实现什么功能？",
@@ -2027,7 +2315,9 @@
             "为不同的课程或时间点设置不同的强调色",
             "提供一个 API 供插件查询或修改应用的强调色",
             "生成与当前主题色互补的颜色方案"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `AutomationService` 在加载配置文件时，如果当前配置名的文件不存在，它会怎么做？",
@@ -2041,7 +2331,9 @@
             "提示用户选择一个已存在的自动化配置文件或创建一个新的",
             "禁用自动化功能，直到用户手动创建一个有效的配置文件",
             "从应用的内置资源中加载一个预设的自动化配置"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `SettingsWindowNew.xaml.cs` 中，`OpenUri` 方法是如何处理传入的 `classisland://app/settings/general` 这样的 URI的？",
@@ -2055,7 +2347,9 @@
             "它会检查该 URI 是否在已注册的插件导航处理器中，如果是则交给插件处理",
             "它会将 URI 的路径部分作为参数传递给当前显示的设置页面",
             "它会忽略协议和主机部分，只使用路径来查找本地文件或资源"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `AttachedSettingsControlHelper<T>` 类在 `AttachedTarget` 属性发生变化时会做什么？",
@@ -2069,7 +2363,9 @@
             "如果新的 `AttachedTarget` 类型不兼容，则抛出异常",
             "触发一个事件，通知其他组件 `AttachedTarget` 已更改",
             "将新的 `AttachedTarget` 序列化并保存到配置文件"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `FileLoggerProvider` 在初始化时，会如何处理应用日志目录 (`AppLogFolderPath`) 中已存在的旧日志文件？",
@@ -2083,7 +2379,9 @@
             "如果旧日志文件总大小超过一定阈值，则删除最早的日志文件",
             "不做任何处理，直接开始写入新的日志文件",
             "将所有旧日志文件合并到一个大的历史日志文件中"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `ExcelImportWindow.xaml.cs` 中，`ViewModel.IsVerticalLayout` 属性为 true 时，表示 Excel 表格中的课表数据是如何组织的？",
@@ -2097,7 +2395,9 @@
             "课程名称在第一行，时间点信息在后续行中",
             "整个工作表只包含一个课表，没有特定的行列组织",
             "使用合并单元格来表示多天的课表"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `SplashService` 中，`SplashStatus` 属性的默认文本是什么（如果用户未自定义）？",
@@ -2111,7 +2411,9 @@
             "欢迎使用 ClassIsland",
             "版本号 + Codename",
             "一个随机的“回声洞”文本"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 中，`Core.Controls.CommonDialog.CommonDialogBuilder` 类提供了一种什么方式来创建对话框？",
@@ -2125,7 +2427,9 @@
             "使用一个包含所有可能选项的大型构造函数来创建对话框",
             "通过 XML 配置文件来定义对话框的行为和外观",
             "依赖于操作系统的标准对话框 API (如 MessageBox)"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ManagementServerConnection` 类中，`CommandConnectionAliveTimer` 定时器的主要目的是什么？",
@@ -2139,7 +2443,9 @@
             "设置命令执行的超时时间",
             "在空闲一段时间后自动断开与服务器的连接以节省资源",
             "管理命令队列的轮询间隔"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `WindowRuleService` 在初始化时，会使用 `SetWinEventHook` 注册哪些主要的窗口事件？",
@@ -2154,7 +2460,9 @@
             "EVENT_SYSTEM_SCROLLINGEND (滚动结束)",
             "EVENT_SYSTEM_ALERT (系统警告)",
             "WM_MOUSEMOVE (鼠标移动，这是消息而非事件钩子)"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的文档仓库 (`classisland-docs-next`) 的 GitHub Actions 工作流程 `generate-pdf.yml` 中，使用了哪个工具间接生成 PDF？",
@@ -2168,7 +2476,9 @@
             "wkhtmltopdf",
             "Microsoft Print to PDF",
             "Adobe Acrobat SDK"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ViewModel` 基类 `ObservableRecipient` 来自哪个 NuGet 包？",
@@ -2182,7 +2492,9 @@
             "ReactiveUI",
             "Caliburn.Micro",
             "System.ComponentModel.Annotations"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `PluginService.InitializePlugins` 方法在加载插件时，如果插件目录中存在名为 `.disabled` 的文件，会如何处理该插件？",
@@ -2196,7 +2508,9 @@
             "提示用户是否要启用该插件",
             "将该插件移动到隔离区域",
             "忽略 `.disabled` 文件，正常加载插件"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ProfileSettingsWindow` 中，如果用户在编辑时间表时，选择了“时间轴视图”，并拖动一个时间点的结束把柄，其时间变化通常会如何对齐？",
@@ -2210,7 +2524,9 @@
             "时间会自动调整以避免与其他时间点重叠，但不保证对齐到特定间隔",
             "时间变化量会与拖动的像素数严格对应",
             "时间只能通过在右侧属性面板中输入精确值来修改"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `SplashScreen` (启动动画窗口) 在何时会关闭？",
@@ -2224,7 +2540,9 @@
             "当用户点击启动画面时关闭",
             "在所有插件都加载完成后关闭",
             "当应用检测到网络连接成功时关闭"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `SettingsService.SaveSettings` 方法通常在什么时候被调用？",
@@ -2239,7 +2557,9 @@
             "在主窗口的布局或大小发生变化时",
             "当检测到配置文件被外部修改时",
             "在应用更新完成后"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `AutomationService` 中，如果一个 `ActionSet` 的 `IsRevertEnabled` 属性为 true，但其关联的 `Workflow` 的 `IsConditionEnabled` 为 false，当触发器触发恢复时会发生什么？",
@@ -2253,7 +2573,9 @@
             "应用会提示用户是否要强制执行恢复操作",
             "只有部分标记为“关键”的行动会被恢复",
             "该行动组的 `IsOn` 状态会被重置，但不执行实际恢复操作"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `UpdateService` 在检查更新并发现新版本后，会如何通知用户？",
@@ -2267,7 +2589,9 @@
             "发送一封电子邮件通知用户",
             "在应用日志中记录更新信息，但不主动通知用户",
             "自动将更新信息写入应用的更新日志文件"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `FileLoggerProvider` 在创建新的日志文件时，文件名是如何生成的？",
@@ -2281,7 +2605,9 @@
             "文件名包含应用的完整版本号",
             "用户可以在设置中自定义日志文件名格式",
             "使用 GUID 生成随机文件名"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `ExcelImportWindow` 中，如果用户选择从 Excel 文件导入时间表，并且选定的时间安排区域包含无效的时间格式，应用会如何处理？",
@@ -2295,7 +2621,9 @@
             "提示用户手动修正每个无效条目",
             "使用猜测算法尝试修复无效的时间格式",
             "将无效条目标记为“待定”，并允许用户后续编辑"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `SpeechService` 体系结构中，`EdgeTtsService` 和 `SystemSpeechService` 的主要区别是什么？",
@@ -2309,7 +2637,9 @@
             "`EdgeTtsService` 是付费服务，`SystemSpeechService` 是免费的。",
             "`SystemSpeechService` 可以自定义音色，`EdgeTtsService` 不支持。",
             "两者功能完全相同，只是实现方式不同。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ComponentPresenter` 控件，其 `Settings` 依赖属性发生变化时会触发什么操作？",
@@ -2323,7 +2653,9 @@
             "触发一个全局事件通知其他组件配置已更改",
             "如果新旧设置类型不匹配，则显示一个错误占位符",
             "清空当前显示的组件，等待用户手动选择新组件"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 中，`AttachedSettingsTargets` 枚举定义了哪些目标可以附加设置？",
@@ -2340,7 +2672,9 @@
             "Component (组件)",
             "User (用户)",
             "Window (窗口)"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `MainWindow.xaml.cs` 中，`ReCheckTopmostState()` 方法的主要目的是什么？",
@@ -2354,7 +2688,9 @@
             "记录主窗口置顶状态的变化历史",
             "如果主窗口未置顶，则显示一个警告通知",
             "仅在主窗口激活时才检查并设置置顶状态"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ProfileService` 中，`CreateTempClassPlan` 方法创建的临时层课表，其 `IsOverlay` 属性通常被设置为什么？",
@@ -2366,7 +2702,9 @@
             "null",
             "取决于源课表的设置",
             "由用户在创建时选择"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `SettingsWindowNew.xaml.cs` 中的 `OpenUri` 方法，如果接收到的 Uri 是 `classisland://app/settings/general?ci_keepHistory=true`，它会如何处理 `ci_keepHistory` 参数？",
@@ -2380,7 +2718,9 @@
             "如果 `ci_keepHistory` 为 true，则在新窗口中打开设置页面",
             "该参数仅用于日志记录，不影响导航行为",
             "如果 `ci_keepHistory` 为 true，则在导航前清空所有历史记录"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `UpdateService` 在下载更新包前，如果发现 `UpdateTempPath` 目录已存在，它会如何处理？",
@@ -2394,7 +2734,9 @@
             "检查该目录中是否已存在有效的更新包，如果是则跳过下载",
             "追加下载，只下载缺失或损坏的文件",
             "抛出异常并停止更新过程"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `ActionService.cs` 中，`LessonsServiceOnPostMainTimerTicked` 方法的主要职责是什么？",
@@ -2408,7 +2750,9 @@
             "保存当前所有行动的配置到文件",
             "处理用户通过 UI 触发的行动",
             "清理已完成或已过期的行动队列"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ExcelImportWindow.xaml.cs` 中的 `NavigateCommand` 在导航到不同的导入步骤时，会根据 `e.Parameter` (导航目标) 执行哪些特定逻辑？",
@@ -2423,7 +2767,9 @@
             "在导航前保存当前步骤的所有用户输入",
             "如果目标步骤无效，则显示错误消息",
             "会根据导入的文件类型（如 .xls vs .xlsx）选择不同的导航路径"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `HangService` 如何判断 UI 线程是否挂起？",
@@ -2437,7 +2783,9 @@
             "定期检查主线程的 CPU 使用率，如果持续过高则认为挂起",
             "通过 `Thread.Sleep` 短暂阻塞主线程，如果导致界面无响应则认为挂起（这是错误的测试方法）",
             "分析最近的日志文件，查找与线程阻塞相关的错误信息"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `SettingsPageInfo` 特性中，`HideDefault` 属性为 true 时，对设置页面的行为有何影响？",
@@ -2451,7 +2799,9 @@
             "该设置页面将只在调试模式下可见",
             "该设置页面不会被集控策略影响",
             "该设置页面的内容会从一个默认模板加载"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `Profile.cs` 中，当 `TimeLayouts` 集合发生更改时（例如添加或删除了一个时间表），会间接触发哪个属性的 `PropertyChanged` 事件？",
@@ -2465,7 +2815,9 @@
             "`ClassPlans` (课表列表，除非 `TimeLayoutId` 直接关联的课表受影响)",
             "`IsOverlayClassPlanEnabled`",
             "`Id` (档案 GUID)"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `DiagnosticService.ExportDiagnosticData` 方法导出的 zip 包中，通常会包含哪些信息？",
@@ -2482,7 +2834,9 @@
             "用户的 Windows 注册表备份",
             "系统事件查看器的完整日志",
             "最近的屏幕截图或录屏"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ColorOctTreeNode.ReduceTree` 方法在何时被调用，其目的是什么？",
@@ -2496,7 +2850,9 @@
             "用于将八叉树中的颜色转换为 HSV 或 HSL 色彩空间",
             "在图像处理出现错误时，用于回滚到上一个有效状态",
             "定期调用以优化八叉树的内存占用"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ExcelImportWindow.xaml.cs` 中的 `LoadClassPlanSource` 方法，在自动模式下，是如何填充 `ViewModel.ClassRecognitionTimePoints` 集合的？",
@@ -2510,7 +2866,9 @@
             "它会尝试从 Excel 的列标题或行标题中识别时间点信息。",
             "它会根据 `ViewModel.ClassRecognitionRange` 中选中的范围自动生成时间点。",
             "它会忽略 `ViewModel.SelectedTimeLayout`，并根据 Excel 数据重新创建一个新的时间表。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ManagementService` 在加载策略文件时，如果集控清单中的 `PolicySource.Version` 低于或等于本地缓存的 `Versions.PolicyVersion`，会发生什么？",
@@ -2524,7 +2882,9 @@
             "删除本地缓存的策略文件，并使用应用内置的默认策略",
             "忽略版本号，总是尝试下载策略文件，如果下载失败则使用本地缓存",
             "比较本地缓存和服务器策略文件的内容哈希值，如果不同则更新"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `MainWindow.xaml.cs` 中，处理 `WM_INPUT` (0x00FF) 消息的 `ProcWnd` 方法，为什么会使用 `RawInputUpdateStopWatch` 来限制处理频率？",
@@ -2538,7 +2898,9 @@
             "记录处理每个原始输入事件所花费的时间，用于性能分析",
             "仅在秒表计时超过特定阈值后才开始处理原始输入事件",
             "用于计算两次原始输入事件之间的时间间隔"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `VisualTargetPresentationSource.cs` 主要用于解决 WPF 中的什么问题？",
@@ -2552,7 +2914,9 @@
             "将 WPF UI 元素嵌入到 WinForms 或其他非 WPF 应用中",
             "实现自定义的命中测试和输入事件路由",
             "提供一种创建自定义 `PresentationSource` 的模板"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的插件模型中，如果一个插件的 `manifest.yml` 中未指定 `icon` 字段，插件列表会如何显示其图标？",
@@ -2566,7 +2930,9 @@
             "会从插件的入口程序集中提取嵌入的图标资源",
             "会根据插件的 ID 生成一个唯一的颜色块作为图标",
             "会提示用户为该插件手动选择一个图标文件"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `App.xaml.cs` 在启动时，如果检测到 `ApplicationCommand.UpdateReplaceTarget` 不为 null，它会执行什么操作？",
@@ -2580,7 +2946,9 @@
             "提示用户已检测到更新，并询问是否立即安装",
             "将应用的配置文件迁移到 `UpdateReplaceTarget` 指定的目录",
             "忽略该参数，正常启动应用"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `SettingsService.AddSettingsOverlay` 方法，如果对同一个设置属性（如 `Theme`）多次添加不同 GUID 的叠层，最终应用的设置值会是什么？",
@@ -2594,7 +2962,9 @@
             "原始值（\"@\" 键对应的值），叠层仅用于记录历史",
             "会抛出异常，不允许对同一属性添加多个叠层",
             "会弹出一个对话框，要求用户选择哪个叠层生效"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 中，`TimeLayoutItem` 实现了 `IComparable` 接口，其 `CompareTo` 方法主要基于哪个属性进行比较？",
@@ -2608,7 +2978,9 @@
             "`DefaultClassId`",
             "时间点的持续时长 (`Last`)",
             "时间点的创建顺序（内部索引）"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `WallpaperPickingService` 在“兼容模式”下，是如何尝试获取壁纸路径的？",
@@ -2622,7 +2994,9 @@
             "使用 `DwmGetWindowAttribute` 获取桌面窗口的背景位图",
             "截取整个主屏幕的屏幕截图作为壁纸来源",
             "查询活动桌面主题包中的壁纸设置"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `StartupCompleted` 事件在何时触发？",
@@ -2636,7 +3010,9 @@
             "在主窗口 (`MainWindow`) 的构造函数执行完毕时触发",
             "在第一个计时器周期 (`MainTimerOnTick`) 完成后触发",
             "当用户完成欢迎向导并点击“完成”按钮时触发"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `ProfileService.cs` 中，`MergeManagementProfileAsync` 方法是如何合并集控的课表、时间表和科目配置的？",
@@ -2651,7 +3027,9 @@
             "它会将服务器的配置与用户当前的活动档案（非集控档案）进行合并。",
             "它会为每个集控配置项（课表、时间表、科目）创建一个新的 Profile 文件。",
             "它会弹出一个对话框，让用户手动选择如何合并冲突的配置项。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `SettingsWindowNew.xaml.cs` 中，`_cachedPages` 字典的作用是什么，并且其行为受哪个设置项控制？",
@@ -2665,7 +3043,9 @@
             "记录每个设置页面的修改历史，用于撤销/重做功能。",
             "保存每个设置页面的默认配置值。",
             "它的行为完全由代码硬编码，不受用户设置影响。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `AutomationService` 在加载一个 `Workflow` 时，如果其 `TriggerSettings.TriggerInstance` 为 null，会执行什么操作？",
@@ -2680,7 +3060,9 @@
             "将该 `Workflow` 标记为禁用，直到用户手动修复触发器配置。",
             "弹出一个对话框提示用户该触发器配置不完整。",
             "自动移除该触发器设置，并保存自动化配置。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `AttachedSettingsControlPresenter.xaml.cs` 中，当 `IsDependencyMode` 为 true 时，控件的标题和图标通常反映什么？",
@@ -2694,7 +3076,9 @@
             "显示其直接子节点的标题和图标。",
             "显示一个通用的“依赖项”图标和文本。",
             "标题和图标将为空，只显示具体的设置内容。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `UpdateService` 在下载完更新包并准备重启安装前，会执行 `ValidateUpdateAsync` 方法，该方法如何验证更新包的完整性？",
@@ -2708,7 +3092,9 @@
             "连接到更新服务器，请求对已下载文件的校验信息。",
             "比较更新包的文件大小是否与预期一致。",
             "仅在用户手动触发时才进行校验，自动下载时不校验。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `PluginService.InitializePlugins` 方法在加载插件时，如果一个插件的 `manifest.yml` 中指定的 `EntranceAssembly` 文件不存在或无法加载，会发生什么？",
@@ -2723,7 +3109,9 @@
             "会提示用户手动指定正确的入口程序集路径。",
             "会忽略该插件并继续加载其他插件，不记录任何错误。",
             "会尝试在插件目录下的其他 DLL 文件中查找插件入口点。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `App.xaml.cs` 中，`ProcessInstanceExisted` 方法在检测到已有实例运行时，它会如何处理命令行中通过 `--uri` 传入的导航请求？",
@@ -2737,7 +3125,9 @@
             "尝试关闭已运行的实例，然后用新的 URI 启动当前实例。",
             "在新的实例中处理该 URI，导致同时运行多个 ClassIsland 窗口。",
             "记录一个错误，指出无法在多实例情况下处理 URI 导航。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `LessonControlExpanded.xaml.cs` (用于课表组件展开项的控件) 中，`IsLiveUpdatingEnabled` 属性为 true 时，控件是如何更新时间相关属性 (如 `Seconds`, `LeftSeconds`) 的？",
@@ -2752,7 +3142,9 @@
             "它依赖于父控件 `LessonsListBox` 通过数据绑定直接更新这些属性。",
             "它会直接读取 `ILessonsService` 的相关属性，而不进行自己的计算。",
             "它通过 IPC 向一个后台服务查询实时的时间信息。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `SettingsService.MigrateSettings` 方法中，从版本低于 1.4.1.0 的设置迁移到新版组件系统时，原先的 `SelectedMiniInfoProvider` GUID (如代表“日期”的 D9FC55D6...) 会如何被处理？",
@@ -2767,7 +3159,9 @@
             "会将旧的 `SelectedMiniInfoProvider` GUID 直接作为新组件的 ID，如果找不到对应组件则显示错误。",
             "只迁移“课程表”组件的设置，其他快速信息设置会被丢弃。",
             "会将所有旧的快速信息提供方都转换为文本组件，显示其原始 GUID。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `WallpaperPickingService` 在非兼容模式下，如果 `SettingsService.Settings.WallpaperClassName` 为空，它会尝试从哪个窗口类名获取壁纸截图？",
@@ -2781,7 +3175,9 @@
             "Explorer.EXE (进程名，非类名)",
             "Windows.UI.Core.CoreWindow (UWP 窗口)",
             "此情况下会直接回退到兼容模式"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 中，`WindowRuleService` 注册的 `EVENT_SYSTEM_FOREGROUND` 事件，其回调函数 `PfnWinEventProc` 在执行时，为什么通常需要使用 `Dispatcher.CurrentDispatcher.InvokeAsync` 来调用 `ForegroundWindowChanged` 事件？",
@@ -2795,7 +3191,9 @@
             "因为 `ForegroundWindowChanged` 事件本身设计为异步执行。",
             "这是 `SetWinEventHook` API 的固定用法，不使用 `InvokeAsync` 会导致钩子失效。",
             "为了在事件处理中能够访问 `Application.Current` 对象。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `PluginMarketService` 在刷新插件源时，如果 `SettingsService.Settings.OfficialIndexMirrors` 为空，它会使用哪个备用镜像列表？",
@@ -2809,7 +3207,9 @@
             "仅使用 `github.com` 作为唯一的官方镜像源",
             "禁用插件市场功能，直到用户配置了镜像源",
             "从应用的配置文件 `PluginSources.json` 中读取备用列表"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `ProfileService.CleanExpiredTempClassPlan` 方法中，除了删除 `Profile.OrderedSchedules` 中已过期的条目外，还会清理 `Profile.ClassPlans` 中的哪些类型的课表？",
@@ -2823,7 +3223,9 @@
             "所有最后修改时间早于特定日期的课表",
             "仅删除 `OverlayClassPlanId` 指向的课表，如果它已过期",
             "所有名称包含“临时”或“备份”字样的课表"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `RuleSettingsControlBase<T>` 泛型类中的 `Settings` 属性是如何获取其具体类型 `T` 的实例的？",
@@ -2837,7 +3239,9 @@
             "从一个全局的设置服务中根据控件的 ID 查询获取。",
             "在 `OnApplyTemplate` 方法中从模板部件中查找并转换。",
             "使用反射查找并调用一个静态工厂方法来创建 `T` 的实例。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ActionService` 在调用一个行动的处理程序 (`HandleDelegate`) 时，传入的 `guid` 参数代表什么？",
@@ -2851,7 +3255,9 @@
             "当前用户的唯一标识符。",
             "ClassIsland 应用实例的 GUID。",
             "一个随机生成的用于日志追踪的 GUID。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ClassPlanGroup.DefaultGroupGuid` 是一个静态只读属性，它在 `Profile.cs` 的构造函数中起什么作用？",
@@ -2865,7 +3271,9 @@
             "在加载档案时，如果找不到 `SelectedClassPlanGroupId` 对应的课表群，则用此 GUID 作为回退。",
             "用于验证课表群 ID 的格式是否正确。",
             "在创建临时课表群时，作为其父群组的默认 ID。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `UpdateService.cs` 中，`IsNewerVersion` 方法在什么情况下会返回 true，即使传入的版本号 (verCode) 不高于当前应用版本？",
@@ -2879,7 +3287,9 @@
             "当 `verCode` 的修订版本号高于当前应用版本，即使主版本号和次版本号较低。",
             "该方法总是严格比较版本号，没有此种情况。",
             "当检测到本地更新文件损坏时。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `PluginMarketService.RefreshPluginSourceAsync` 方法在刷新插件源时，官方插件源的 URL 是如何构成的？",
@@ -2893,7 +3303,9 @@
             "直接使用 `PluginService.PluginsIndexPath` 下的本地缓存文件。",
             "从 `PluginRepoManifest.cs` 中读取固定的 URL。",
             "向 `classisland.tech` 的某个 API 端点请求最新的插件源 URL。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ProfileSettingsWindow.xaml.cs` 中，`RefreshClassesList` 方法在什么情况下会被调用？",
@@ -2908,7 +3320,9 @@
             "当用户手动点击“刷新课表”按钮时。",
             "在导入新的 Excel 文件后自动调用。",
             "当应用的全局设置（如字体大小）发生变化时。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `SettingsWindowNew.xaml.cs` 中，`CoreNavigate` 方法是如何处理 `SettingsWindowNavigationData` 中的 `KeepHistory` 参数的？",
@@ -2922,7 +3336,9 @@
             "`KeepHistory` 为 true 时，导航动画会加速；为 false 时，动画会变慢。",
             "该参数决定了导航到新页面时，是否需要重新实例化页面对象。",
             "该参数会被忽略，导航历史总是被保留，除非用户点击“返回”按钮。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `FileFolderService.CreateBackupAsync` 方法中，如果 `isAuto` 参数为 true，备份文件夹的名称会包含什么前缀？",
@@ -2935,7 +3351,9 @@
             "Scheduled_",
             "System_",
             "User_"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ConsoleService.InitializeConsole()` 方法仅在什么构建配置下会实际分配控制台窗口？",
@@ -2949,7 +3367,9 @@
             "当检测到特定命令行参数时",
             "仅在 Windows 7 系统上",
             "当应用以管理员权限运行时"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `DiagnosticService.GetDeviceInfo` 方法使用哪个 WMI 类来获取设备名称和供应商信息？",
@@ -2962,7 +3382,9 @@
             "Win32_BIOS",
             "Win32_BaseBoard",
             "CIM_ManagedSystemElement"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `SettingsService.cs` 中，`MigrateSettings` 方法主要处理从哪个版本之前的设置迁移？",
@@ -2977,7 +3399,9 @@
             "1.3.0.0",
             "1.6.0.0",
             "2.0.0.0"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `UpdateService` 在成功下载更新包后，会将 `Settings.LastUpdateStatus` 设置为什么值？",
@@ -2990,7 +3414,9 @@
             "UpdateStatus.UpdateAvailable",
             "UpdateWorkingStatus.Idle",
             "UpdateWorkingStatus.ExtractingUpdates"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `ThemeService.SetTheme` 方法中，如果 `themeMode` 参数为 0 (跟随系统)，它是如何确定当前系统是亮色还是暗色主题的？",
@@ -3004,7 +3430,9 @@
             "使用一个内置的轻量级算法分析当前壁纸的平均亮度。",
             "依赖 `UISettings.GetColorValue(UIColorType.Background)` (UWP API)。",
             "总是默认为亮色，除非 ClassIsland 自身的设置中指定了暗色。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `WindowRuleService` 使用了 `SetWinEventHook` API，其回调函数 `PfnWinEventProc` 在接收到哪些事件时会触发 `ForegroundWindowChanged` 事件？",
@@ -3021,7 +3449,9 @@
             "仅在 EVENT_OBJECT_CREATE 和 EVENT_OBJECT_DESTROY 事件时",
             "当窗口内容重绘 (WM_PAINT) 时",
             "当鼠标在窗口间移动 (WM_MOUSEMOVE) 时"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `PluginMarketService.RefreshPluginSourceAsync` 方法在下载插件索引压缩包后，会将解压的内容存放到哪个目录下？",
@@ -3035,7 +3465,9 @@
             "AppCacheFolderPath 下的 PluginIndexCache 目录",
             "AppTempFolderPath 下的临时目录，处理完即删除",
             "直接在内存中处理，不存放到本地文件系统"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `AttachedSettingsControlPresenter.xaml.cs` 中，`AnalyzeAsync` 方法被调用时，它会如何填充 `NextItems` 和 `PreviousItems` 集合？",
@@ -3049,7 +3481,9 @@
             "从一个全局的附加设置依赖缓存中读取信息。",
             "使用反射查找所有实现了特定接口的附加设置，并按优先级排序。",
             "仅当 `IsDependencyMode` 为 false 时才填充这些集合。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `SpeechService` 体系中，`EdgeTtsService` 在合成语音前，如果发现请求文本的语音缓存文件已存在于 `EdgeTtsCacheFolderPath` 中，它会怎么做？",
@@ -3063,7 +3497,9 @@
             "比较缓存文件的时间戳和服务器上可能的更新时间，如果服务器有更新则重新下载。",
             "提示用户已存在缓存，并询问是否使用缓存或重新合成。",
             "将缓存文件作为参考音频，与新文本一起发送给 TTS 服务进行风格迁移。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `SplashService` 中的 `CurrentProgress` 属性发生变化时，会触发哪个事件？",
@@ -3077,7 +3513,9 @@
             "`LoadingStepAdvanced` 事件",
             "`INotifyPropertyChanged.PropertyChanged` 事件 (虽然也会，但题目更具体)",
             "不会触发任何特定事件，仅更新绑定"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `ViewModelBase` (通过 `ObservableRecipient`) 中，`OnPropertyChanged()` 方法通常需要传入什么参数？",
@@ -3091,7 +3529,9 @@
             "属性的 `DependencyProperty` 标识符",
             "一个指向属性的 `PropertyInfo` 对象",
             "不需要参数，它会自动检测所有已更改的属性"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ProfileSettingsWindow.xaml.cs` 中的 `OpenDrawer` 方法，其 `key` 参数代表什么？",
@@ -3105,7 +3545,9 @@
             "一个包含抽屉配置信息的 JSON 字符串",
             "要加载的 XAML 文件的相对路径",
             "一个委托，用于动态创建抽屉内容"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `UpdateService.cs` 中，`IsNewerVersion` 方法的 `isForce` 参数为 true 时，此方法会返回什么？",
@@ -3119,7 +3561,9 @@
             "取决于 `isCancel` 参数的值",
             "取决于 `Settings.LastUpdateStatus` 的状态",
             "抛出一个异常，指示不应在强制模式下进行版本比较"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `RuleSettingsControlBase.GetInstance` 方法，如果传入的 `RuleRegistryInfo.SettingsControlType` 为 null，它会返回什么？",
@@ -3133,7 +3577,9 @@
             "抛出一个 `ArgumentNullException`",
             "尝试从 `RuleRegistryInfo.SettingsType` 推断控件类型",
             "返回一个空的 `UserControl`"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `Profile.cs` 中，当 `TimeLayouts` 字典的内容通过代码直接修改（而不是通过 `Add` 或 `Remove` 方法）后，为了确保 `TimeLayout` 属性和相关绑定能正确更新，开发者可能需要手动调用哪个方法？",
@@ -3147,7 +3593,9 @@
             "调用 `Profile.NotifyPropertyChanged(\"TimeLayout\")`",
             "调用 `ProfileService.SaveProfile()` 来强制刷新",
             "重启应用以重新加载档案"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `App.xaml.cs` 中，`ProcessInstanceExisted` 方法在检测到已有实例运行时，如果用户在弹出的 `InstanceExistedWindow` 中点击了“重启应用”按钮，它会尝试如何重启？",
@@ -3161,7 +3609,9 @@
             "修改系统注册表中的自启动项，并在下次系统启动时完成重启",
             "提示用户手动关闭已运行的实例，然后再重新启动",
             "不执行任何操作，仅关闭提示窗口"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `AutomationService.LoadConfig` 方法在加载自动化配置时，如果当前配置名的文件不存在，它的行为是什么？",
@@ -3175,7 +3625,9 @@
             "提示用户选择一个已存在的自动化配置文件或创建一个新的。",
             "禁用自动化功能，直到用户手动创建一个有效的配置文件。",
             "从应用的内置资源中加载一个预设的自动化配置模板。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `FileFolderService.CreateBackupAsync` 方法中，`rootPath` 参数的默认值是什么？",
@@ -3189,7 +3641,9 @@
             "用户的文档文件夹",
             "系统临时文件夹",
             "null，必须显式提供"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `CrashWindow.xaml.cs` 中，如果 `IsCritical` 属性为 true，并且用户点击了“退出应用”按钮，程序会如何退出？",
@@ -3203,7 +3657,9 @@
             "隐藏崩溃窗口并继续运行（如果 `AllowIgnore` 为 true）",
             "触发一个全局异常，让 Sentry 捕获并上报",
             "启动一个新的 ClassIsland 实例并关闭当前实例"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `UpdateService` 在进行更新包的哈希校验 (`ValidateUpdateAsync`) 时，如果 `Settings.UpdateArtifactHash` 为空或空白，会发生什么？",
@@ -3217,7 +3673,9 @@
             "使用一个默认的、预置的哈希值进行校验",
             "提示用户更新包可能已损坏，并询问是否继续安装",
             "将更新包标记为不可信，并删除已下载的文件"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `WallpaperPickingService.GetWallpaperAsync` 方法中，如果 `SettingsService.Settings.ColorSource` 设置为 3 (屏幕主题色)，它会尝试截取哪个屏幕的图像？",
@@ -3231,7 +3689,9 @@
             "截取包含当前活动窗口的显示器的图像",
             "从系统主题设置中直接读取屏幕强调色，而不进行截图",
             "依赖于 `DesktopWindowClassName` 设置来确定要截图的窗口"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `TimeLineListItemExpandingAdornerControl.xaml.cs` 中，`PrevTimePoint` 方法在查找上一个时间点时，默认会排除哪种类型的时间点？",
@@ -3245,7 +3705,9 @@
             "所有 `IsHideDefault` 为 true 的时间点",
             "不排除任何类型的时间点",
             "只查找与当前时间点在同一课表群组内的时间点"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ConsoleService.cs` 中，`ConsoleHWnd` 属性是在什么时候被赋值的？",
@@ -3259,7 +3721,9 @@
             "当用户在调试菜单中手动启用控制台时",
             "仅当应用发生未处理异常时才赋值并显示控制台",
             "该属性始终为 `IntPtr.Zero`，除非外部程序设置"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `NotificationHostService.cs` 中，`RequestQueue` 属性的类型是什么？",
@@ -3273,7 +3737,9 @@
             "`ObservableCollection<NotificationRequest>`",
             "`ConcurrentQueue<NotificationRequest>`",
             "`Stack<NotificationRequest>`"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `SpeechService` 体系中，`GptSoVitsService.GetCachePath` 方法生成的缓存文件名是基于哪些信息计算 MD5 哈希的？",
@@ -3287,7 +3753,9 @@
             "提示文本 (`GptSoVitsPromptText`)",
             "用户的唯一标识符 (CUID)",
             "ClassIsland 的应用版本号"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ClassPlan` 模型中，`RefreshIsChangedClass` 方法的作用是什么？",
@@ -3301,7 +3769,9 @@
             "从集控服务器获取最新的课表数据并更新当前课表。",
             "如果课表被修改，则自动创建一个新的临时层。",
             "刷新课表在主界面上的显示，高亮显示已更改的课程。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `AttachedSettingsControlPresenter.xaml.cs` 中，`UpdateContent` 方法在什么时候会被调用？",
@@ -3316,7 +3786,9 @@
             "在主计时器的每个周期 (`MainTimerOnTick`) 调用。",
             "当应用的全局主题发生变化时。",
             "当关联的档案文件被保存时。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `IpcClient.cs` 中定义的 `PipeName` 常量是什么？",
@@ -3329,7 +3801,9 @@
             "CI_IPC_Channel",
             "dev.classisland.ipc.pipe",
             "Global\\ClassIslandIpc"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `ComponentSettings` 模型中，`AssociatedComponentInfo` 属性是如何在运行时获取到 `ComponentInfo` 实例的？",
@@ -3343,7 +3817,9 @@
             "从一个全局的 `ComponentInfo` 缓存字典中根据 `Id` 获取。",
             "由 `ComponentsService.GetComponent` 方法在创建组件实例后手动设置。",
             "在 XAML 中通过数据绑定从父容器或数据上下文中获取。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `MainWindow.xaml.cs` 中的 `UpdateWindowPos` 方法，在计算窗口位置时，如果 `ViewModel.Settings.IsIgnoreWorkAreaEnabled` 为 true，它会使用哪个区域作为基准？",
@@ -3357,7 +3833,9 @@
             "由用户在设置中定义的自定义区域",
             "桌面图标排列的区域",
             "活动窗口所在的区域"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `ManagementService.cs` 中，如果应用以禁用集控的命令行参数 (`App.ApplicationCommand.DisableManagement`) 启动，`IsManagementEnabled` 属性会是什么状态？",
@@ -3371,7 +3849,9 @@
             "会弹出一个对话框询问用户是否临时启用集控",
             "会尝试连接到集控服务器，如果连接失败则为 false",
             "该属性将被忽略，应用行为如同未启用集控"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `PluginService.InitializePlugins` 方法是如何确定一个插件是否应该被加载的（除了检查文件是否存在）？",
@@ -3386,7 +3866,9 @@
             "要求用户在启动时手动选择要加载的插件。",
             "仅加载位于 `PluginsRootPath` 一级子目录中的插件。",
             "根据插件的最后修改日期，只加载最近更新的插件。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `RulesetService.cs` 中，`IsRulesetSatisfied` 方法在评估一个 `Ruleset` 时，如果 `Ruleset.Groups` 集合为空，它会返回什么结果？",
@@ -3400,7 +3882,9 @@
             "抛出一个 `InvalidOperationException`",
             "取决于 `Ruleset.IsReversed` 的值，如果为 true 则返回 true，否则 false",
             "总是返回 true，因为没有规则组需要被满足"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `AppSettingsActionHandler.cs` 中，注册的行动处理器 (如 `classisland.settings.theme`) 在执行时，其对设置的修改是如何确保可恢复性的？",
@@ -3414,7 +3898,9 @@
             "依赖于用户在自动化配置中手动添加一个“恢复设置”的行动。",
             "设置的更改是永久性的，无法自动恢复，除非有对应的恢复行动明确执行相反操作。",
             "通过创建一个新的 `Settings` 对象副本进行修改，原始设置不受影响。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ProfileSettingsWindow.xaml.cs` 中的 `CopyObject<T>` 方法是如何实现对象复制的？",
@@ -3428,7 +3914,9 @@
             "依赖于对象自身实现的 `ICloneable` 接口。",
             "使用二进制序列化 (BinaryFormatter) 进行复制。",
             "创建一个新的 `T` 类型实例，然后手动将原对象的属性值赋给新对象。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `ViewModelBase` (通过 `ObservableRecipient`) 中，如果一个属性的 setter 没有调用 `OnPropertyChanged()` 或 `SetProperty()`，会发生什么？",
@@ -3442,7 +3930,9 @@
             "只有在 Debug 构建下会记录一个警告，Release 构建下无影响。",
             "该属性会变为只读，无法再通过 setter 修改。",
             "会导致整个 ViewModel 对象被垃圾回收器提前回收。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `NativeWindowHelper.cs` 中的 `GetAllWindows` 方法是如何枚举系统中的所有顶层窗口的？",
@@ -3456,7 +3946,9 @@
             "监听系统范围的窗口创建和销毁事件。",
             "读取注册表中 `HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ShellFolders` 下的窗口列表。",
             "使用 `EnumWindows` Win32 API 函数。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `AppLogService.cs` 中，`Logs` 集合的最大条目数 (MaxLogEntries) 是多少？当超过这个数量时会如何处理？",
@@ -3470,7 +3962,9 @@
             "没有固定上限，取决于可用内存；内存不足时自动清理。",
             "100 条；超过时只保留错误和严重级别的日志。",
             "5000 条；超过时不再记录新的日志，直到用户手动清空。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `UpdateService.cs` 中，`AppStartupBackground` 方法在什么条件下会调用 `UpdateNodeSpeedTestingService.RunSpeedTestAsync()`？",
@@ -3484,7 +3978,9 @@
             "当检测到网络连接发生变化（例如从 Wi-Fi 切换到有线）时。",
             "在用户手动点击“检查更新”按钮之前。",
             "仅在 Release 构建版本中，Debug 构建版本会跳过测速。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `TaskBarIconService.cs` 中，如果连续快速调用 `ShowNotification` 方法多次，通知是如何显示的？",
@@ -3498,7 +3994,9 @@
             "最后一个通知会覆盖之前的通知。",
             "应用会显示一个包含所有待处理通知摘要的组合通知。",
             "通知的显示顺序是随机的。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `ProfileSettingsWindow.xaml.cs` 中，`CreateClassPlan()` 方法创建的新课表，其 `AssociatedGroup` 属性默认被设置为什么？",
@@ -3512,7 +4010,9 @@
             "null，需要用户在创建后手动指定",
             "一个新生成的 GUID，表示它属于一个新的、未命名的群组",
             "与上一个创建的课表相同的群组"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `TopmostEffectWindow.xaml.cs` 中，`PlayEffect` 方法在添加特效控件 (`INotificationEffectControl`) 到 `ViewModel.EffectControls` 集合后，如果该控件尚未加载 (`IsLoaded` 为 false)，它会如何确保特效被正确播放？",
@@ -3526,7 +4026,9 @@
             "它会强制控件立即加载并渲染，然后调用 `Play` 方法。",
             "它会忽略未加载的控件，只播放已加载的特效控件。",
             "它会抛出一个异常，指示特效控件必须在添加到集合前完全加载。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `WelcomeWindow.xaml.cs` 中，如果用户在欢迎向导的最后一步勾选了 “在桌面创建换课快捷方式”，并且“注册 Url 协议”也被勾选或已注册，该快捷方式的目标 URL 通常是什么？",
@@ -3540,7 +4042,9 @@
             "一个指向 `ClassChangingWindow.xaml` 的本地文件路径",
             "`ms-settings:classisland-classswap`",
             "一个包含当前课表信息的加密字符串作为参数的 `ClassIsland.exe` 快捷方式"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `WindowRuleService.cs` 中，`ClassNameHandler` 方法在判断规则时，它比较的是哪个窗口的类名？",
@@ -3554,7 +4058,9 @@
             "用户在规则设置中指定的特定窗口的类名",
             "产生 `EVENT_OBJECT_CREATE` 事件的新窗口的类名",
             "父窗口或所有者窗口的类名"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `SettingsService.cs` 中，如果 `LoadSettingsAsync` 方法在加载 `Settings.json` 文件时发生异常，并且存在有效的备份文件 (`Settings.json.bak`)，它会如何处理？",
@@ -3569,7 +4075,9 @@
             "提示用户配置文件已损坏，并询问是否要重置为默认设置。",
             "仅加载备份文件，不覆盖原始文件，直到用户确认。",
             "删除损坏的 `Settings.json` 和备份文件，然后创建新的默认设置。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `NotificationHostService.cs` 中，`ShowNotification` 方法在将提醒请求加入队列 (`RequestQueue`) 时，是如何确定其优先级的？",
@@ -3584,7 +4092,9 @@
             "用户可以在每次显示提醒时手动设置其优先级。",
             "优先级由插件在其 `INotificationProvider` 实现中直接指定。",
             "根据提醒的持续时间长短来决定优先级，持续时间短的优先。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `FileFolderService.ProcessAutoBackupAsync` 方法在执行自动备份时，如果备份目录下的自动备份数量超过了 `SettingsService.Settings.AutoBackupLimit`，它会如何处理旧的自动备份？",
@@ -3598,7 +4108,9 @@
             "如果设置了 `AutoBackupLimit` 为 0 或负数，则不删除任何自动备份。",
             "合并最旧的几个自动备份为一个归档文件。",
             "在达到上限后停止自动备份，直到用户手动清理。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ExcelImportWindow.xaml.cs` 在加载 Excel 文件时，如果遇到包含不兼容格式（如某些特殊字体或样式）的旧版 Excel 文件，它最初会如何尝试处理？",
@@ -3612,7 +4124,9 @@
             "要求用户先用 Microsoft Excel 打开并保存为最新格式。",
             "仅支持 XLSX 格式，对 XLS 或其他旧格式直接报错。",
             "忽略所有格式和样式信息，只读取单元格的文本内容。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `SplashService.cs` 中，`ResetSplashText` 方法会将 `SplashStatus` 设置为什么？",
@@ -3626,7 +4140,9 @@
             "从 `Tellings.txt` 中随机选择一条文本。",
             "显示一个进度条和百分比，而不是固定文本。",
             "清空 `SplashStatus`，使其不显示任何文本。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `MainWindow.xaml.cs` 中，`UpdateWindowPos` 方法是如何确定主窗口应该显示在哪个显示器上的？",
@@ -3640,7 +4156,9 @@
             "尝试将主窗口显示在拥有最大分辨率的显示器上。",
             "如果连接了多个显示器，会提示用户选择要显示的显示器。",
             "读取一个名为 `MonitorPreference.cfg` 的配置文件来确定显示器。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `PluginMarketService.RequestDownloadPlugin` 方法在下载插件包完成后，会如何验证文件的完整性？",
@@ -3654,7 +4172,9 @@
             "尝试解压缩插件包，如果成功则认为文件完整。",
             "不进行任何校验，直接将下载的文件移动到插件包目录。",
             "向插件市场服务器发送一个请求，要求服务器验证已下载文件的完整性。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `AutomationService.LoadWorkflow` 方法在加载一个工作流 (`Workflow`) 时，是如何处理该工作流中的每个触发器 (`TriggerSettings`) 的？",
@@ -3669,7 +4189,9 @@
             "将所有触发器的设置合并到一个全局的触发器配置对象中。",
             "检查触发器的 ID 是否在已禁用的触发器列表中，如果是则跳过加载。",
             "为每个触发器创建一个新的后台线程来独立运行。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `ProfileService.ConvertToStdClassPlan` 方法中，将一个临时层课表转换为普通课表时，主要修改了该课表对象的哪个属性？",
@@ -3682,7 +4204,9 @@
             "清空该课表的 `OverlaySetupTime` 属性。",
             "将其关联的 `TimeLayoutId` 指向一个标准的、非临时的 时间表。",
             "复制该课表的所有课程到一个新的、`IsOverlay` 为 false 的课表对象中。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `DiagnosticService.GetDiagnosticInfo` 方法生成的诊断信息中，不包含以下哪项内容？",
@@ -3698,7 +4222,9 @@
             "当前内存使用情况 (AppCurrentMemoryUsage)",
             "应用启动耗时 (AppStartupDurationMs)",
             "DWM 组合是否启用 (SystemIsCompositionEnabled)"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `SettingsService.Settings` 对象中的 `IsSentryEnabled` 属性的 get 访问器是如何确定 Sentry 是否启用的？",
@@ -3712,7 +4238,9 @@
             "检查应用的构建配置 (Debug/Release)，仅在 Release 构建中启用。",
             "查询 `SentrySdk.IsEnabled` 属性。",
             "如果用户在欢迎向导中同意了隐私政策，则启用。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 中，如果一个 `ComponentSettings` 的 `AssociatedComponentInfo.IsComponentContainer` 为 true，通常意味着该组件的 `Settings` 属性会实现哪个接口？",
@@ -3726,7 +4254,9 @@
             "`ClassIsland.Core.Abstractions.Controls.IComponentSettings`",
             "`System.Windows.Markup.IAddChild`",
             "`System.Collections.Specialized.INotifyCollectionChanged` (通常由 Children 属性的类型实现)"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `ProfileService.CleanExpiredTempClassPlan` 方法是如何判断一个临时层课表 (`ClassPlan` 其 `IsOverlay` 为 true) 是否应该被清理的？",
@@ -3740,7 +4270,9 @@
             "如果临时层课表的数量超过了某个预设的上限，则清理最早创建的。",
             "用户必须手动在档案编辑界面中删除过期的临时层课表。",
             "当其关联的源课表 (`OverlaySourceId`) 被删除时，对应的临时层也会被清理。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `MainWindow.xaml.cs` 中，`UpdateWindowPos` 方法在调整窗口位置时，DPI缩放值是如何获取的？",
@@ -3754,7 +4286,9 @@
             "调用 `GetDpiForWindow` Win32 API。",
             "假设 DPI 总是 96 (100%)。",
             "从系统注册表中读取全局 DPI 设置。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `IpcService.BroadcastNotificationAsync<T>` 方法在广播通知给所有连接的对等端时，如果某个对等端的连接已断开，它会如何处理？",
@@ -3768,7 +4302,9 @@
             "它会尝试重新连接已断开的对等端，然后再广播。",
             "它会忽略已断开的对等端，不记录任何错误或警告。",
             "它会将通知缓存起来，等待对等端重新连接后再发送。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `FileLoggerProvider` 类中，`_lock` 对象的主要用途是什么？",
@@ -3782,7 +4318,9 @@
             "在压缩旧日志文件时，防止新的日志写入。",
             "管理日志条目的缓存队列，在写入磁盘前。",
             "确保日志级别过滤器在多线程环境下正确应用。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的 `SpeechService` 体系中，`GptSoVitsService.GenerateSpeechAsync` 方法如果遇到 HTTP 请求失败（非 2xx 状态码），它会如何处理？",
@@ -3796,7 +4334,9 @@
             "返回一个包含错误信息的默认语音文件路径。",
             "向用户显示一个错误提示对话框。",
             "忽略错误并返回 `true`，但实际并未生成语音文件。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 `SettingsService.Settings` 对象中，`IsSentryEnabled` 属性的 setter 是如何持久化其更改的？",
@@ -3810,6 +4350,8 @@
             "修改一个名为 `Sentry.config` 的独立配置文件。",
             "该属性是只读的，只能通过命令行参数在启动时设置。",
             "通过 IPC 通知一个后台服务来更新全局 Sentry 配置。"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     }
 ]

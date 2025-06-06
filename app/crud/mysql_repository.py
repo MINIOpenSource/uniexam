@@ -189,7 +189,11 @@ class MySQLStorageRepository(IDataStorageRepository):
                             pass_status TEXT,
                             passcode TEXT,
                             last_update_time_utc DATETIME,
-                            last_update_ip TEXT
+                            last_update_ip TEXT,
+                            subjective_questions_count INT DEFAULT 0,
+                            graded_subjective_questions_count INT DEFAULT 0,
+                            pending_manual_grading_count INT DEFAULT 0,
+                            total_score FLOAT DEFAULT 0.0
                         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
                         """
                     )

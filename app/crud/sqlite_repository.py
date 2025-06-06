@@ -111,10 +111,25 @@ class SQLiteStorageRepository(IDataStorageRepository):
             elif entity_type == "paper":
                 await db.execute(
                     f"""CREATE TABLE IF NOT EXISTS {PAPER_TABLE} (
-                        paper_id TEXT PRIMARY KEY, user_uid TEXT, creation_time_utc TEXT,
-                        creation_ip TEXT, difficulty TEXT, paper_questions TEXT, score INTEGER,
-                        submitted_answers_card TEXT, submission_time_utc TEXT, submission_ip TEXT,
-                        pass_status TEXT, passcode TEXT, last_update_time_utc TEXT, last_update_ip TEXT )"""
+                        paper_id TEXT PRIMARY KEY,
+                        user_uid TEXT,
+                        creation_time_utc TEXT,
+                        creation_ip TEXT,
+                        difficulty TEXT,
+                        paper_questions TEXT,
+                        score INTEGER,
+                        submitted_answers_card TEXT,
+                        submission_time_utc TEXT,
+                        submission_ip TEXT,
+                        pass_status TEXT,
+                        passcode TEXT,
+                        last_update_time_utc TEXT,
+                        last_update_ip TEXT,
+                        subjective_questions_count INTEGER DEFAULT 0,
+                        graded_subjective_questions_count INTEGER DEFAULT 0,
+                        pending_manual_grading_count INTEGER DEFAULT 0,
+                        total_score REAL DEFAULT 0.0
+                        )"""
                 )
                 _sqlite_repo_logger.info(
                     f"表 '{PAPER_TABLE}' 已检查/创建。(Table '{PAPER_TABLE}' checked/created.)"

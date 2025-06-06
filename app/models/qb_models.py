@@ -30,10 +30,10 @@ class QuestionModel(BaseModel):
     题库中单个问题的模型。
     (Model for a single question in the question bank.)
     用于文件存储、Admin API的GET响应（作为列表元素）和POST请求体（添加新题目时）。
-    包含了对未来题型（填空、解答）的预留字段。
+    支持单选题、多选题（未来）、填空题（未来）和主观题（论述/简答题）。
     (Used for file storage, GET responses in Admin API (as a list element),
     and POST request bodies (when adding new questions).
-    Includes reserved fields for future question types (fill-in-the-blank, essay).)
+    Supports single-choice, multiple-choice (future), fill-in-the-blank (future), and essay/subjective questions.)
     """
 
     body: str = Field(
@@ -50,30 +50,42 @@ class QuestionModel(BaseModel):
     correct_choices: Optional[List[str]] = Field(
         None,
         min_items=1,
-        description="选择题的正确答案列表。(List of correct answers for multiple-choice questions.)",
+        description="【选择题】正确答案选项的文本列表。对于主观题，此字段应为None。 (List of correct answer option texts for choice-based questions. Should be None for subjective questions.)",
     )
     incorrect_choices: Optional[List[str]] = Field(
         None,
         min_items=1,
-        description="选择题的错误答案列表。(List of incorrect answers for multiple-choice questions.)",
+        description="【选择题】错误答案选项的文本列表。对于主观题，此字段应为None。 (List of incorrect answer option texts for choice-based questions. Should be None for subjective questions.)",
     )
     num_correct_to_select: Optional[int] = Field(
         None,
         ge=1,
-        description="对于多选题，指示需要选择的正确答案数量；单选题通常为1。(For multi-select, number of correct answers to select; usually 1 for single-choice.)",
+        description="【选择题】对于多选题，指示需要选择的正确答案数量；单选题通常为1。对于主观题，此字段应为None。 (For multiple-choice questions, indicates the number of correct answers to select; usually 1 for single-choice. Should be None for subjective questions.)",
     )
 
     # --- 填空题相关字段 (Fill-in-the-blank related fields) ---
     correct_fillings: Optional[List[str]] = Field(
         None,
         min_items=1,
-        description="填空题的正确填充答案列表 (可包含通配符，例如 '?')。(List of correct fillings for fill-in-the-blank (can include wildcards, e.g., '?').)",
+        description="【填空题】正确填充答案的文本列表 (可包含通配符，例如 '?')。对于非填空题，此字段应为None。 (List of correct filling answer texts for fill-in-the-blank questions (can include wildcards, e.g., '?'). Should be None for other question types.)",
     )
 
-    # --- 解答题和填空题的参考/解释字段 (Reference/explanation fields for essay and fill-in-the-blank) ---
+    # --- 主观题相关字段 (Subjective/Essay Question related fields) ---
+    standard_answer_text: Optional[str] = Field(
+        None,
+        description="【主观题】参考答案或答案要点。用于教师批阅时参考，或在回顾时展示给学生。对于非主观题，此字段应为None。 (Reference answer or key points for subjective questions. For teacher grading reference or student review. Should be None for non-subjective questions.)"
+    )
+    scoring_criteria: Optional[str] = Field(
+        None,
+        description="【主观题】评分标准或详细评分细则。供教师批阅时参考。对于非主观题，此字段应为None。 (Scoring criteria or detailed rubrics for subjective questions. For teacher grading reference. Should be None for non-subjective questions.)"
+    )
+
+    # --- 通用参考/解释字段 (General Reference/Explanation field) ---
+    # 此字段可用于所有题型，提供额外的解释、解题思路或知识点链接等。
+    # (This field can be used for all question types to provide additional explanations, solution approaches, or links to knowledge points.)
     ref: Optional[str] = Field(
         None,
-        description="答案解释、参考信息或评分标准，用于批阅时展示给批阅者参考。(Answer explanation, reference info, or grading criteria for graders.)",
+        description="通用答案解释或参考信息 (可选)。例如，选择题的答案解析，或主观题的补充说明。 (General answer explanation or reference information (optional). E.g., explanation for multiple-choice answers, or supplementary notes for subjective questions.)",
     )
 
     @field_validator("correct_choices", "incorrect_choices", mode="before")

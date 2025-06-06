@@ -202,11 +202,24 @@ class PostgresStorageRepository(IDataStorageRepository):
                 await conn.execute(
                     """
                     CREATE TABLE IF NOT EXISTS papers (
-                        paper_id UUID PRIMARY KEY, user_uid TEXT, creation_time_utc TIMESTAMPTZ,
-                        creation_ip TEXT, difficulty TEXT, paper_questions JSONB, score INTEGER,
-                        submitted_answers_card JSONB, submission_time_utc TIMESTAMPTZ,
-                        submission_ip TEXT, pass_status TEXT, passcode TEXT,
-                        last_update_time_utc TIMESTAMPTZ, last_update_ip TEXT
+                        paper_id UUID PRIMARY KEY,
+                        user_uid TEXT,
+                        creation_time_utc TIMESTAMPTZ,
+                        creation_ip TEXT,
+                        difficulty TEXT,
+                        paper_questions JSONB,
+                        score INTEGER,
+                        submitted_answers_card JSONB,
+                        submission_time_utc TIMESTAMPTZ,
+                        submission_ip TEXT,
+                        pass_status TEXT,
+                        passcode TEXT,
+                        last_update_time_utc TIMESTAMPTZ,
+                        last_update_ip TEXT,
+                        subjective_questions_count INTEGER DEFAULT 0,
+                        graded_subjective_questions_count INTEGER DEFAULT 0,
+                        pending_manual_grading_count INTEGER DEFAULT 0,
+                        total_score REAL DEFAULT 0.0
                     )"""
                 )
                 _postgres_repo_logger.info(

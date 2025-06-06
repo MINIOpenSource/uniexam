@@ -16,6 +16,7 @@ for dynamically generating the `DifficultyLevel` enum and setting up logging.)
 import asyncio  # 导入 asyncio 用于锁 (Import asyncio for locks)
 import json
 import logging  # 导入标准日志模块 (Import standard logging module)
+import logging.handlers # 导入日志处理器模块 (Import logging handlers module)
 import os
 from enum import Enum  # 确保 Enum 被导入 (Ensure Enum is imported)
 from pathlib import Path  # 用于处理文件路径 (For handling file paths)
@@ -28,11 +29,63 @@ from pydantic import (
     BaseModel,
     Field,
     ValidationError,
-    validator,  # field_validator for Pydantic v2, but validator is fine for v1-like usage too
+    validator,  # Pydantic v2中推荐使用field_validator, 但validator在v1兼容模式下仍可使用
 )  # Pydantic 模型及验证工具
 
 # 导入自定义枚举类型 (Import custom enum type)
 from ..models.enums import AuthStatusCodeEnum, LogLevelEnum  # 导入认证状态码枚举
+from datetime import datetime, timezone # 确保 timezone 也被导入 for JsonFormatter
+
+# endregion
+
+# region 自定义JSON日志格式化器 (Custom JSON Log Formatter)
+class JsonFormatter(logging.Formatter):
+    """
+    自定义日志格式化器，将日志记录转换为JSON格式字符串。
+    (Custom log formatter that converts log records into JSON formatted strings.)
+    """
+    def format(self, record: logging.LogRecord) -> str:
+        """
+        将 LogRecord 对象格式化为JSON字符串。
+        (Formats a LogRecord object into a JSON string.)
+        """
+        log_object: Dict[str, Any] = {
+            "timestamp": datetime.fromtimestamp(record.created, tz=timezone.utc).isoformat(),
+            "level": record.levelname,
+            "message": record.getMessage(), # 获取格式化后的主消息
+            "logger_name": record.name,
+            "module": record.module,
+            "function": record.funcName,
+            "line": record.lineno,
+            "thread_id": record.thread,
+            "thread_name": record.threadName,
+            "process_id": record.process,
+        }
+
+        # 添加异常信息 (Add exception information)
+        if record.exc_info:
+            # formatException 会返回包含换行符的字符串，对于单行JSON日志可能需要进一步处理
+            # 例如替换换行符或将其作为数组元素。当前保持原样。
+            log_object["exception"] = self.formatException(record.exc_info)
+
+        # 添加通过 extra 传递的额外字段 (Add extra fields passed via extra)
+        # 标准 LogRecord 属性列表，用于排除它们，只提取 "extra" 内容
+        standard_record_attrs = {
+            'args', 'asctime', 'created', 'exc_info', 'exc_text', 'filename',
+            'funcName', 'levelname', 'levelno', 'lineno', 'message', 'module',
+            'msecs', 'msg', 'name', 'pathname', 'process', 'processName',
+            'relativeCreated', 'stack_info', 'thread', 'threadName',
+            # Formatter可能添加的内部属性，以及我们已经明确记录的
+            'currentframe', 'taskName', 'timestamp', 'level', 'logger_name', 'function', 'line',
+            'thread_id', 'thread_name', 'process_id'
+        }
+
+        # 遍历record中所有非下划线开头的属性
+        for key, value in record.__dict__.items():
+            if not key.startswith('_') and key not in standard_record_attrs:
+                log_object[key] = value
+
+        return json.dumps(log_object, ensure_ascii=False, default=str) # default=str 处理无法序列化的对象
 
 # endregion
 
@@ -589,27 +642,39 @@ def setup_logging(
     for handler in app_root_logger.handlers[:]:
         app_root_logger.removeHandler(handler)
 
-    formatter = logging.Formatter(
+    # 保留原有的文本格式化器给控制台 (Keep original text formatter for console)
+    text_formatter = logging.Formatter(
         "%(asctime)s - %(name)s - %(levelname)s - %(module)s:%(lineno)d - %(message)s"
     )
 
     console_handler = logging.StreamHandler()
-    console_handler.setFormatter(formatter)
+    console_handler.setFormatter(text_formatter)
     app_root_logger.addHandler(console_handler)
 
+    # 为文件处理器创建并设置JSON格式化器 (Create and set JSON formatter for file handler)
     log_file_path = data_dir / log_file_name
     try:
-        file_handler = logging.FileHandler(
-            log_file_path, encoding="utf-8", mode="a"
-        )  # 追加模式 (Append mode)
-        file_handler.setFormatter(formatter)
+        json_formatter = JsonFormatter() # 使用自定义的JsonFormatter
+        # 使用 TimedRotatingFileHandler 实现日志按天轮转，保留7天备份
+        # (Use TimedRotatingFileHandler for daily log rotation, keep 7 backups)
+        file_handler = logging.handlers.TimedRotatingFileHandler(
+            filename=log_file_path,
+            when='midnight',       # 每天午夜轮转 (Rotate at midnight)
+            interval=1,            # 每天一次 (Once a day)
+            backupCount=7,         # 保留7个备份文件 (Keep 7 backup files)
+            encoding='utf-8',
+            utc=True,              # 使用UTC时间进行轮转 (Use UTC for rotation)
+            delay=False            # False: 在创建处理器时即打开文件 (Open file on handler creation)
+        )
+        file_handler.setFormatter(json_formatter) # 应用JsonFormatter
         app_root_logger.addHandler(file_handler)
-        _config_module_logger.info(
-            f"应用日志将写入到 (Application logs will be written to): {log_file_path} (级别 (Level): {log_level_str})"
+        # 初始日志消息仍将使用根记录器的控制台格式，直到文件处理器被添加。
+        _config_module_logger.info( # 此消息本身会通过 console_handler 以文本格式输出
+            f"应用日志将以JSON格式按天轮转写入到 (Application logs will be written in daily rotated JSON format to): {log_file_path} (级别 (Level): {log_level_str})"
         )
     except Exception as e:
         _config_module_logger.error(
-            f"无法配置日志文件处理器 '{log_file_path}' (Failed to configure log file handler): {e}"
+            f"无法配置带轮转的JSON日志文件处理器 '{log_file_path}' (Failed to configure rotating JSON log file handler): {e}"
         )
 
     # --- Uvicorn 日志记录器配置 (Uvicorn logger configuration) ---

@@ -19,7 +19,7 @@ from typing import Dict, List, Optional
 
 from fastapi import (
     Request,
-)  # Request对象及HTTP异常
+)  # 导入FastAPI的Request对象 (Import FastAPI's Request object)
 
 # from .security import get_current_user_info_from_token # (可选) 如需基于用户标签的速率限制
 from ..models.user_models import UserTag  # 用户标签枚举

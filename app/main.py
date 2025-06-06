@@ -738,7 +738,7 @@ async def update_exam_progress(
         raise HTTPException(
             status_code=http_status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="更新进度时发生意外服务器错误。",
-        )
+        ) from e
 
 
 @exam_router.post(
@@ -947,7 +947,7 @@ async def get_users_directory():
         raise HTTPException(
             status_code=http_status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="获取用户数据时发生错误，无法生成目录。",
-        )
+        ) from e_users
 
     # 定义哪些标签属于“特殊角色”
     special_role_tags = {
