@@ -27,6 +27,19 @@ class PaperPassStatusEnum(str, Enum):
     """
     试卷通过状态枚举。
     (Paper Pass Status Enumeration.)
+
+    - `PASSED`: 已通过考试。
+    - `FAILED`: 未通过考试。
+    - `GRADING`: （自动）批改中或客观题部分已批改。
+    - `PENDING`: 试卷已创建但用户尚未提交，或处于其他待处理状态。
+    - `PENDING_REVIEW`: 试卷已提交，客观题已自动批改，但包含主观题等待人工批阅。
+    (
+    - `PASSED`: Passed the exam.
+    - `FAILED`: Failed the exam.
+    - `GRADING`: (Auto)grading in progress, or objective part graded.
+    - `PENDING`: Paper created but not yet submitted by user, or other pending states.
+    - `PENDING_REVIEW`: Paper submitted, objective questions auto-graded, but contains subjective questions awaiting manual review.
+    )
     """
 
     PASSED = "PASSED"  # 已通过 (Passed)
@@ -35,6 +48,7 @@ class PaperPassStatusEnum(str, Enum):
         "GRADING"  # 批改中 (Grading in progress - if async/manual grading is needed)
     )
     PENDING = "PENDING"  # 待提交或待批改 (Pending submission or grading)
+    PENDING_REVIEW = "PENDING_REVIEW" # 客观题已批改，主观题待阅 (Objective part graded, subjective pending review)
     # 可以根据需要添加更多状态，例如 CANCELED, ERROR_IN_GRADING 等
     # (More statuses like CANCELED, ERROR_IN_GRADING can be added as needed)
 
@@ -43,6 +57,17 @@ class QuestionTypeEnum(str, Enum):
     """
     题目类型枚举。
     (Question Type Enumeration.)
+
+    定义了系统中支持的各种题目类型：
+    - `single_choice`: 单选题，用户从多个选项中选择一个正确答案。
+    - `multiple_choice`: 多选题，用户从多个选项中选择一个或多个正确答案 (未来支持)。
+    - `fill_in_blank`: 填空题，用户需要填写一个或多个空白处的答案 (未来支持)。
+    - `essay_question`: 问答题/论述题，用户需要提供文本形式的详细答案，通常需要人工批阅。
+    (Defines various question types supported in the system:
+     - `single_choice`: Single choice, user selects one correct answer from multiple options.
+     - `multiple_choice`: Multiple choice, user selects one or more correct answers (future support).
+     - `fill_in_blank`: Fill-in-the-blank, user provides answers for one or more blanks (future support).
+     - `essay_question`: Essay/subjective question, user provides detailed textual answer, usually requires manual grading.)
     """
 
     SINGLE_CHOICE = "single_choice"  # 单选题 (Single Choice)

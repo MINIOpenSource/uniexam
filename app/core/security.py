@@ -288,7 +288,7 @@ async def get_current_user_info_from_token(
         )
         raise HTTPException(
             status_code=http_status.HTTP_401_UNAUTHORIZED,
-            detail="无效或已过期的Token (Invalid or expired token)",
+            detail="无效或已过期的Token", # 完全中文 (Fully Chinese)
             headers={
                 "WWW-Authenticate": "Bearer scheme='QueryToken'"
             },  # 提示客户端使用QueryToken方案
@@ -301,7 +301,7 @@ async def get_current_user_info_from_token(
         )
         raise HTTPException(
             status_code=http_status.HTTP_403_FORBIDDEN,
-            detail="用户账户已被封禁 (User account is banned)",
+            detail="用户账户已被封禁", # 完全中文 (Fully Chinese)
         )
     return user_info
 
@@ -325,6 +325,39 @@ async def get_current_active_user_uid(
         str: 当前活动用户的UID。(UID of the current active user.)
     """
     return user_info["user_uid"]
+
+
+# 旧的HTTP Basic认证逻辑 (Old HTTP Basic auth logic - to be removed if not used)
+# async def _authenticate_admin_user_http_basic(credentials: HTTPBasicCredentials = Depends(HTTPBasic())):
+#     """
+#     内部辅助函数：验证HTTP Basic认证凭据是否为预设的管理员用户名和密码。
+#     (Internal helper function: Validates if HTTP Basic auth credentials match preset admin username/password.)
+#     """
+#     correct_username = secrets.compare_digest(credentials.username, settings.admin_username)
+#     correct_password = secrets.compare_digest(credentials.password, settings.admin_password)
+#     if not (correct_username and correct_password):
+#         _security_module_logger.warning(
+#             f"管理员HTTP Basic认证失败，用户名: '{credentials.username}'"
+#             f"(Admin HTTP Basic auth failed for username: '{credentials.username}')"
+#         )
+#         raise HTTPException(
+#             status_code=http_status.HTTP_401_UNAUTHORIZED,
+#             detail="管理员凭据错误 (Incorrect admin credentials)",
+#             headers={"WWW-Authenticate": "Basic"},
+#         )
+#     # 注意：此基础认证不直接返回用户模型或标签，仅用于访问控制。
+#     # (Note: This basic auth doesn't directly return a user model or tags, only for access control.)
+#     _security_module_logger.info(f"管理员 '{credentials.username}' 通过HTTP Basic认证成功。")
+#     return credentials.username
+
+# async def get_current_admin_user(admin_username: str = Depends(_authenticate_admin_user_http_basic)):
+#     """
+#     FastAPI依赖项：确保当前用户通过HTTP Basic认证为管理员。
+#     (FastAPI Dependency: Ensures the current user is authenticated as admin via HTTP Basic.)
+#     """
+#     # 此函数主要用于依赖注入，实际的用户名已在 _authenticate_admin_user_http_basic 中验证。
+#     # (This function is mainly for dependency injection; actual username is validated in _authenticate_admin_user_http_basic.)
+#     return admin_username
 
 
 class RequireTags:
@@ -415,6 +448,7 @@ __all__ = [
     "cleanup_expired_tokens_periodically",  # 函数名已修正
     "get_current_user_info_from_token",
     "get_current_active_user_uid",
+    # "get_current_admin_user", # 已移除 (Removed)
     "RequireTags",
     "require_admin",
     "require_user",

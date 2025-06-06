@@ -14,7 +14,9 @@
             "一个复杂的3D建模工具",
             "办公套件软件",
             "浏览器扩展程序"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的名称灵感来源于什么？",
@@ -28,7 +30,9 @@
             "安卓的 Material Design",
             "一个著名的旅游景点",
             "一部科幻小说"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的主要开发者是谁？",
@@ -42,7 +46,9 @@
             "苹果公司",
             "ClassIsland 社区全体成员",
             "Linus Torvalds"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 应用本体的开源许可证是什么？",
@@ -56,7 +62,9 @@
             "BSD License",
             "LGPLv3",
             "商业闭源许可证"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "运行 ClassIsland 需要的 .NET 版本是什么？",
@@ -70,7 +78,9 @@
             "Java Runtime Environment",
             "Python 3.x",
             ".NET 6.0"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的主界面默认停靠在屏幕的哪个位置？",
@@ -83,7 +93,9 @@
             "右下角",
             "屏幕左侧",
             "屏幕右侧"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“组件”功能允许用户做什么？",
@@ -97,7 +109,9 @@
             "编写新的操作系统驱动程序",
             "直接编辑应用程序的源代码",
             "设计硬件组件"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "以下哪些是 ClassIsland 内置的组件？",
@@ -114,7 +128,9 @@
             "代码编辑器组件",
             "股票行情组件",
             "邮件客户端组件"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的提醒功能可以在哪些时间点发出提醒？",
@@ -129,7 +145,9 @@
             "学生生日时",
             "节假日时",
             "教师会议时"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“档案”主要用来存储什么信息？",
@@ -144,7 +162,9 @@
             "教师的考勤记录",
             "学校的财务报表",
             "操作系统配置文件"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“时间表”功能主要定义什么？",
@@ -158,7 +178,9 @@
             "教师的会议日程",
             "学校的年度校历",
             "节假日的放假安排"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 中，时间点有哪几种基本类型？",
@@ -173,7 +195,9 @@
             "自习",
             "考试",
             "集会"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“科目”信息包含哪些内容？",
@@ -188,7 +212,9 @@
             "科目的考试大纲",
             "科目的平均分",
             "科目的学分"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“临时课表”功能有什么特点？",
@@ -202,7 +228,9 @@
             "需要管理员权限才能启用",
             "只能在周末使用",
             "会覆盖所有已有的课表配置"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“临时层”和“临时课表”有什么主要区别？",
@@ -215,7 +243,9 @@
             "临时课表不能编辑",
             "临时层会自动同步到云端",
             "临时课表不能设置触发规则"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“换课”功能允许用户做什么？",
@@ -229,7 +259,9 @@
             "调整课程的上课时间",
             "自动为所有课程安排代课老师",
             "将课程表导出为图片"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“课表群”功能有什么作用？",
@@ -243,7 +275,9 @@
             "将课表分享给其他用户",
             "限制用户访问特定的课表",
             "将多个课表合并为一个"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动化”功能可以实现什么？",
@@ -258,7 +292,9 @@
             "自动批改试卷",
             "自动生成教学课件",
             "自动回复邮件"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 可以从哪些来源提取主题色？",
@@ -273,7 +309,9 @@
             "当前播放的音乐专辑封面",
             "用户的头像",
             "麦克风输入的音频"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "如果在 Windows 7 系统上运行 ClassIsland 时遇到内存占用极高的问题，应该如何解决？",
@@ -287,7 +325,9 @@
             "关闭所有其他应用程序",
             "重装 Windows 7 操作系统",
             "将 ClassIsland 设置为以管理员身份运行"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "如果 ClassIsland 设置开机自启后无法正常自启动，可能是什么原因？",
@@ -301,7 +341,9 @@
             "操作系统版本过低",
             "未安装 .NET 运行时",
             "用户没有管理员权限"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“附加设置”功能允许在哪些层级单独设置并覆盖全局设置？",
@@ -316,7 +358,9 @@
             "操作系统用户层级",
             "插件层级",
             "网络连接层级"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的档案编辑界面，如何打开“临时课表”菜单？",
@@ -328,7 +372,9 @@
             "右键点击主界面上的课程表",
             "在【应用设置】的【基本】选项卡中",
             "通过快捷键 Ctrl+T"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“多周轮换”功能是基于哪个时间来计算的？",
@@ -341,7 +387,9 @@
             "每周一的日期",
             "农历日期",
             "国际标准时间（UTC）"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“强调提醒”可以包含哪些元素？",
@@ -356,7 +404,9 @@
             "播放视频动画",
             "打印提醒内容",
             "自动打开相关文档"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的调试菜单可以通过什么方式开启？",
@@ -369,7 +419,9 @@
             "在注册表中修改特定键值",
             "安装一个特殊的“调试模式”插件",
             "在欢迎向导中选择“开发者模式”"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 URI 导航协议是什么？",
@@ -381,7 +433,9 @@
             "ftp://",
             "classisland-app://",
             "ci://"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的应用数据备份功能默认会备份哪些内容？",
@@ -395,7 +449,9 @@
             "应用的日志文件",
             "应用的缓存文件",
             "用户下载的自定义主题"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“时间表”中的分割线时间点有什么作用？",
@@ -408,7 +464,9 @@
             "表示一天的课程结束",
             "自动触发特定的提醒",
             "插入一个短暂的休息时间"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "如果 ClassIsland 的配置文件损坏或丢失，可以从哪里恢复？",
@@ -422,7 +480,9 @@
             "系统还原点",
             "回收站",
             "通过邮件联系开发者获取"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 主界面组件的“相对行号”是用来做什么的？",
@@ -435,7 +495,9 @@
             "调整组件的字体大小",
             "控制组件的宽度",
             "设置组件的更新频率"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“课表群”中，“全局课表群”有什么特性？",
@@ -448,7 +510,9 @@
             "优先级低于普通课表群",
             "只能包含一个课表",
             "需要联网才能使用"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“预定调课”功能支持哪些操作？",
@@ -462,7 +526,9 @@
             "生成打印版的调课通知单",
             "向全班同学发送调课短信",
             "永久修改所有课表中的某一门课"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“从表格导入课表”功能支持导入什么格式的文件？",
@@ -475,7 +541,9 @@
             "CSV 文件（.csv）",
             "纯文本文件（.txt）",
             "PDF 文件（.pdf）"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 中，如果禁用了“课表自动启用”，课表将如何被加载？",
@@ -488,7 +556,9 @@
             "课表会在周末自动启用",
             "需要管理员密码才能启用",
             "应用会自动选择最近修改的课表启用"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 中“提醒优先级”是如何工作的？",
@@ -501,7 +571,9 @@
             "根据提醒内容的重要性自动判断优先级",
             "优先级最高的提醒会覆盖其他所有提醒",
             "只能同时显示一个提醒"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动化”功能中的“规则集”是用来做什么的？",
@@ -514,7 +586,9 @@
             "定义软件的更新策略",
             "管理用户的登录凭据",
             "配置网络防火墙规则"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 支持从哪个课表软件迁移课表数据？",
@@ -528,7 +602,9 @@
             "Google Calendar",
             "小爱课程表",
             "超级课程表"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“Himeko”版本（1.6）引入了哪些重要的新功能？",
@@ -545,7 +621,9 @@
             "插件系统",
             "跨平台支持（macOS/Linux）",
             "内置浏览器"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的设置中，可以调整主界面的哪些外观属性？",
@@ -561,7 +639,9 @@
             "任务栏图标样式",
             "鼠标指针样式",
             "系统通知区域图标样式"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“时间表编辑”中的“列表视图”和“时间轴视图”有什么区别？",
@@ -574,7 +654,9 @@
             "时间轴视图不支持添加分割线",
             "列表视图会自动计算课间休息时间",
             "时间轴视图不支持多周轮换"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 中的“附加设置分析”功能主要用于什么？",
@@ -588,7 +670,9 @@
             "检查配置文件语法错误",
             "自动优化课表安排",
             "生成附加设置的使用报告"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“插件”功能主要用于什么？",
@@ -603,7 +687,9 @@
             "破解 ClassIsland 的授权限制",
             "绕过操作系统的安全设置",
             "自动下载和安装盗版软件"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的天气功能可以显示哪些信息？",
@@ -619,7 +705,9 @@
             "历史天气数据查询",
             "空气质量指数（AQI）",
             "紫外线指数"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 官方文档的网址是什么？",
@@ -632,7 +720,9 @@
             "https://classisland.org/documentation",
             "https://github.com/ClassIsland/ClassIsland/wiki",
             "https://classisland.readthedocs.io"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "如果 ClassIsland 启动时提示“.NET 运行时未安装”，应如何操作？",
@@ -645,7 +735,9 @@
             "重启电脑",
             "卸载并重装 ClassIsland",
             "安装 Java 运行时"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的主界面在鼠标移入时会有什么行为？",
@@ -659,7 +751,9 @@
             "自动隐藏",
             "播放提示音效",
             "显示帮助信息"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“集控”功能主要面向哪些用户？",
@@ -672,7 +766,9 @@
             "单个班级的任课教师",
             "软件开发者",
             "家庭用户"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“精确时间服务”通过什么方式获取时间？",
@@ -685,7 +781,9 @@
             "GPS 卫星信号",
             "手动输入的时间",
             "读取主板 CMOS 时钟"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的默认字体是什么（非精简版）？",
@@ -698,7 +796,9 @@
             "宋体",
             "Arial",
             "Times New Roman"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 中，如果禁用了某个课表的“自动启用”，该课表在什么情况下会被加载？",
@@ -712,7 +812,9 @@
             "在每周一自动加载",
             "在所有其他课表都不满足条件时自动加载",
             "需要管理员输入密码才能加载"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的更新模式有哪些选项？",
@@ -727,7 +829,9 @@
             "每小时检查一次更新",
             "需要付费才能更新",
             "只能通过手动下载安装包更新"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的档案编辑中，“时间表”和“课表”的关系是？",
@@ -741,7 +845,9 @@
             "时间表是课表的子集",
             "课表和时间表是完全独立、没有关联的",
             "时间表定义了考试安排，课表定义了日常课程"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "如果用户在 ClassIsland 的“关于”页面多次点击应用图标，可能会发生什么？",
@@ -754,7 +860,9 @@
             "应用会崩溃",
             "解锁一个隐藏的皮肤主题",
             "没有任何反应"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的 IPC (Inter-Process Communication) 功能允许其他应用做什么？",
@@ -768,7 +876,9 @@
             "远程控制用户的电脑",
             "获取用户的登录密码",
             "无限制地读写 ClassIsland 的所有配置文件"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“回声洞”功能在哪里可以找到？",
@@ -781,7 +891,9 @@
             "在档案编辑器的科目设置中",
             "在应用的托盘菜单中",
             "需要安装特定插件才能启用"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "如果 ClassIsland 在动态壁纸环境下无法正确提取主题色，用户应该检查哪些设置？",
@@ -794,7 +906,9 @@
             "显示器的分辨率设置",
             ".NET 运行时的版本",
             "是否以管理员身份运行 ClassIsland"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的自动化功能中，“行动”指的是什么？",
@@ -809,7 +923,9 @@
             "课程表中的课程项目",
             "应用更新的过程",
             "插件的安装和卸载过程"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“窗口停靠位置”设置允许用户将主界面停靠在屏幕的哪些区域？",
@@ -822,7 +938,9 @@
             "仅允许停靠在任务栏上",
             "可以停靠在其他应用程序的窗口内部",
             "只能停靠在主显示器的顶部"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 中，如果一个时间点被设置为“默认隐藏”，它会在什么时候显示？",
@@ -835,7 +953,9 @@
             "只在周末显示",
             "在所有其他时间点都隐藏时显示",
             "需要手动点击才能显示"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“插件市场”功能主要用于什么？",
@@ -848,7 +968,9 @@
             "下载应用的主题皮肤",
             "报告应用 Bug",
             "与其他用户在线聊天"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的提醒特效（如水波纹）会在什么情况下播放？",
@@ -861,7 +983,9 @@
             "当用户点击主界面时",
             "仅在放学提醒时播放",
             "需要付费购买特效包"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 中，设置“学期开始时间”的主要目的是什么？",
@@ -874,7 +998,9 @@
             "用于记录学生的入学日期",
             "控制应用更新的检查频率",
             "设置节假日倒计时"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "如果 ClassIsland 的托盘图标消失了，可能的原因是什么？",
@@ -887,7 +1013,9 @@
             "ClassIsland 自动进入了隐身模式",
             "这是应用的正常行为，图标会定时隐藏",
             "需要付费才能永久显示托盘图标"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“时间偏移”功能是用来解决什么问题的？",
@@ -900,7 +1028,9 @@
             "设置不同时区的显示",
             "加快或减慢应用内动画的播放速度",
             "用于模拟不同日期的课表情况"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 1.6 版本的代号是什么？",
@@ -914,7 +1044,9 @@
             "Elysia",
             "爱莉希雅",
             "Ningbo"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 完整版和精简版的主要区别是什么？",
@@ -927,7 +1059,9 @@
             "完整版需要付费购买",
             "精简版不支持插件",
             "完整版更新频率更高"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的“组件设置”页面，用户可以如何添加新的组件到主界面？",
@@ -940,7 +1074,9 @@
             "在配置文件中手动输入组件ID",
             "从网上下载组件包并安装",
             "右键点击主界面选择“添加组件”"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 提醒系统中的“遮罩（Mask）”通常用于什么目的？",
@@ -953,7 +1089,9 @@
             "播放一段背景音乐",
             "显示详细的错误信息",
             "作为屏幕保护程序"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“临时层课表”在什么情况下会自动删除？",
@@ -966,7 +1104,9 @@
             "用户手动重启电脑时",
             "一周后",
             "永远不会自动删除，需要手动清除"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的“应用设置”中，如果一个选项卡旁边有“（策略禁用）”的提示，意味着什么？",
@@ -979,7 +1119,9 @@
             "需要管理员密码才能访问该选项卡",
             "该选项卡只在特定版本的 Windows 上可用",
             "这是一个付费功能"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“规则集”中的“反转”选项有什么作用？",
@@ -992,7 +1134,9 @@
             "将课程的顺序颠倒",
             "撤销上一次的操作",
             "将时间倒流"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 中，“显示器”设置选项的主要作用是什么？",
@@ -1005,7 +1149,9 @@
             "校准显示器的颜色",
             "设置屏幕保护程序",
             "开启或关闭显示器"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动备份”功能默认的备份间隔是多久？",
@@ -1018,7 +1164,9 @@
             "每月一次",
             "每次应用启动时",
             "从不自动备份"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 支持从系统壁纸提取主题色，这个功能在什么情况下可能无法正常工作？",
@@ -1032,7 +1180,9 @@
             "如果壁纸文件格式不是 JPG",
             "如果系统主题不是 Aero 主题",
             "如果未连接到互联网"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的“时间表编辑”中，如果一个时间点被设置为“户外课程”，这通常意味着什么？",
@@ -1045,7 +1195,9 @@
             "主界面会显示一个户外风景的背景",
             "应用会自动打开地图导航",
             "这个课程不需要老师点名"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的主界面组件，如“时钟”或“日期”，它们的显示格式是否可以自定义？",
@@ -1058,7 +1210,9 @@
             "日期组件可以设置为显示农历日期",
             "时钟组件可以设置为模拟时钟样式",
             "所有组件的格式都是固定的，无法更改"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "如果 ClassIsland 在运行时意外崩溃，用户可以在哪里找到崩溃相关的日志信息？",
@@ -1072,7 +1226,9 @@
             "用户的电子邮件收件箱",
             "Windows 注册表中",
             "系统回收站中"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“组件配置方案”允许用户做什么？",
@@ -1085,7 +1241,9 @@
             "将组件导出为独立的应用",
             "购买新的高级组件",
             "设置组件的自动更新"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 中，如果一个提醒来源的“启用语音”选项被勾选，但全局的“允许启用提醒语音”未勾选，提醒会播报语音吗？",
@@ -1098,7 +1256,9 @@
             "会，但音量会减半",
             "会，但只会播报标题",
             "取决于当前系统是否静音"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“从表格导入课表”向导中，“选择时间安排区域”步骤的目的是什么？",
@@ -1111,7 +1271,9 @@
             "选择包含科目名称的单元格区域",
             "选择包含教师姓名的单元格区域",
             "选择日期信息所在的单元格区域"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的主界面“指针移入淡化”功能，如果勾选了“反转指针移入淡化”，会是什么效果？",
@@ -1124,7 +1286,9 @@
             "鼠标移入时，主界面会变得更暗",
             "主界面的淡化动画会反向播放",
             "该功能会被禁用"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 中，如果一个“科目”的“简称”字段为空，应用会如何处理？",
@@ -1137,7 +1301,9 @@
             "会自动使用“未”作为简称",
             "会随机生成一个简称",
             "该科目将无法在课表中使用"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的插件清单文件（manifest.yml）中，`apiVersion` 字段的作用是什么？",
@@ -1151,7 +1317,9 @@
             "指定插件依赖的 .NET 版本",
             "指定插件的 API 接口数量",
             "指定插件的开发者 API 密钥"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“教学安全模式”的主要目的是什么？",
@@ -1164,7 +1332,9 @@
             "限制应用的网络访问",
             "加密存储用户的个人数据",
             "提供一个简化的、无干扰的界面"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的“自动化”功能中，如果一个行动组的“启用恢复”被勾选，当规则集不再满足时会发生什么？",
@@ -1177,7 +1347,9 @@
             "应用会显示一个错误提示",
             "所有相关的设置会被重置为默认值",
             "会触发另一个预设的“恢复”行动组"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 主界面上的“快速信息”区域（默认在日期组件处）主要用来显示什么？",
@@ -1190,7 +1362,9 @@
             "学校的最新通知公告",
             "系统 CPU 和内存使用率",
             "用户的待办事项列表"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的“时间表编辑”中，如果两个上课时间点之间没有添加“课间休息”时间点，会发生什么？",
@@ -1204,7 +1378,9 @@
             "这两个上课时间点会被合并为一个",
             "应用会报错并阻止保存时间表",
             "主界面会一直显示“上课中”"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动备份”功能，如果备份数量达到上限，会如何处理？",
@@ -1217,7 +1393,9 @@
             "提示用户手动清理备份文件",
             "自动增加备份上限",
             "将旧的备份文件压缩存档"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的“组件设置”页面，如果一个组件是“容器组件”，通常意味着什么？",
@@ -1231,7 +1409,9 @@
             "这个组件只能在主界面的特定位置显示",
             "这个组件是付费的",
             "这个组件由多个 DLL 文件组成"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“精确时间服务”如果无法连接到NTP服务器，会发生什么？",
@@ -1245,7 +1425,9 @@
             "主界面会显示“时间错误”",
             "会自动尝试连接其他公共NTP服务器",
             "提醒功能会被完全禁用"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的多周轮换功能中，“单双周”设置是基于什么计算的？",
@@ -1258,7 +1440,9 @@
             "农历月份的单双",
             "当前周数是奇数还是偶数",
             "学校手动设置的当前周类型"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的提醒设置中，如果“自定义音效”路径留空，会发生什么？",
@@ -1271,7 +1455,9 @@
             "应用会随机选择一个系统音效播放",
             "会弹出一个错误提示",
             "提醒音效会被禁用"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 在显示提醒时，如果同时有多个提醒请求，会如何处理？",
@@ -1284,7 +1470,9 @@
             "同时显示所有提醒，可能会重叠",
             "随机选择一个提醒显示",
             "根据提醒内容的重要性自动排序"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“组件设置”页面中，如果一个组件的设置界面为空，通常是什么原因？",
@@ -1297,7 +1485,9 @@
             "需要管理员权限才能查看设置",
             "该组件是付费功能的一部分",
             "用户没有安装该组件的依赖库"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“从表格导入课表”功能，在导入时间表时，如果表格中的时间格式不规范，可能会发生什么？",
@@ -1310,7 +1500,9 @@
             "导入过程会直接失败并报错",
             "会使用默认的时间表替换导入的内容",
             "会提示用户手动输入每个时间点"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“窗口层级”设置中的“置底”选项有什么效果？",
@@ -1323,7 +1515,9 @@
             "主界面会变得半透明",
             "主界面会显示在任务栏下方",
             "主界面会固定在屏幕底部"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "如果用户在 ClassIsland 的设置中更改了需要重启才能生效的选项，应用会如何提示？",
@@ -1336,7 +1530,9 @@
             "不会有任何提示，用户需要自行判断",
             "会在下次启动时显示一个警告信息",
             "会通过系统通知区域图标闪烁提示"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动化”功能中，“触发器”的作用是什么？",
@@ -1349,7 +1545,9 @@
             "设置自动化流程的参数",
             "控制自动化流程的执行速度",
             "记录自动化流程的执行日志"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的“档案编辑”中，如果删除了一个正在被某个课表使用的时间表，会发生什么？",
@@ -1362,7 +1560,9 @@
             "应用会自动创建一个新的时间表替代被删除的",
             "对应的课表也会被一并删除",
             "不会有任何影响"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“从壁纸提取主题色”功能，在兼容模式下是如何获取壁纸的？",
@@ -1375,7 +1575,9 @@
             "通过获取桌面窗口句柄并截图",
             "连接到微软的壁纸服务器下载",
             "使用摄像头拍摄当前环境光线"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“插件市场”默认的插件源（索引）托管在哪里？",
@@ -1388,7 +1590,9 @@
             "用户本地的插件文件夹",
             "一个独立的第三方网站",
             "ClassIsland 应用内置的数据库"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“教学安全模式”在应用崩溃时，有哪些可选的处理方式？",
@@ -1403,7 +1607,9 @@
             "尝试回滚到上一个稳定版本",
             "锁定电脑屏幕",
             "播放警报音"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 中，如果一个科目被标记为“户外课程”，在上课准备提醒时，其默认的提醒提前时间与室内课程相比通常是？",
@@ -1416,7 +1622,9 @@
             "相同",
             "不发出提醒",
             "由老师手动设置"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“时间表编辑器”中的“时间轴视图”模式，用户可以通过哪些方式调整时间点？",
@@ -1430,7 +1638,9 @@
             "右键点击时间点选择“自动调整”",
             "使用滚轮缩放时间点长度",
             "只能在列表视图中修改时间"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "如果用户在 ClassIsland 中创建了一个新的“课表群”但没有向其中添加任何课表，这个课表群会如何影响应用的课表加载？",
@@ -1443,7 +1653,9 @@
             "应用会提示错误并要求用户添加课表",
             "这个空课表群会被自动删除",
             "不会有任何影响，应用会忽略空课表群"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的主界面在显示当前课程时，进度条表示的是什么？",
@@ -1456,7 +1668,9 @@
             "学生完成作业的进度",
             "应用的加载进度",
             "网络连接的信号强度"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“组件”配置文件默认存储在哪个目录下？",
@@ -1469,7 +1683,9 @@
             "./Plugins/",
             "./Cache/Components/",
             "Windows 系统目录"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的提醒设置中，“允许启用提醒语音”和单个提醒来源的“启用语音”是什么关系？",
@@ -1482,7 +1698,9 @@
             "单个提醒来源的设置优先于全局设置",
             "全局设置只对内置提醒有效，对插件提醒无效",
             "全局设置只控制默认语音，单个提醒来源可以指定其他语音引擎"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 应用本体（非核心库和共享库）的开源许可证是什么？",
@@ -1495,7 +1713,9 @@
             "MIT License",
             "Apache License 2.0",
             "BSD License"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动化”功能中，如果一个工作流的“启用条件判定”未勾选，会发生什么？",
@@ -1508,7 +1728,9 @@
             "该工作流的行动会反向执行",
             "应用会提示用户确认是否执行",
             "规则集会被重置为默认条件"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“临时层课表”和“预定调课”中的临时启用课表有什么区别？",
@@ -1521,7 +1743,9 @@
             "临时层课表是永久性的，预定调课是临时的",
             "临时层课表只能修改科目，预定调课可以修改时间",
             "预定调课需要管理员权限，临时层不需要"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“从表格导入课表”功能在选择课程区域后，如果选择了“每竖列为一个课表”，这意味着什么？",
@@ -1534,7 +1758,9 @@
             "每一列代表一个科目的所有上课时间",
             "每一列代表一个时间表",
             "导入功能不支持竖向排列的课表"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 中“提醒特效渲染精度”设置的作用是什么？",
@@ -1548,7 +1774,9 @@
             "控制提醒特效的播放速度",
             "选择不同的提醒特效动画",
             "调整提醒特效的音量"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 官方文档中提及的“CSES”是什么？",
@@ -1561,7 +1789,9 @@
             "ClassIsland 的一个核心组件名称",
             "一种加密算法",
             "ClassIsland 的开发代号之一"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“时间表”中的“行动”时间点是用来做什么的？",
@@ -1574,7 +1804,9 @@
             "播放一段动画效果",
             "打开一个特定的应用程序窗口",
             "记录教师的操作日志"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "如果ClassIsland的主界面显示“（无课表）”，可能是什么原因？",
@@ -1589,7 +1821,9 @@
             "电脑的系统时间不正确",
             "显示器未连接或已关闭",
             "应用需要更新"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 中，如果一个插件的清单文件（manifest.yml）缺失或损坏，会发生什么？",
@@ -1602,7 +1836,9 @@
             "该插件会自动从插件市场重新下载",
             "系统会提示用户手动创建清单文件",
             "该插件的功能会受限，但仍可部分使用"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“PointerEvent”通常与哪个功能相关？",
@@ -1615,7 +1851,9 @@
             "屏幕画笔功能",
             "远程控制鼠标",
             "游戏手柄支持"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 中，如果用户反馈“主界面不显示了”，但托盘图标还在，可能的原因有哪些？",
@@ -1630,7 +1868,9 @@
             "显示器已关闭或未连接",
             "电脑进入了睡眠模式",
             "网络连接中断导致界面无法加载"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“组件库”在哪个设置页面可以找到？",
@@ -1643,7 +1883,9 @@
             "【应用设置】->【提醒】",
             "【档案编辑】->【时间表】",
             "【应用设置】->【插件】"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "如果 ClassIsland 的某个组件的“按规则隐藏”功能被启用，并且设置了隐藏规则，那么当规则满足时会发生什么？",
@@ -1656,7 +1898,9 @@
             "该组件的设置会被重置",
             "应用会发出一个警告通知",
             "该组件的功能会被禁用，但依然显示"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动备份”功能，备份文件的命名格式通常包含什么信息？",
@@ -1670,7 +1914,9 @@
             "备份文件的MD5哈希值",
             "当前加载的课表名称",
             "ClassIsland 的版本号"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 中，如果“时间表”中的某个“上课”类型时间点没有设置“默认科目”，那么在课表编辑中这个时间点会如何显示？",
@@ -1683,7 +1929,9 @@
             "该时间点会被自动隐藏",
             "应用会从上一个时间点继承科目",
             "该时间点会显示为“待定”"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“附加设置”中，设置的应用优先级顺序是怎样的？",
@@ -1696,7 +1944,9 @@
             "所有层级的设置会合并生效，冲突时以最新修改的为准",
             "课表设置优先于时间表，其他层级无效",
             "用户可以在每个层级设置独立的优先级数值"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "如果 ClassIsland 无法从NTP服务器同步精确时间，它会使用什么时间？",
@@ -1709,7 +1959,9 @@
             "随机生成一个时间",
             "提示用户手动输入当前时间",
             "停止所有与时间相关的功能"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“组件”配置文件（如 Default.json）是用来存储什么的？",
@@ -1722,7 +1974,9 @@
             "用户的课表数据",
             "已安装插件的列表",
             "应用的更新历史记录"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的主题设置中，“跟随系统”选项是如何工作的？",
@@ -1735,7 +1989,9 @@
             "ClassIsland 会使用 Windows 系统的壁纸作为背景",
             "ClassIsland 的字体会与系统字体保持一致",
             "ClassIsland 的窗口样式会模仿 Windows 系统窗口"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“导出诊断数据”功能会包含哪些信息？",
@@ -1751,7 +2007,9 @@
             "电脑上安装的所有软件列表",
             "用户的个人文档和图片",
             "Windows 事件查看器中的所有系统日志"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的“档案编辑”中，如果一个“时间表”被多个“课表”使用，修改这个时间表会对这些课表产生什么影响？",
@@ -1764,7 +2022,9 @@
             "应用会为每个课表创建一个时间表的副本，修改互不影响",
             "修改时间表后，需要手动将更改应用到每个课表",
             "无法修改被多个课表使用的时间表"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“兼容透明模式”选项是用来解决什么问题的？",
@@ -1777,7 +2037,9 @@
             "允许用户自定义窗口的透明度级别",
             "使窗口能够穿透所有其他应用程序",
             "为窗口添加毛玻璃效果"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "如果用户在 ClassIsland 中设置了“禁止编辑档案”的集控策略，那么用户还能进行哪些操作？",
@@ -1790,7 +2052,9 @@
             "修改时间表中的时间点",
             "添加新的科目",
             "从 Excel 导入课表"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的主界面组件如果设置了“固定宽度”，会是什么效果？",
@@ -1803,7 +2067,9 @@
             "组件会占满其所在行的所有可用宽度",
             "组件的宽度会根据屏幕分辨率动态变化",
             "该设置只对文本组件有效"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动化”功能中，“广播信号”行动的作用是什么？",
@@ -1816,7 +2082,9 @@
             "播放一段预设的音频信号",
             "改变主界面的背景颜色以示信号",
             "向用户的手机发送通知"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 中，如果“学期开始时间”设置不当（例如，设置在了未来），可能会影响哪个功能的正常运作？",
@@ -1829,7 +2097,9 @@
             "天气信息的获取",
             "提醒音效的播放",
             "主界面的主题颜色"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“附加设置”中的“覆盖”状态（橙色标记）通常表示什么？",
@@ -1842,7 +2112,9 @@
             "当前节点的设置与全局设置相同",
             "当前节点没有配置该附加设置",
             "当前节点的设置存在错误"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“语音引擎”设置中，如果选择了“Edge TTS”，需要注意什么？",
@@ -1855,7 +2127,9 @@
             "需要付费购买语音包",
             "会大量消耗系统资源",
             "不支持自定义语速和音调"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“从表格导入课表”向导中，“时间对应关系”步骤是用来做什么的？",
@@ -1868,7 +2142,9 @@
             "选择要导入哪些科目的课程",
             "定义多周轮换的规则",
             "设置课间休息的时长"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“窗口层级”设置为“置顶”时，主界面会显示在哪里？",
@@ -1881,7 +2157,9 @@
             "只在桌面显示，其他窗口打开时会自动隐藏",
             "嵌入到当前活动窗口的标题栏",
             "会根据鼠标位置自动调整层级"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“插件”功能，用户可以从哪里获取插件？",
@@ -1895,7 +2173,9 @@
             "通过修改注册表启用隐藏插件",
             "只能通过编译源代码获得",
             "需要向开发者单独申请"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“回声洞”中的内容主要来源于哪里？",
@@ -1908,7 +2188,9 @@
             "用户本地计算机上的文档",
             "开发者的个人博客",
             "由人工智能模型自动生成"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动备份”功能，如果设置的“自动备份上限”为0，意味着什么？",
@@ -1921,7 +2203,9 @@
             "每次备份都会覆盖上一次的备份",
             "只保留最近一次的自动备份",
             "需要手动确认才能进行自动备份"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的主界面组件，如“课程表”，其字体大小是如何确定的？",
@@ -1935,7 +2219,9 @@
             "字体大小会根据屏幕分辨率自动调整",
             "每个组件都有独立的、固定的字体大小",
             "需要修改组件的源代码才能更改字体大小"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动化”功能中，如果一个工作流设置了“规则集更新时”作为触发器，那么这个工作流会在什么时候执行？",
@@ -1948,7 +2234,9 @@
             "每天固定时间执行一次",
             "当用户手动点击“刷新规则集”按钮时",
             "仅在 ClassIsland 应用启动时执行一次"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的“档案编辑”中，如果用户创建了一个新的“时间表”但没有在任何“课表”中使用它，这个时间表会起作用吗？",
@@ -1961,7 +2249,9 @@
             "会作为备用时间表，在当前时间表出问题时自动启用",
             "应用会随机选择一个时间表使用",
             "会与当前时间表合并"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“从壁纸提取主题色”功能，如果提取到的颜色与壁纸主色调差异较大，可能是什么原因？",
@@ -1975,7 +2265,9 @@
             "ClassIsland 的版本过低",
             "未安装显卡驱动程序",
             "系统主题色设置冲突"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“本地集控”功能（密码保护和限制策略）与“云端集控”有什么主要区别？",
@@ -1989,7 +2281,9 @@
             "本地集控只能设置密码，不能限制功能",
             "云端集控是免费的，本地集控需要付费",
             "本地集控只对当前用户有效，云端集控对所有用户有效"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“时间表”中，如果一个“课间休息”时间点没有设置“课间名称”，它在主界面上会显示什么？",
@@ -2002,7 +2296,9 @@
             "显示上一个上课科目的名称",
             "显示“未命名课间”",
             "该时间点不会被识别为课间休息"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 插件的`.cipx`文件实际上是什么类型的文件？",
@@ -2015,7 +2311,9 @@
             "动态链接库（.dll）",
             "加密的二进制文件",
             "ClassIsland 特有的私有格式文件"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 中，如果用户想要在所有课表的所有特定时间点（如第一节课）都显示一个相同的附加信息，应该在哪里配置附加设置？",
@@ -2028,7 +2326,9 @@
             "在全局应用设置中配置",
             "在对应科目的附加设置中配置",
             "无法实现，只能逐个设置"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“调试菜单”中的“特性调试窗口”主要用于什么？",
@@ -2041,7 +2341,9 @@
             "修改应用的底层参数",
             "自动修复常见的应用错误",
             "远程调试其他用户的 ClassIsland 实例"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "如果 ClassIsland 的主界面在某些全屏应用（如游戏）下没有自动隐藏，可能的原因是？",
@@ -2055,7 +2357,9 @@
             "电脑的性能不足以支持该功能",
             "需要安装特定的游戏兼容插件",
             "该功能已被集控策略禁用"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“快捷换课”桌面快捷方式依赖于哪个系统功能才能正常工作？",
@@ -2068,7 +2372,9 @@
             ".NET Framework 兼容模式",
             "特定的显卡驱动程序",
             "Windows 快捷键管理器"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“提醒音效”功能，如果用户选择了一个非常长的自定义音效文件，会发生什么？",
@@ -2081,7 +2387,9 @@
             "提醒的显示时间会自动延长以播放完整的音效",
             "应用会提示错误并要求用户选择较短的音效",
             "音效会循环播放直到提醒结束"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 中，如果一个“课表群”被设置为“覆盖”模式的临时课表群，它会如何影响课表的加载？",
@@ -2094,7 +2402,9 @@
             "只会加载这个临时课表群中的课表，全局课表群也会被忽略",
             "所有课表都会被临时禁用",
             "应用会提示用户选择要覆盖哪些课表群"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“从表格导入课表”向导中，如果表格中某些课程名称在 ClassIsland 的科目列表中不存在，会发生什么？",
@@ -2107,7 +2417,9 @@
             "导入过程会失败并报错",
             "这些课程会被自动忽略，不会导入",
             "应用会随机分配一个已有的科目给这些课程"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“时间偏移”设置中，如果设置了一个负值（例如 -5 秒），这意味着什么？",
@@ -2120,7 +2432,9 @@
             "所有课程的持续时间会减少 5 秒",
             "应用的主界面会延迟 5 秒显示",
             "提醒音效会提前 5 秒播放"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“恢复模式”主要用于解决哪些问题？",
@@ -2134,7 +2448,9 @@
             "修复操作系统的启动问题",
             "重置用户的 Windows 登录密码",
             "扫描和清除电脑病毒"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“禁止编辑档案”集控策略会影响哪些操作？",
@@ -2147,7 +2463,9 @@
             "用户无法启用临时课表",
             "用户无法调整应用的外观设置",
             "用户无法查看当前加载的课表信息"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“组件”配置文件通常是什么格式？",
@@ -2160,7 +2478,9 @@
             "YAML (.yml)",
             "二进制文件 (.dat)",
             "SQLite 数据库 (.db)"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的主题设置中，“主题色来源”选择“系统壁纸”时，如果壁纸是纯色，提取到的主题色会是怎样的？",
@@ -2173,7 +2493,9 @@
             "会使用系统默认的强调色",
             "无法提取颜色，会报错",
             "会提取屏幕上最亮的颜色"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动化”功能中，“等待时长”行动的作用是什么？",
@@ -2186,7 +2508,9 @@
             "让 ClassIsland 应用进入休眠模式",
             "调整主计时器的触发间隔",
             "延迟应用的启动时间"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“时间表编辑器”的时间轴视图中，用户可以通过什么操作来缩放时间轴的显示比例？",
@@ -2199,7 +2523,9 @@
             "在设置中调整全局缩放比例",
             "使用键盘快捷键 Ctrl + +/-",
             "双击时间轴的空白区域"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "如果 ClassIsland 的自动更新下载完成后，用户没有立即重启应用，会发生什么？",
@@ -2212,7 +2538,9 @@
             "应用会强制自动重启",
             "更新会被标记为失败，需要重新下载",
             "用户需要手动运行安装程序"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“排除的全屏窗口”设置是用来做什么的？",
@@ -2225,7 +2553,9 @@
             "设置哪些窗口在 ClassIsland 全屏提醒时不会被覆盖",
             "过滤掉不希望被 ClassIsland 窗口规则影响的窗口",
             "指定哪些窗口在启动时会自动最小化"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“附加设置”中，如果某个时间点的“上课提醒”附加设置被启用了，它会覆盖哪些层级的设置？",
@@ -2239,7 +2569,9 @@
             "不会覆盖任何设置，只作为补充",
             "只会覆盖科目的附加设置",
             "只会覆盖比它优先级更低的设置"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“时间表”中，如果两个上课时间点之间的时间间隔为0（即无缝连接），是否还需要添加“课间休息”时间点？",
@@ -2252,7 +2584,9 @@
             "应用会自动识别并插入一个虚拟的课间休息点",
             "需要添加一个“分割线”时间点代替",
             "这会导致两个上课时间点合并"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“插件”功能，卸载插件后通常需要做什么才能使更改生效？",
@@ -2265,7 +2599,9 @@
             "重新登录 Windows 用户账户",
             "刷新插件列表",
             "卸载后立即生效，无需其他操作"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“主菜单”中，“编辑档案”和“应用设置”有什么主要区别？",
@@ -2278,7 +2614,9 @@
             "“编辑档案”是只读的，只能查看；“应用设置”可以修改",
             "“编辑档案”需要管理员权限，“应用设置”不需要",
             "“应用设置”只包含外观设置，“编辑档案”包含所有其他设置"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“组件配置方案”保存在哪里？",
@@ -2291,7 +2629,9 @@
             "用户的文档文件夹中",
             "Windows 注册表中",
             "云端服务器上"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的提醒系统，如果全局的“允许启用提醒音效”未勾选，但某个提醒来源的特殊高级设置中勾选了“启用提醒音效”，该提醒来源的提醒会播放音效吗？",
@@ -2304,7 +2644,9 @@
             "会，但音量会减半",
             "只有在连接了耳机时才会播放",
             "取决于提醒的紧急程度"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“从表格导入课表”功能，如果表格中一个单元格同时包含了多个科目的名称（例如“语文/数学”），会如何处理？",
@@ -2317,7 +2659,9 @@
             "会提示用户选择其中一个科目",
             "会忽略这个单元格",
             "会创建一个名为“语文/数学”的新科目"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“窗口层级”设置为“置底”时，主界面是否会被其他置顶窗口（如任务管理器）覆盖？",
@@ -2330,7 +2674,9 @@
             "主界面会自动调整透明度以避免完全遮挡",
             "只有在播放提醒特效时才会被覆盖",
             "取决于屏幕分辨率"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "如果用户在 ClassIsland 中禁用了所有提醒提供方，会发生什么？",
@@ -2343,7 +2689,9 @@
             "提醒功能会被锁定，无法再次启用",
             "只会禁用插件提供的提醒，内置提醒不受影响",
             "提醒会以静默方式（无声音、无特效）显示"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动化”功能中，“规则集”的“并且（AND）”模式和“或者（OR）”模式有什么区别？",
@@ -2356,7 +2704,9 @@
             "“或者”模式的执行速度比“并且”模式快",
             "“并且”模式用于判断条件是否同时不满足，“或者”模式用于判断是否不同时满足",
             "两者没有实际区别，只是名称不同"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“时间表编辑器”中，如果用户设置了一个结束时间早于开始时间的时间点，会发生什么？",
@@ -2369,7 +2719,9 @@
             "该时间点会被视为跨天时间点",
             "应用会忽略该时间点",
             "会弹出一个错误提示，阻止保存"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“从壁纸提取主题色”功能，如果用户使用的是幻灯片壁纸，提取到的颜色会是？",
@@ -2382,7 +2734,9 @@
             "第一张幻灯片图片的主题色",
             "无法提取颜色，会使用默认主题色",
             "会提取屏幕上固定区域的颜色"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“插件市场”中，如果一个插件显示“需要重启”，意味着什么？",
@@ -2395,7 +2749,9 @@
             "该插件存在严重的 Bug，需要开发者修复",
             "该插件正在下载中",
             "该插件是一个系统级插件，需要重启电脑"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“教学安全模式”在什么情况下会被触发（如果用户启用了该功能）？",
@@ -2408,7 +2764,9 @@
             "当检测到系统资源不足时",
             "当用户尝试修改核心配置文件时",
             "在进行应用更新前"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的“档案编辑”中，如果删除了一个科目，对已使用该科目的课表有什么影响？",
@@ -2421,7 +2779,9 @@
             "对应的课表也会被一并删除",
             "该科目会被标记为“已弃用”，但仍可显示",
             "不会有任何影响，课表会自动适应"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“时间偏移”功能，如果用户设置了“自动时间偏移”，例如每天增加1秒，其目的是什么？",
@@ -2434,7 +2794,9 @@
             "模拟夏令时或冬令时的调整",
             "用于测试应用在不同时间下的行为",
             "这是一个彩蛋功能，没有实际用途"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 核心库（ClassIsland.Core.dll）使用的开源许可证是什么？",
@@ -2447,7 +2809,9 @@
             "MIT License",
             "Apache License 2.0",
             "BSD License"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“组件配置方案”功能，如果用户创建了多个方案，如何切换？",
@@ -2460,7 +2824,9 @@
             "通过修改应用的启动参数切换",
             "每个方案对应一个独立的配置文件，需要手动替换",
             "只能在安装时选择，之后无法切换"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 中，如果一个提醒的“遮罩（Mask）”显示时长设置为0，会发生什么？",
@@ -2473,7 +2839,9 @@
             "应用会使用默认的遮罩显示时长（5秒）",
             "会弹出一个错误提示",
             "该提醒请求会被忽略"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“临时层课表”的“源课表ID”指的是什么？",
@@ -2486,7 +2854,9 @@
             "临时层课表自身的ID",
             "生成临时层的时间戳",
             "一个随机生成的标识符，没有实际意义"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“从表格导入课表”功能，如果表格中时间单元格的格式为“上午8点”而非“8:00”，导入功能能否正确识别？",
@@ -2499,7 +2869,9 @@
             "会自动转换为“8:00 AM”格式并识别",
             "会忽略这些单元格，导致时间点缺失",
             "会提示用户手动更正每个不规范的时间单元格"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“窗口层级”设置为“置顶”时，是否会覆盖所有其他置顶窗口（如某些安全软件的浮窗）？",
@@ -2512,7 +2884,9 @@
             "只有在播放提醒特效时才会尝试覆盖其他置顶窗口",
             "不会覆盖任何其他置顶窗口",
             "需要管理员权限才能覆盖其他置顶窗口"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“插件市场”中的插件信息（如版本号、描述）来源于哪里？",
@@ -2525,7 +2899,9 @@
             "用户对插件的评价和评论",
             "插件的 GitHub 仓库的 README 文件",
             "微软的 NuGet 包管理器"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“回声洞”功能，如果用户不希望看到，可以如何操作？",
@@ -2538,7 +2914,9 @@
             "卸载“回声洞”组件",
             "修改应用的配置文件，禁用该功能",
             "无法关闭，是应用的内置特性"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的“档案编辑”中，如果一个“课表”关联的“时间表ID”不存在或无效，会发生什么？",
@@ -2551,7 +2929,9 @@
             "该课表会被自动删除",
             "应用会提示用户选择一个新的时间表",
             "该课表会使用上一个成功加载的课表的时间表"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“组件”设置中，“按规则隐藏”的规则集是如何判断的？",
@@ -2564,7 +2944,9 @@
             "由用户手动点击按钮触发判断",
             "基于机器学习模型对当前场景进行分析",
             "随机判断"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动备份”功能，如果备份过程中应用意外关闭，会发生什么？",
@@ -2577,7 +2959,9 @@
             "应用会自动从云端恢复最近一次的成功备份",
             "会锁定所有配置文件，直到手动修复",
             "不会有任何影响，备份是原子操作"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“时间表”中的“分割线”时间点，是否可以设置持续时长？",
@@ -2590,7 +2974,9 @@
             "其持续时长代表了两个课时之间的长休息时间",
             "持续时长决定了分割线的粗细",
             "是的，并且可以播放一段简短的音效"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“插件”功能，如果一个插件依赖了特定版本的 ClassIsland.Core.dll，而当前 ClassIsland 使用了不兼容的版本，会发生什么？",
@@ -2603,7 +2989,9 @@
             "插件会自动下载并使用其兼容的 ClassIsland.Core.dll 版本",
             "不会有任何问题，插件会自动适配所有版本的核心库",
             "ClassIsland 会提示用户更新插件或应用本体"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动化”功能中，如果一个行动（如“运行程序”）执行失败，会如何影响后续行动的执行？",
@@ -2616,7 +3004,9 @@
             "应用会尝试重新执行失败的行动三次",
             "会弹出一个错误对话框，等待用户处理",
             "后续行动会被跳过，直到下一个触发器触发"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 中，如果用户希望某个组件（如“天气简报”）始终显示在主界面的最右侧，应该如何设置？",
@@ -2629,7 +3019,9 @@
             "在配置文件中手动编辑组件的坐标",
             "该功能无法实现，组件位置是固定的",
             "使用自动化功能在每次启动时设置组件位置"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“时间偏移”设置，如果设置为0，意味着什么？",
@@ -2642,7 +3034,9 @@
             "所有课程的时间都会显示为00:00",
             "应用会随机选择一个时间偏移量",
             "时间会停止流动"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“恢复模式”中，用户可以执行哪些操作？",
@@ -2657,7 +3051,9 @@
             "修复 Windows 操作系统文件",
             "扫描并清除电脑病毒",
             "格式化硬盘并重装系统"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“禁止编辑应用设置”集控策略会影响哪些设置的修改？",
@@ -2672,7 +3068,9 @@
             "已安装插件的启用和禁用",
             "应用的更新检查和下载",
             "用户登录凭据和密码"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“课表群”中，“临时课表群”的“覆盖”模式和“继承”模式有什么主要区别？",
@@ -2685,7 +3083,9 @@
             "“继承”模式只对当天有效，“覆盖”模式可以设置有效期",
             "“覆盖”模式需要管理员权限，“继承”模式不需要",
             "两者没有实际区别，只是描述不同"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“从表格导入课表”功能，如果表格中包含合并单元格，可能会对导入结果产生什么影响？",
@@ -2699,7 +3099,9 @@
             "合并单元格会被完全忽略",
             "导入过程会因此失败并报错",
             "只会导入合并单元格中的第一个单元格内容"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“窗口层级”设置为“置顶”时，如果打开了一个全屏应用（如PPT放映），主界面会怎样？",
@@ -2712,7 +3114,9 @@
             "主界面会自动切换到“置底”模式",
             "主界面会缩小并停靠在屏幕边缘",
             "应用会提示用户退出全屏模式"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“插件市场”中的插件，其安全性由谁负责？",
@@ -2725,7 +3129,9 @@
             "微软公司负责审查所有 .NET 应用的插件",
             "GitHub 平台会自动扫描并移除恶意插件",
             "所有插件都是绝对安全的，无需担心"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的“档案编辑”中，如果一个“科目”被多个“课表”使用，修改这个科目的“科任老师”信息，会如何影响这些课表？",
@@ -2738,7 +3144,9 @@
             "应用会为每个课表创建一个科目的副本，修改互不影响",
             "修改后需要手动将更改应用到每个课表",
             "无法修改被多个课表使用的科目的信息"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动化”功能中，“运行程序”行动可以执行哪些类型的目标？",
@@ -2752,7 +3160,9 @@
             "手机 App",
             "ClassIsland 插件（除非插件提供了可执行文件或URI）",
             "Windows 系统服务"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“时间表编辑器”的时间轴视图中，如果两个时间点之间存在重叠，会发生什么？",
@@ -2765,7 +3175,9 @@
             "重叠部分的时间点会被忽略",
             "会弹出一个警告提示，但允许保存",
             "重叠部分会同时显示两个时间点的信息"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动备份”功能，如果用户手动修改了备份文件夹中的文件，会对自动备份流程产生什么影响？",
@@ -2778,7 +3190,9 @@
             "应用会提示用户确认是否保留手动修改",
             "自动备份会失败并报错",
             "手动修改会自动同步到应用的当前配置中"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 中，如果用户希望在所有课间休息时间点都显示一个相同的自定义名称（例如“大课间”），应该如何操作？",
@@ -2791,7 +3205,9 @@
             "创建一个名为“大课间”的科目，并将其用于所有课间休息",
             "使用自动化功能，在每个课间休息时修改主界面显示",
             "无法实现，课间名称是固定的"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“插件”功能，如果一个已安装的插件与其依赖的另一个插件版本不兼容，可能会发生什么？",
@@ -2804,7 +3220,9 @@
             "不兼容的插件会被自动禁用",
             "不会有任何问题，插件会自动解决版本冲突",
             "ClassIsland 会提示用户手动解决依赖冲突"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动化”功能中，如果一个工作流的触发器（如“上课时”）被触发，但其关联的“规则集”未满足，会发生什么？",
@@ -2817,7 +3235,9 @@
             "规则集总会覆盖触发器的状态，如果规则不满足，触发器不会被视为触发",
             "应用会弹出一个对话框询问用户是否执行行动",
             "该工作流会被自动禁用，直到规则集满足"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的主界面组件，如“课程表”，在显示多节课时，如果空间不足，会如何处理？",
@@ -2830,7 +3250,9 @@
             "会隐藏部分课程，只显示当前和下一节课",
             "会自动缩小字体以适应空间",
             "会弹出一个滚动条供用户查看"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“时间偏移”设置，如果设置为一个很大的正值（例如3600秒），会导致什么现象？",
@@ -2843,7 +3265,9 @@
             "应用会认为当前时间是明天",
             "主界面会显示一个错误的时间",
             "时间流速会变慢"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“恢复模式”中，“重置应用设置”选项会影响哪些数据？",
@@ -2856,7 +3280,9 @@
             "已安装的插件及其配置",
             "应用的更新历史和缓存文件",
             "Windows 注册表中与 ClassIsland 相关的条目"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“禁止编辑课表”集控策略是否会影响“临时换课”功能？",
@@ -2869,7 +3295,9 @@
             "只允许管理员进行临时换课",
             "临时换课后无法保存",
             "临时换课功能会被隐藏"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“组件”配置文件（例如 Default.json）中，如果一个组件的ID无法在已注册组件中找到，会发生什么？",
@@ -2883,7 +3311,9 @@
             "该组件会被自动替换为默认的“文本组件”",
             "配置文件会被视为损坏并恢复到默认值",
             "不会有任何影响，应用会自动忽略无法识别的组件ID"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的主题设置中，“主题色来源”选择“系统”时，应用会提取哪个颜色作为主题色？",
@@ -2896,7 +3326,9 @@
             "当前活动窗口的标题栏颜色",
             "固定使用 ClassIsland 的默认蓝色主题",
             "随机选择一种预设的颜色"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动化”功能中，“显示天气提醒”行动，如果当前没有气象预警，但行动设置为显示“气象预警”，会发生什么？",
@@ -2909,7 +3341,9 @@
             "会自动切换到显示“三天天气预报”",
             "应用会报错并停止自动化流程",
             "会强制从天气服务器获取最新的预警信息并显示"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“时间表编辑器”中，如果用户在一个时间点内又错误地添加了另一个时间点（导致时间重叠），应用会如何处理？",
@@ -2923,7 +3357,9 @@
             "重叠的时间点会被自动合并",
             "较早的时间点会被自动缩短以适应新的时间点",
             "应用会弹出一个错误提示并强制用户修改"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动备份”功能，如果备份时磁盘空间不足，会发生什么？",
@@ -2936,7 +3372,9 @@
             "会提示用户清理磁盘空间并重试",
             "自动备份功能会被临时禁用",
             "会只备份最重要的配置文件（如Settings.json）"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“插件”功能，如果用户手动删除了插件文件夹中的某个核心 .dll 文件，该插件会怎样？",
@@ -2949,7 +3387,9 @@
             "该插件会自动回滚到上一个稳定版本",
             "不会有任何影响，插件有自愈能力",
             "系统会提示用户重新安装该插件"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动化”功能中，如果一个行动（如“修改应用主题”）被触发，并且之后规则不再满足且“启用恢复”被勾选，那么应用主题会变回什么状态？",
@@ -2962,7 +3402,9 @@
             "变回 ClassIsland 的默认主题",
             "保持行动修改后的主题不变",
             "随机选择一个主题"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 主界面上的“日期”组件，其显示的日期格式（例如“周三 07/26”）是否可以自定义？",
@@ -2975,7 +3417,9 @@
             "可以通过修改系统区域设置来改变格式",
             "可以通过插件实现自定义日期格式",
             "可以在组件的高级设置中输入自定义的日期格式化字符串"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "如果用户将 ClassIsland 的安装文件夹整体移动到新的路径，之前设置的“开机自启”是否会失效？",
@@ -2988,7 +3432,9 @@
             "只有管理员权限的移动才会导致失效",
             "ClassIsland 会在启动时自动修复自启动项",
             "取决于移动的距离，同分区内移动通常不受影响"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“恢复模式”中，“重置全部配置”和“重置全部信息”有什么主要区别？",
@@ -3001,7 +3447,9 @@
             "“重置全部配置”只影响外观设置，“重置全部信息”影响所有设置",
             "“重置全部信息”会卸载应用，“重置全部配置”不会",
             "“重置全部配置”需要联网，“重置全部信息”不需要"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“集控”功能中，如果客户端无法连接到集控服务器或清单文件，会发生什么？",
@@ -3014,7 +3462,9 @@
             "应用会报错并强制退出",
             "会使用内置的演示课表和设置",
             "会提示用户输入管理员密码以进入单机模式"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的主界面组件，如果设置了“最小宽度”和“最大宽度”，当内容实际宽度超出这个范围时，会发生什么？",
@@ -3027,7 +3477,9 @@
             "设置会被忽略，组件始终根据内容自动调整宽度",
             "应用会弹出一个错误提示",
             "组件会变为半透明以提示用户宽度设置问题"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动化”功能中，如果两个不同的工作流都设置了在“上课时”触发，并且都修改了同一个应用设置（例如主界面透明度），哪个设置会最终生效？",
@@ -3040,7 +3492,9 @@
             "会弹出一个冲突解决对话框让用户选择",
             "两个设置会叠加生效（例如透明度会相乘）",
             "先创建的工作流的设置优先"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“多周轮换偏移”设置是用来做什么的？",
@@ -3053,7 +3507,9 @@
             "调整夏令时和冬令时的时间偏移",
             "设置每个月的第一周是哪一天",
             "用于在不同学期之间切换课表"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "如果 ClassIsland 的提醒音效无法播放，可能的原因有哪些？",
@@ -3068,7 +3524,9 @@
             "未安装 .NET 音频解码包",
             "提醒特效功能被禁用",
             "电脑的 CPU 性能不足"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“调试菜单”中，“垃圾回收”选项的作用是什么？",
@@ -3081,7 +3539,9 @@
             "删除过期的课表和时间表",
             "重置应用的所有设置为默认值",
             "扫描并清除系统中的垃圾文件"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 支持的插件包文件扩展名是什么？",
@@ -3093,7 +3553,9 @@
             ".zip",
             ".plugin",
             ".jar"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“附加设置”中，如果在“科目”级别和“时间点”级别都为某个提醒（如“上课提醒”）启用了附加设置，哪个设置会优先生效？",
@@ -3106,7 +3568,9 @@
             "两个设置会合并生效",
             "取决于哪个设置最后被修改",
             "应用会提示用户选择一个"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“从表格导入课表”功能，如果表格中使用了特殊的字体或格式，导入时会发生什么？",
@@ -3120,7 +3584,9 @@
             "应用会自动下载并安装缺失的字体",
             "特殊格式会被转换成图片嵌入到课表中",
             "只会导入纯文本内容，忽略所有格式"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“窗口层级”设置为“置顶”时，如果用户打开了另一个也设置为“置顶”的应用程序（如录屏软件的悬浮窗），哪个窗口会显示在最前面？",
@@ -3133,7 +3599,9 @@
             "另一个应用程序的窗口永远在最前面",
             "两个窗口会交替闪烁",
             "系统会强制其中一个窗口取消置顶"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "如果用户在 ClassIsland 的“插件市场”下载了一个插件，但没有重启 ClassIsland，这个插件会立即生效吗？",
@@ -3146,7 +3614,9 @@
             "只有部分轻量级插件会立即生效",
             "需要手动在设置中启用该插件，然后立即生效",
             "取决于插件的类型，界面插件会立即生效，功能插件需要重启"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“附加设置”中，“默认隐藏”选项通常用于哪种类型的时间点？",
@@ -3159,7 +3629,9 @@
             "分割线类型的时间点",
             "行动类型的时间点",
             "所有类型的时间点都可以设置"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“时间表”中，“分割线”时间点是否可以设置“默认科目”？",
@@ -3172,7 +3644,9 @@
             "可以，但只在时间轴视图中显示",
             "可以，但会被自动忽略",
             "只能设置为“无科目”"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动备份”功能，如果备份文件过多导致磁盘空间不足，用户应该如何处理？",
@@ -3186,7 +3660,9 @@
             "应用会自动暂停自动备份功能",
             "需要购买更大的硬盘",
             "卸载并重装 ClassIsland"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“组件设置”页面中，如果一个组件被标记为“容器组件”，它通常具有哪些特性？",
@@ -3199,7 +3675,9 @@
             "该组件只能单独占满主界面的一行",
             "该组件的设置项会比普通组件少",
             "该组件是 ClassIsland 的核心组件，无法删除"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“精确时间服务”，如果用户所在的网络环境屏蔽了NTP协议（UDP端口123），会发生什么？",
@@ -3212,7 +3690,9 @@
             "会弹出一个防火墙警告",
             "ClassIsland 会无法正常启动",
             "时间显示会冻结在上一次成功同步的时间"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“多周轮换偏移”设置，如果设置为与学校实际周数不符，会导致什么问题？",
@@ -3225,7 +3705,9 @@
             "主界面会显示错误的日期",
             "应用会自动校准偏移量",
             "提醒功能会失效"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的提醒设置中，如果“提醒特效渲染精度”设置得过高，而电脑性能不足，可能会出现什么情况？",
@@ -3238,7 +3720,9 @@
             "提醒特效会被禁用",
             "电脑会蓝屏重启",
             "提醒音效会失真"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动化”功能中，如果一个工作流的“规则集”包含多个“规则组”，且规则集的模式为“或者（OR）”，那么工作流的条件何时满足？",
@@ -3251,7 +3735,9 @@
             "当至少一半的规则组条件满足时",
             "当第一个规则组的条件满足时，后续规则组不再判断",
             "规则组的满足状态与规则集的模式无关"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的“档案编辑”中，如果将一个“课间休息”时间点的“课间名称”设置为空，它在主界面上会如何显示？",
@@ -3264,7 +3750,9 @@
             "显示为上一个课程的科目名称",
             "该时间点会被隐藏",
             "应用会提示输入课间名称"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“从表格导入课表”功能，如果表格中某一天的课程特别多，超出了时间表中定义的上课时间点数量，多余的课程会如何处理？",
@@ -3277,7 +3765,9 @@
             "多余的课程会被合并到最后一个时间点",
             "会忽略这些多余的课程",
             "导入会失败并提示错误"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“窗口层级”设置为“置底”时，如果用户打开了多个普通窗口（非置顶），主界面会显示在哪里？",
@@ -3290,7 +3780,9 @@
             "会随机显示在某个窗口的后方",
             "会自动隐藏",
             "会根据窗口数量自动调整层级"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "如果用户在 ClassIsland 的插件市场下载并安装了一个新插件，但该插件与现有的某个插件功能冲突，可能会发生什么？",
@@ -3304,7 +3796,9 @@
             "后安装的插件会自动覆盖先安装的插件的功能",
             "应用会提示用户选择保留哪个插件的功能",
             "两个插件会自动协同工作，不会产生冲突"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“恢复模式”中，“清除临时文件”选项会删除哪些类型的文件？",
@@ -3317,7 +3811,9 @@
             "应用的设置文件（Settings.json）",
             "已安装的插件文件",
             "Windows 系统的临时文件"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“集控”功能中，如果管理员更新了策略文件（policy.json）并提高了版本号，客户端的 ClassIsland 实例会如何响应？",
@@ -3330,7 +3826,9 @@
             "客户端会忽略版本号较低的策略文件更新",
             "策略文件只在首次加入集控时加载，之后不再更新",
             "客户端会弹出一个对话框，显示策略变更的详细内容"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的主界面组件，如果设置了“固定宽度”为一个较小的值，而组件内容较多，会导致什么显示效果？",
@@ -3344,7 +3842,9 @@
             "组件会变高以容纳所有内容",
             "应用会弹出警告提示宽度不足",
             "字体会自动缩小以适应固定宽度"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动化”功能中，如果一个工作流的多个触发器（例如，“上课时”和“特定窗口出现时”）同时被满足，工作流会如何执行？",
@@ -3357,7 +3857,9 @@
             "应用会提示用户选择哪个触发器来启动工作流",
             "工作流会被锁定，直到只有一个触发器条件满足",
             "优先级最高的触发器会启动工作流"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“时间表编辑器”中，如果用户添加了一个“行动”类型的时间点，但没有为其配置任何行动，会发生什么？",
@@ -3370,7 +3872,9 @@
             "会自动执行一个默认的“无操作”行动",
             "该时间点会被自动删除",
             "主界面会显示“行动未配置”的提示"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "如果 ClassIsland 的“更新通道”设置为“测试版”，用户可能会遇到什么情况？",
@@ -3383,7 +3887,9 @@
             "测试版需要付费才能使用",
             "测试版的功能会比稳定版少",
             "只能通过邀请码加入测试版通道"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的“档案编辑”中，如果一个“课表”的“触发规则”设置了在“周三”且“双周”启用，那么这个课表会在什么时候生效？",
@@ -3396,7 +3902,9 @@
             "只要是双周就会生效，忽略星期设置",
             "只在学期的第一个双周的周三生效",
             "需要用户在每周三手动确认启用"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“从壁纸提取主题色”功能，如果用户使用的是多显示器环境，并且每个显示器壁纸不同，应用会提取哪个壁纸的主题色？",
@@ -3409,7 +3917,9 @@
             "当前鼠标指针所在显示器的壁纸",
             "ClassIsland 主界面所在显示器的壁纸",
             "随机选择一个显示器的壁纸"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“插件市场”中，如果一个插件的作者发布了新版本，但没有更新插件市场中的信息，用户会收到更新提示吗？",
@@ -3422,7 +3932,9 @@
             "是的，插件会自动检查更新并提示",
             "只有付费插件才会自动提示更新",
             "ClassIsland 不支持插件更新提示"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“教学安全模式”中，如果设置为“忽略”崩溃，对应用的稳定性有什么潜在风险？",
@@ -3435,7 +3947,9 @@
             "应用会自动修复所有被忽略的错误",
             "只会影响当前崩溃的功能，其他功能不受影响",
             "“忽略”模式会自动记录详细的调试信息供后续分析"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“档案”文件（.json）是否可以直接用文本编辑器打开和修改？",
@@ -3448,7 +3962,9 @@
             "只能通过 ClassIsland 的档案编辑器打开",
             "需要特定的数据库软件才能打开",
             "打开后是乱码，无法直接编辑"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的主界面在显示时间点时，如果当前时间点设置了“默认科目”，但在课表中该时间点又被指定了其他科目，主界面会显示哪个科目？",
@@ -3461,7 +3977,9 @@
             "两个科目名称会同时显示",
             "应用会提示冲突并要求用户选择",
             "显示为空白科目"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动备份”功能，备份文件的存储位置在哪里？",
@@ -3474,7 +3992,9 @@
             "Windows 系统备份目录",
             "云端存储服务上",
             "ClassIsland 的安装目录下的 Cache 文件夹"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“提醒”功能，如果用户在全局设置中禁用了所有提醒音效，但在某个提醒来源的特殊高级设置中启用了音效并指定了自定义音效文件，该提醒来源的提醒会播放音效吗？",
@@ -3487,7 +4007,9 @@
             "会，但只会播放默认音效，自定义音效会被忽略",
             "只有在连接了外置音箱时才会播放",
             "取决于提醒的类型，重要提醒会强制播放音效"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“从表格导入课表”功能，如果表格中存在空单元格代表没有课程，导入后这些时间点会如何处理？",
@@ -3500,7 +4022,9 @@
             "这些时间点会被从时间表中删除",
             "导入过程会因空单元格而失败",
             "应用会提示用户为每个空单元格指定科目"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“窗口层级”设置为“置顶”时，如果打开了 Windows 任务管理器，主界面会显示在任务管理器之上还是之下？",
@@ -3513,7 +4037,9 @@
             "两个窗口会并排显示，互不遮挡",
             "主界面会自动隐藏",
             "取决于哪个窗口最后被激活"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "如果用户在 ClassIsland 中安装了一个恶意插件，可能会造成哪些后果？",
@@ -3527,7 +4053,9 @@
             "恶意插件只会被限制在 ClassIsland 的配置目录中活动",
             "Windows Defender 会自动检测并清除恶意插件",
             "插件市场的所有插件都经过了严格的安全审核，不存在恶意插件"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动化”功能中，“规则集”的“当前科目是”规则，如果当前时间是课间休息，该规则会如何判定？",
@@ -3540,7 +4068,9 @@
             "会判定为满足下一个上课时间点的科目",
             "会随机选择一个科目进行判定",
             "应用会忽略此规则，直接判定为满足"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的“时间表编辑”中，如果用户希望某个时间段（如午休）不显示在主界面的课程列表中，但仍然作为一个独立的时间段存在（例如用于触发特定提醒），应该将该时间点类型设置为什么？",
@@ -3553,7 +4083,9 @@
             "行动",
             "必须创建一个新的自定义时间点类型",
             "无法实现，所有时间点都会显示在列表中"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动备份”功能，如果用户在自动备份间隔（如7天）内多次手动修改并保存了配置文件，自动备份会备份哪个版本的文件？",
@@ -3566,7 +4098,9 @@
             "会备份7天前最后一次保存的版本",
             "会提示用户选择要备份哪个版本",
             "会自动合并间隔期内的所有修改，并备份合并后的版本"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的主界面组件，例如“倒计时日”，其显示的字体颜色是否可以自定义？",
@@ -3579,7 +4113,9 @@
             "只能选择预设的几种颜色",
             "需要修改组件的 XAML 代码才能更改颜色",
             "字体颜色会自动根据背景颜色反转"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“恢复模式”中，“清除临时文件”和“重置全部配置”在清除范围上有什么区别？",
@@ -3593,7 +4129,9 @@
             "“清除临时文件”会保留最近7天的缓存，“重置全部配置”则全部删除",
             "“重置全部配置”是“清除临时文件”的超集，包含了后者的所有操作",
             "没有区别，是同一功能的两种叫法"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“集控”功能，如果集控清单中某个配置项（如课表文件）的URL模板包含了`{id}`，这意味着什么？",
@@ -3606,7 +4144,9 @@
             "`{id}`代表当前登录用户的ID",
             "`{id}`是一个固定的字符串，所有客户端请求的URL都相同",
             "该配置项是可选的，如果客户端没有设置ID，则会忽略此项"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动化”功能中，如果一个工作流同时包含“上课时”和“课间休息时”两个触发器，这个工作流的行动会在什么时候执行？",
@@ -3619,7 +4159,9 @@
             "应用会报错，不允许一个工作流有多个时间状态触发器",
             "只会响应第一个被定义的触发器（“上课时”）",
             "两个触发器会轮流触发行动"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“时间表编辑器”的时间轴视图中，如果多个时间点在时间轴上显示得非常拥挤，用户可以通过什么方式改善视图？",
@@ -3632,7 +4174,9 @@
             "将时间轴视图切换为列表视图",
             "在设置中减小时间点的默认高度",
             "开启“紧凑模式”"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "如果 ClassIsland 的“更新通道”设置为“稳定版”，但用户手动从 GitHub 下载并安装了一个最新的测试版，应用内的更新检查会提示什么？",
@@ -3645,7 +4189,9 @@
             "会自动切换更新通道到“测试版”",
             "会忽略更新检查，直到稳定版发布新版本",
             "会报错，因为版本不匹配"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“从表格导入课表”功能，如果表格中的课程名称与 ClassIsland 中已有的某个科目名称完全一致，导入时会怎样？",
@@ -3658,7 +4204,9 @@
             "会提示用户确认是否使用已有科目",
             "导入会失败，因为科目名称重复",
             "会忽略这个课程"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“窗口层级”设置为“置顶”时，如果用户打开了另一个也声明为“置顶”的第三方应用（如录屏软件的悬浮窗），哪个窗口会显示在最前面？",
@@ -3671,7 +4219,9 @@
             "另一个应用程序的窗口永远在最前面",
             "两个窗口会交替闪烁",
             "系统会强制其中一个窗口取消置顶"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "如果用户在 ClassIsland 中安装了一个插件，后来又手动删除了该插件在 Plugins 文件夹下的所有文件，ClassIsland 下次启动时会发生什么？",
@@ -3684,7 +4234,9 @@
             "应用会报错并无法启动",
             "该插件的配置信息会被保留，但功能失效",
             "系统会提示用户恢复被删除的文件"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动化”功能中，如果一个工作流的“行动组”包含多个行动，这些行动的执行顺序是怎样的？",
@@ -3697,7 +4249,9 @@
             "执行顺序是随机的",
             "根据行动的类型决定执行顺序（例如，修改设置的行动总是先执行）",
             "用户可以在每个行动上设置优先级"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的主界面组件，例如“天气简报”，如果用户所在的地区没有发布任何气象预警，该组件在显示预警的部分会怎样？",
@@ -3710,7 +4264,9 @@
             "会自动显示历史预警信息",
             "会显示一个默认的“晴朗”图标",
             "该组件会整体隐藏"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“时间偏移”设置，如果设置为一个较小的正值（例如5秒），这意味着什么？",
@@ -3723,7 +4279,9 @@
             "所有课程的持续时间会增加 5 秒",
             "应用的主界面会提前 5 秒显示下一节课的信息",
             "提醒音效会延迟 5 秒播放"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“恢复模式”中，“重置全部信息”选项执行后，用户之前安装的插件会怎样？",
@@ -3736,7 +4294,9 @@
             "插件会被禁用，但文件仍保留在 Plugins 文件夹中",
             "只有通过插件市场安装的插件会被删除，手动安装的插件不受影响",
             "应用会尝试从云端恢复插件列表"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“集控”功能中，如果管理员在策略文件中设置“DisableDebugMenu”为 true，用户还能通过连续点击应用图标的方式打开调试菜单吗？",
@@ -3749,7 +4309,9 @@
             "可以，但需要输入管理员密码",
             "可以，但应用会记录此行为并上报给管理员",
             "取决于 ClassIsland 的版本，旧版本可能不受此策略影响"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的主界面组件，如果设置了“最小宽度”为一个较大的值，而组件内容很少，会导致什么显示效果？",
@@ -3762,7 +4324,9 @@
             "组件的字体会自动放大以填满最小宽度",
             "应用会提示用户减小最小宽度设置",
             "组件会显示一个错误图标"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动化”功能中，“显示提醒”行动，如果“遮罩内容”和“正文内容”都设置为空字符串，会发生什么？",
@@ -3775,7 +4339,9 @@
             "该行动会被忽略，不执行",
             "会弹出一个错误提示，要求填写内容",
             "会自动显示当前的时间作为提醒内容"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“多周轮换偏移”设置，如果用户学校实行的是“四周轮换”，但用户只调整了“单双周”的偏移，会对“四周轮换”的课表产生什么影响？",
@@ -3788,7 +4354,9 @@
             "“四周轮换”功能会被禁用",
             "应用会提示用户设置“四周轮换”的偏移",
             "不会有任何影响，两者是独立计算的"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "如果 ClassIsland 的提醒音效文件路径设置不正确（例如文件不存在），在触发提醒时会发生什么？",
@@ -3801,7 +4369,9 @@
             "会弹出一个错误对话框提示文件不存在",
             "提醒功能会被整体禁用",
             "电脑会发出蜂鸣声"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“调试菜单”中的“崩溃测试”选项是用来做什么的？",
@@ -3814,7 +4384,9 @@
             "检查应用的配置文件是否存在语法错误",
             "扫描系统是否存在与 ClassIsland 冲突的软件",
             "自动修复已知的应用 Bug"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“插件”功能，如果一个插件在 `Initialize` 方法中注册了一个后台服务，但在插件被禁用或卸载时没有正确注销或停止该服务，可能会导致什么问题？",
@@ -3827,7 +4399,9 @@
             "该服务会自动转为低功耗模式",
             "不会有任何问题，.NET 的垃圾回收机制会自动处理",
             "系统会提示用户手动停止该服务"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“时间表编辑器”中，如果用户将一个“上课”时间点的开始时间设置得比前一个“课间休息”时间点的结束时间还要早，会发生什么？",
@@ -3840,7 +4414,9 @@
             "“课间休息”时间点会被自动缩短或删除",
             "会弹出一个错误提示，阻止保存时间表",
             "两个时间点会合并为一个更长的时间点"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“从表格导入课表”功能，如果表格中存在多张工作表（Sheet），默认会从哪张工作表导入数据？",
@@ -3853,7 +4429,9 @@
             "只从名为“课表”或“Schedule”的工作表导入",
             "会提示用户选择要导入的工作表",
             "导入功能不支持包含多张工作表的 Excel 文件"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“窗口层级”设置为“置底”时，如果用户打开了桌面快捷方式（图标），主界面会显示在桌面图标之上还是之下？",
@@ -3866,7 +4444,9 @@
             "主界面会自动避开桌面图标的区域显示",
             "桌面图标会变得半透明以显示主界面",
             "取决于桌面图标的排列方式"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "如果用户在 ClassIsland 的插件市场禁用了某个已安装的插件，该插件的配置文件（如果存在）会发生什么？",
@@ -3879,7 +4459,9 @@
             "配置文件会被移动到回收站",
             "配置文件会被重命名为 .bak 后缀",
             "配置文件会被加密锁定"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动化”功能中，如果一个工作流的触发器是“当前天气是雨”，并且设置了“反转”规则，那么这个工作流的规则集何时会被视为满足？",
@@ -3892,7 +4474,9 @@
             "只有在下冰雹的时候",
             "该设置无效，天气规则不支持反转",
             "需要同时满足其他未反转的条件"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的“档案编辑”中，如果一个“课表”没有设置任何“触发规则”（星期和周次都未指定或设为默认），它会如何被应用加载？",
@@ -3905,7 +4489,9 @@
             "应用会提示用户为此课表设置触发规则",
             "该课表会被视为“全局课表”，每天都尝试加载",
             "该课表只在周末生效"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“时间表”中的“行动”时间点，如果其关联的“行动组”包含多个行动，这些行动会如何执行？",
@@ -3918,7 +4504,9 @@
             "所有行动会并行同时执行",
             "用户需要在到达时间点时手动确认执行每个行动",
             "行动的执行顺序是随机的"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "如果 ClassIsland 的主界面因为“按规则隐藏”而被隐藏，用户可以通过什么方式临时显示它？",
@@ -3931,7 +4519,9 @@
             "重启 ClassIsland 应用",
             "无法临时显示，必须等待规则不再满足",
             "按下特定的键盘快捷键"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“组件配置文件”（如 Default.json）如果被意外删除，下次启动 ClassIsland 时会发生什么？",
@@ -3944,7 +4534,9 @@
             "主界面将不显示任何组件",
             "会尝试从备份中恢复（如果备份功能正常且有可用备份）",
             "会提示用户手动选择一个组件配置文件"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的主题设置中，如果“主题色来源”设置为“系统”，但 Windows 系统的强调色是灰色或黑色，ClassIsland 的主题色会是？",
@@ -3957,7 +4549,9 @@
             "会自动切换到“自定义”颜色来源",
             "提示用户选择一个更合适的系统强调色",
             "会使用壁纸颜色作为备选"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动化”功能中，“显示提醒”行动的“遮罩持续时长”和“正文持续时长”如果都设置为0，会发生什么？",
@@ -3970,7 +4564,9 @@
             "该行动会被忽略，不执行",
             "会弹出一个错误提示，要求设置有效的持续时长",
             "遮罩和正文会无限期显示，直到手动清除"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“多周轮换偏移”设置，如果学校实行的是三周轮换，用户应该主要调整哪个选项的偏移？",
@@ -3983,7 +4579,9 @@
             "“四周轮换”的偏移设置",
             "“学期开始时间”设置",
             "所有轮换选项都需要设置相同的偏移值"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "如果 ClassIsland 的提醒音效在播放时声音过大或过小，用户可以在哪里调整？",
@@ -3996,7 +4594,9 @@
             "需要修改音效文件本身的音量",
             "在主界面的托盘菜单中有快捷音量调节",
             "无法调整，音量是固定的"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“调试菜单”中的“动画缩放”选项，如果设置为一个很小的值（如0.1），会对应用产生什么影响？",
@@ -4009,7 +4609,9 @@
             "应用界面的整体大小会缩小到10%",
             "所有动画效果会被禁用",
             "会导致应用卡顿或崩溃"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“插件”功能，如果两个插件都尝试注册同一个ID的组件，会发生什么？",
@@ -4022,7 +4624,9 @@
             "ClassIsland 会自动为后加载的插件的组件分配一个新的ID",
             "会弹出一个对话框让用户选择保留哪个插件的组件",
             "应用会无法启动"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“时间表编辑器”中，如果用户创建了一个没有任何时间点（上课、课间、分割线、行动都为空）的时间表，并在某个课表中使用了它，这个课表在主界面会如何显示？",
@@ -4035,7 +4639,9 @@
             "该课表会被自动禁用",
             "会使用上一个成功加载的课表的时间表进行显示",
             "应用会报错并阻止加载该课表"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“从表格导入课表”功能，如果表格中使用了自定义的课程名称缩写（例如“物理实验”缩写为“物实”），而 ClassIsland 的科目列表中只有“物理实验”这个全称，导入时会怎样？",
@@ -4048,7 +4654,9 @@
             "会创建一个名为“物实”的新科目",
             "导入会失败，并提示找不到科目",
             "会忽略这些无法匹配的课程"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“窗口层级”设置为“置底”时，如果用户打开了 Windows 的“显示桌面”功能（例如通过任务栏按钮或 Win+D），主界面会怎样？",
@@ -4061,7 +4669,9 @@
             "主界面会暂时隐藏，直到用户再次显示所有窗口",
             "主界面会变成透明，但仍然存在",
             "主界面会被移动到屏幕边缘"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "如果用户在 ClassIsland 的插件市场启用了某个插件，但该插件的`manifest.yml`中指定的入口程序集（`entranceAssembly`）文件在插件目录中不存在或已损坏，ClassIsland 启动时会发生什么？",
@@ -4074,7 +4684,9 @@
             "应用会尝试从其他 .dll 文件中查找插件入口点",
             "该插件会被自动禁用",
             "应用会无法启动，并提示插件错误"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动化”功能中，如果一个工作流的“规则集”设置为“当前科目是语文”，并且“行动组”设置为“打开 Word 文档”，那么在非语文课时，这个 Word 文档会被打开吗？",
@@ -4087,7 +4699,9 @@
             "会，但只在第一次非语文课时打开，之后不再打开",
             "取决于触发器的设置，与规则集无关",
             "会弹出一个提示询问是否打开 Word 文档"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“从壁纸提取主题色”功能，如果用户设置了纯黑色的壁纸，提取到的主题色板中可能会包含哪些颜色？",
@@ -4100,7 +4714,9 @@
             "会随机生成一组鲜艳的颜色",
             "无法提取颜色，主题色会保持不变",
             "会提取屏幕上其他窗口的颜色"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“插件市场”中，如果用户尝试安装一个与当前 ClassIsland 版本不兼容的插件（例如插件要求的 `apiVersion` 高于当前应用版本），会发生什么？",
@@ -4113,7 +4729,9 @@
             "插件会自动调整自身以适应当前 ClassIsland 版本",
             "不会有任何提示，插件会静默安装但无法使用",
             "应用会强制更新到与插件兼容的最新版本"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“教学安全模式”中，如果设置为“静默重启应用”，当应用崩溃时用户会看到什么？",
@@ -4126,7 +4744,9 @@
             "会播放一段重启提示音效",
             "屏幕会短暂变黑，然后应用重新出现",
             "需要用户手动点击“重启”按钮"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的“档案编辑”中，如果一个“课表”的“触发规则”中“多周轮换总周数”设置为0，这意味着什么？",
@@ -4139,7 +4759,9 @@
             "该课表只在单周生效",
             "该课表只在双周生效",
             "应用会默认使用两周轮换规则"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的主界面组件，例如“文本组件”，其显示的文本内容可以包含换行符吗？",
@@ -4152,7 +4774,9 @@
             "换行符会被转换为空格",
             "只有通过插件添加的自定义文本组件才支持换行",
             "需要使用特殊的HTML标签来实现换行"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“时间偏移”设置中的“自动时间偏移”，如果设置为每天减少2秒，并且当前时间偏移为0，一周后时间偏移会变成多少？",
@@ -4165,7 +4789,9 @@
             "0秒（自动偏移只在正向调整时生效）",
             "-2秒（只调整一次）",
             "保持为0秒，自动偏移不会累加"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“组件”配置文件如果被用户手动编辑并引入了语法错误（例如JSON格式不正确），下次启动 ClassIsland 时会发生什么？",
@@ -4179,7 +4805,9 @@
             "ClassIsland 将无法启动，并提示配置文件损坏",
             "会忽略错误的配置项，只加载正确的部分",
             "会弹出一个文本编辑器让用户手动修复配置文件"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的主题设置中，如果“主题色来源”设置为“系统壁纸”，但用户没有设置任何壁纸（桌面是纯黑色背景），提取到的主题色会是什么？",
@@ -4192,7 +4820,9 @@
             "会自动切换到“自定义”颜色来源并要求用户选择",
             "应用会报错并提示无法获取壁纸颜色",
             "会提取任务栏的颜色作为主题色"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动化”功能中，“显示天气提醒”行动，如果选择显示“三天天气预报”，但当前网络断开无法获取最新天气，会发生什么？",
@@ -4205,7 +4835,9 @@
             "会弹出一个网络错误对话框",
             "会显示一个默认的“晴朗”天气预报",
             "应用会尝试通过短信获取天气信息"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“时间表编辑器”中，如果用户不小心删除了一个正在活动课表中被使用的时间点，是否可以立即撤销操作？",
@@ -4218,7 +4850,9 @@
             "删除的时间点会被临时存放到回收站，可以从中恢复",
             "应用会自动创建一个备份，在误删除后可以一键恢复",
             "只有管理员才能撤销删除操作"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "如果用户在 ClassIsland 的“插件市场”卸载了一个插件，该插件之前创建的配置文件（在 Config/Plugins/插件ID/ 目录下）会发生什么？",
@@ -4231,7 +4865,9 @@
             "配置文件会被移动到回收站",
             "配置文件会被重命名并存档到备份目录",
             "应用会提示用户是否保留配置文件"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动化”功能中，如果一个工作流的行动是“退出 ClassIsland”，并且该工作流被一个每分钟触发一次的“Cron触发器”触发，会发生什么？",
@@ -4244,7 +4880,9 @@
             "会弹出一个确认对话框询问是否退出，每分钟一次",
             "该行动会被忽略，因为过于危险",
             "只有在用户手动点击“触发”按钮时才会退出"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 主界面上的“课程表”组件，在显示多节课时，如果某节课的科目名称特别长，会如何显示？",
@@ -4257,7 +4895,9 @@
             "科目名称会自动换行显示",
             "该课程会被隐藏，只显示科目简称",
             "主界面会自动调整宽度以适应最长的科目名称"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“精确时间服务”中，“同步状态信息”显示“时间尚未同步”通常是什么原因？",
@@ -4271,7 +4911,9 @@
             "这是一个正常的提示信息，表示时间同步功能已准备就绪",
             "NTP服务器返回的时间与系统时间差异过大，拒绝同步",
             "用户的ClassIsland版本过低，不支持时间同步"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“组件配置文件”如果被设置为只读属性，ClassIsland 在尝试保存组件配置更改时会发生什么？",
@@ -4285,7 +4927,9 @@
             "会弹出一个权限提升请求（UAC）以获取写入权限",
             "会将更改保存到一个新的临时文件中",
             "不会有任何影响，ClassIsland 使用内存缓存配置"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "在 ClassIsland 的主题设置中，“主题色来源”设置为“屏幕主题色”时，应用是如何获取颜色的？",
@@ -4298,7 +4942,9 @@
             "使用摄像头分析当前环境光线的颜色",
             "连接到一个在线颜色服务获取推荐颜色",
             "根据当前时间（如日出日落）自动变换颜色"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“自动化”功能中，“显示提醒”行动的“遮罩语音内容”和“正文语音内容”如果都设置为空字符串，但“启用语音”被勾选，会发生什么？",
@@ -4311,7 +4957,9 @@
             "会尝试播报遮罩和正文的UI元素文本（如果它们是文本的话）",
             "会弹出一个错误提示，要求填写语音内容",
             "会播放一段简短的提示音效代替语音"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“多周轮换偏移”设置，如果学校从本周开始实行新的轮换制度（例如，本周是三周轮换的第一周），用户应该如何调整偏移？",
@@ -4324,7 +4972,9 @@
             "在所有轮换选项（单双周、三周、四周）中都设置为第一周",
             "重置所有课表和时间表",
             "该功能无法适应中途变更的轮换制度，需要等待下学期"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "如果 ClassIsland 的提醒音效突然变小或消失，但系统其他声音正常，可能是什么原因？",
@@ -4338,7 +4988,9 @@
             "ClassIsland 应用需要更新",
             "Windows 系统的音量合成器中 ClassIsland 的音量被单独调低",
             "这是提醒功能的正常特性，音量会随时间自动衰减"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     },
     {
         "body": "ClassIsland 的“调试菜单”中的“时间流速”选项，如果设置为2.0，会对应用内部时间产生什么影响？",
@@ -4351,6 +5003,8 @@
             "电脑的系统时间会加速",
             "时间流速会变为正常速度的一半（0.5倍）",
             "这是一个显示设置，不会影响实际计时逻辑"
-        ]
+        ],
+        "question_type": "single_choice",
+        "num_correct_to_select": 1
     }
 ]

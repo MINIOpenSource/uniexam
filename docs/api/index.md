@@ -18,28 +18,36 @@
 -   **用户 Token**: 通过在请求的 Query 参数中附加 `token={USER_ACCESS_TOKEN}` 来传递。
 -   **管理员 Token**: 管理员接口同样通过 Query 参数中的 `token` 进行认证，并且服务器端会校验该 Token 对应的用户是否拥有 `admin` 标签。
 
+当前系统使用的是自定义的简单Token机制，并非基于JWT。
+
 ## 数据模型速查
 
 为方便理解，以下列出一些关键的 Pydantic 模型（详细字段请参考各 API 说明）：
 
--   `UserCreate`: 用户注册/登录请求体。
--   `Token`: 认证成功后的 Token 响应。
--   `AuthStatusResponse`: 认证失败或特定状态的响应。
--   `UserPublicProfile`: 用户公开信息响应。
--   `UserProfileUpdate`: 用户更新个人资料请求。
--   `UserPasswordUpdate`: 用户更新密码请求。
--   `ExamPaperResponse`: 获取新试卷的响应。
--   `PaperSubmissionPayload`: 提交/更新试卷答案的请求。
--   `UpdateProgressResponse`: 更新试卷进度的响应。
--   `GradingResultResponse`: 试卷批改结果的响应。
--   `HistoryItem`: 历史记录条目。
--   `HistoryPaperDetailResponse`: 历史试卷详情。
--   `LibraryIndexItem`: 题库元数据。
--   `SettingsResponseModel`: 管理员获取配置响应。
--   `SettingsUpdatePayload`: 管理员更新配置请求。
--   `PaperAdminView`: 管理员查看试卷摘要。
--   `PaperFullDetailModel`: 管理员查看试卷完整详情。
--   `QuestionModel`: 题库题目模型。
+-   **用户认证与管理相关:**
+    -   `UserCreationPayload`: 用户注册请求体。
+    -   `UserCredentials`: 用户登录请求体 (FastAPI的`OAuth2PasswordRequestForm`通常在后台使用，但概念上用户提供用户名密码)。
+    -   `TokenResponse`: 认证成功后的 Token 响应。
+    -   `UserPublicProfile`: 用户公开信息响应。
+    -   `UserProfileUpdatePayload`: 用户更新个人资料请求。
+    -   `UserPasswordUpdatePayload`: 用户更新密码请求。
+-   **考试与答题相关:**
+    -   `PaperDetailModel`: （通常作为获取新试卷或历史试卷详情的）试卷详情响应。
+    -   `PaperSubmissionPayload`: 提交/更新试卷答案的请求。
+    -   `ProgressUpdateResponse`: 更新试卷进度的响应。
+    -   `GradingResultResponse`: 试卷批改结果的响应。
+    -   `UserPaperHistoryItem`: 用户历史记录条目。
+-   **题库与配置相关 (管理端):**
+    -   `LibraryIndexItem`: 题库元数据。
+    -   `QuestionModel`: 题库题目模型。
+    -   `SettingsResponseModel`: 管理员获取配置响应。
+    -   `SettingsUpdatePayload`: 管理员更新配置请求。
+    -   `PaperAdminView`: 管理员查看试卷摘要。
+    -   `PaperFullDetailAdminView`: 管理员查看试卷完整详情。
+-   **通用响应与枚举:**
+    -   `MessageResponse`: 通用的消息响应体 (例如，操作成功但无特定数据返回)。
+    -   `ErrorResponse`: 通用的错误响应体 (通常由 `HTTPException` 自动处理)。
+    -   `QuestionTypeEnum`, `PaperPassStatusEnum`, `AuthStatusCodeEnum`: 常用枚举类型，定义在 `app/models/enums.py`。
 
 ---
 
@@ -49,12 +57,12 @@
 
 -   **`200 OK`**: 请求成功执行，响应体中通常包含所请求的数据。
 -   **`201 Created`**: 资源成功创建（例如，用户注册成功后），响应体中可能包含新创建的资源或相关信息（如Token）。
--   **`204 No Content`**: 请求成功执行，但响应体中无内容返回（例如，用户成功修改密码后）。
+-   **`204 No Content`**: 请求成功执行，但响应体中无内容返回（例如，用户成功修改密码后，或部分删除操作成功后）。
 -   **`400 Bad Request`**: 客户端请求无效。这可能因为参数错误、业务逻辑不满足（如请求的题目数量不足以出题）、或提交的数据格式不正确但不符合特定验证错误类型。响应体的 `detail` 字段通常包含具体的错误描述。
 -   **`401 Unauthorized`**: 未认证或认证失败。通常由于Token无效、过期、缺失，或凭证不正确。响应头可能包含 `WWW-Authenticate`。
 -   **`403 Forbidden`**: 用户已认证，但无权访问所请求的资源。例如，用户账户被封禁，或普通用户尝试访问管理员专属接口。
 -   **`404 Not Found`**: 请求的资源不存在。例如，查询一个不存在的试卷ID或用户UID。
--   **`409 Conflict`**: 请求与服务器当前状态冲突，无法完成。例如，尝试创建已存在的用户，或提交已被批改的试卷。
+-   **`409 Conflict`**: 请求与服务器当前状态冲突，无法完成。例如，尝试创建已存在的用户 (UID冲突)。
 -   **`422 Unprocessable Entity`**: 请求体数据虽然格式正确（例如是合法的JSON），但无法通过Pydantic模型的验证规则（如类型错误、必填字段缺失、值不符合约束等）。响应体通常包含详细的字段级验证错误信息。
 -   **`429 Too Many Requests`**: 客户端在给定时间内发送的请求过多，已超出速率限制。
 -   **`500 Internal Server Error`**: 服务器内部发生未预期的错误，导致无法完成请求。
@@ -77,11 +85,25 @@
 
 ### UserTag (用户标签)
 
+定义在 `app/models/user_models.py` 中的 `UserTag` 枚举，主要包括：
+
 -   `admin`: 管理员
 -   `user`: 普通用户
 -   `banned`: 禁用用户
 -   `limited`: 受限用户
--   `grader`: 批阅者
--   `examiner`: 出题者/题库管理员
--   `manager`: 运营管理员
+-   `grader`: 批阅者 (规划中)
+-   `examiner`: 出题者/题库管理员 (规划中)
+-   `manager`: 运营管理员 (规划中)
+
+### QuestionTypeEnum (题目类型)
+定义在 `app/models/enums.py`，目前主要使用：
+- `single_choice`: 单选题
+
+### PaperPassStatusEnum (试卷通过状态)
+定义在 `app/models/enums.py`，例如：
+- `PASSED`: 已通过
+- `FAILED`: 未通过
+- `PENDING`: 待处理/待批改
+
 ---
+[end of docs/api/index.md]

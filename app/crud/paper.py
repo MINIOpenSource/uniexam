@@ -16,6 +16,7 @@ history viewing, and administrative management of papers.)
 """
 
 # region 模块导入 (Module Imports)
+import asyncio # Added for asyncio.create_task
 import datetime
 import logging
 import random
@@ -35,6 +36,7 @@ from ..core.config import (  # 应用配置及常量 (App config and constants)
 from ..core.interfaces import (
     IDataStorageRepository,
 )  # 数据存储库接口 (Data storage repository interface)
+from ..models.enums import PaperPassStatusEnum, QuestionTypeEnum
 from ..models.paper_models import (  # 试卷相关的Pydantic模型 (Paper-related Pydantic models)
     HistoryPaperQuestionClientView,
 )
@@ -71,35 +73,20 @@ class PaperCRUD:
             Any
         ] = None,  # 期望是 QuestionBankCRUD 的实例 (Expected: instance of QuestionBankCRUD)
     ):
-        """
-        初始化 PaperCRUD。
-        (Initializes PaperCRUD.)
-
-        参数 (Args):
-            repository (IDataStorageRepository): 实现 IDataStorageRepository 接口的存储库实例。
-                                                 (Instance of a repository implementing IDataStorageRepository.)
-            qb_crud_instance (Optional[Any]): QuestionBankCRUD 的实例，用于获取题库信息。
-                                              (Instance of QuestionBankCRUD for fetching question bank info.)
-        """
         self.repository = repository
         if qb_crud_instance is None:
             _paper_crud_logger.critical(
-                "PaperCRUD 初始化错误：未提供 QuestionBankCRUD 实例！ (PaperCRUD Init Error: QuestionBankCRUD instance not provided!)"
+                "PaperCRUD 初始化错误：未提供 QuestionBankCRUD 实例！"
             )
             raise ValueError("QuestionBankCRUD instance is required for PaperCRUD.")
-        self.qb_crud: Any = qb_crud_instance  # 类型注解Any，实际应为QbCRUD接口或具体类
-        # (Type hint Any, should ideally be QbCRUD interface or concrete class)
+        self.qb_crud: Any = qb_crud_instance
 
     async def initialize_storage(self) -> None:
-        """
-        确保试卷的存储已初始化。应在应用启动时调用一次。
-        (Ensures that the storage for papers is initialized. Should be called once during application startup.)
-        """
         await self.repository.init_storage_if_needed(
             PAPER_ENTITY_TYPE, initial_data=[]
-        )  # 使用空列表作为默认初始数据
+        )
         _paper_crud_logger.info(
-            f"实体类型 '{PAPER_ENTITY_TYPE}' 的存储已初始化（如果需要）。 (Storage for entity type '{PAPER_ENTITY_TYPE}' initialized if needed.)"
+            f"实体类型 '{PAPER_ENTITY_TYPE}' 的存储已初始化（如果需要）。"
         )
 
     async def create_new_paper(
@@ -109,20 +96,8 @@ class PaperCRUD:
         difficulty: DifficultyLevel,
         num_questions_override: Optional[int] = None,
     ) -> Dict[str, Any]:
-        """
-        创建一份新试卷，关联用户UID，并将其存储。题目从 qb_crud 获取。
-        (Creates a new paper, associates it with a user UID, and stores it. Questions are fetched from qb_crud.)
-
-        返回 (Returns):
-            Dict[str, Any]: 包含新试卷ID、难度和题目列表（用于客户端展示）的字典。
-                            (A dictionary containing the new paper's ID, difficulty, and list of questions
-                             (formatted for client display).)
-        异常 (Raises):
-            ValueError: 如果请求的题库为空、题目数量无效或不满足要求。
-                        (If the requested question bank is empty, or the number of questions is invalid or unmet.)
-        """
         _paper_crud_logger.info(
-            f"用户 '{user_uid}' 请求创建难度为 '{difficulty.value}' 的新试卷。 (User '{user_uid}' requesting new paper with difficulty '{difficulty.value}'.)"
+            f"用户 '{user_uid}' 请求创建难度为 '{difficulty.value}' 的新试卷。"
         )
         full_question_bank = await self.qb_crud.get_question_bank_with_content(
             difficulty
@@ -130,10 +105,10 @@ class PaperCRUD:
 
         if not full_question_bank or not full_question_bank.questions:
             _paper_crud_logger.error(
-                f"请求了难度 '{difficulty.value}' 但其题库内容为空或元数据未加载。 (Requested difficulty '{difficulty.value}' but its question bank is empty or metadata not loaded.)"
+                f"请求了难度 '{difficulty.value}' 但其题库内容为空或元数据未加载。"
             )
             raise ValueError(
-                f"难度 '{difficulty.value}' 的题库不可用或为空。(Question bank for difficulty '{difficulty.value}' is unavailable or empty.)"
+                f"难度 '{difficulty.value}' 的题库不可用或为空。"
             )
 
         current_question_bank_content = [
@@ -152,78 +127,96 @@ class PaperCRUD:
 
         if not (0 < num_questions_to_select <= len(current_question_bank_content)):
             _paper_crud_logger.warning(
-                f"请求的题目数量 {num_questions_to_select} 无效或超出题库 '{difficulty.value}' (共 {len(current_question_bank_content)} 题) 的范围。 (Requested number of questions {num_questions_to_select} is invalid or out of range for bank '{difficulty.value}' (total {len(current_question_bank_content)} questions).)"
+                f"请求的题目数量 {num_questions_to_select} 无效或超出题库 '{difficulty.value}' (共 {len(current_question_bank_content)} 题) 的范围。"
             )
             raise ValueError(
-                f"请求的题目数量 {num_questions_to_select} 无效或超出题库 '{difficulty.value}' 的范围。 (Requested number of questions {num_questions_to_select} is invalid or out of range for bank '{difficulty.value}'.)"
+                f"请求的题目数量 {num_questions_to_select} 无效或超出题库 '{difficulty.value}' 的范围。"
             )
 
-        paper_uuid = str(uuid.uuid4())  # 生成唯一试卷ID
-        new_paper_data: Dict[str, Any] = {  # 构建试卷基础数据结构
+        paper_uuid = str(uuid.uuid4())
+        new_paper_data: Dict[str, Any] = {
             "paper_id": paper_uuid,
             "user_uid": user_uid,
             "creation_time_utc": datetime.now(timezone.utc).isoformat(),
-            "creation_ip": get_client_ip_from_request(
-                request=request
-            ),  # 移除CF IP参数，函数内部处理
+            "creation_ip": get_client_ip_from_request(request=request),
             "difficulty": difficulty.value,
             "paper_questions": [],
-            "score": None,
+            "score": None, # 将代表客观题得分，或在最终批改后代表总分
+            "total_score": None, # 新增：用于存储客观题+主观题的总分
+            "score_percentage": None,
             "submitted_answers_card": None,
             "submission_time_utc": None,
             "submission_ip": None,
-            "pass_status": None,
+            "pass_status": PaperPassStatusEnum.PENDING.value, # 初始状态为待处理
             "passcode": None,
             "last_update_time_utc": None,
             "last_update_ip": None,
+            "subjective_questions_count": 0,
+            "graded_subjective_questions_count": 0,
+            "pending_manual_grading_count": 0,
         }
 
         selected_question_samples = random.sample(
             current_question_bank_content, num_questions_to_select
-        )  # 随机抽题
-        for item_data in selected_question_samples:  # 为每道题构造存储结构
-            correct_choice_text = random.sample(
-                item_data["correct_choices"], settings.num_correct_choices_to_select
-            )[0]
-            correct_choice_id = generate_random_hex_string_of_bytes(
-                settings.generated_code_length_bytes
-            )
-            num_incorrect_to_sample = min(
-                settings.num_incorrect_choices_to_select,
-                len(item_data["incorrect_choices"]),
-            )
-            incorrect_choices_texts = random.sample(
-                item_data["incorrect_choices"], num_incorrect_to_sample
-            )
-            incorrect_choices_with_ids = {
-                generate_random_hex_string_of_bytes(
-                    settings.generated_code_length_bytes
-                ): text
-                for text in incorrect_choices_texts
-            }
-            question_entry = {  # 试卷中单个问题的内部表示
+        )
+
+        subjective_questions_count = 0
+        for item_data in selected_question_samples:
+            question_type_str = item_data.get("question_type", QuestionTypeEnum.SINGLE_CHOICE.value)
+            if question_type_str == QuestionTypeEnum.ESSAY_QUESTION.value:
+                subjective_questions_count += 1
+
+            question_entry = {
+                "internal_question_id": str(uuid.uuid4()),
                 "body": item_data["body"],
-                "correct_choices_map": {
-                    correct_choice_id: correct_choice_text
-                },  # 正确答案ID -> 文本
-                "incorrect_choices_map": incorrect_choices_with_ids,  # 错误答案ID -> 文本
-                "question_type": item_data.get(
-                    "question_type", "single_choice"
-                ),  # 题目类型
-                "ref": item_data.get("ref"),  # 答案解析或参考
+                "question_type": question_type_str,
+                "ref": item_data.get("ref"),
+                "standard_answer_text": item_data.get("standard_answer_text"),
+                "scoring_criteria": item_data.get("scoring_criteria"),
+                "correct_choices_map": None,
+                "incorrect_choices_map": None,
+                "student_subjective_answer": None,
+                "manual_score": None,
+                "teacher_comment": None,
+                "is_graded_manually": False,
             }
+
+            if question_type_str == QuestionTypeEnum.SINGLE_CHOICE.value:
+                correct_choice_text = random.sample(
+                    item_data.get("correct_choices", ["默认正确答案"]), settings.num_correct_choices_to_select
+                )[0] if item_data.get("correct_choices") else "默认正确答案"
+                correct_choice_id = generate_random_hex_string_of_bytes(
+                    settings.generated_code_length_bytes
+                )
+                num_incorrect_to_sample = min(
+                    settings.num_incorrect_choices_to_select,
+                    len(item_data.get("incorrect_choices", [])),
+                )
+                incorrect_choices_texts = random.sample(
+                    item_data.get("incorrect_choices", []), num_incorrect_to_sample
+                )
+                incorrect_choices_with_ids = {
+                    generate_random_hex_string_of_bytes(
+                        settings.generated_code_length_bytes
+                    ): text
+                    for text in incorrect_choices_texts
+                }
+                question_entry["correct_choices_map"] = {correct_choice_id: correct_choice_text}
+                question_entry["incorrect_choices_map"] = incorrect_choices_with_ids
+
             new_paper_data["paper_questions"].append(question_entry)
+
+        new_paper_data["subjective_questions_count"] = subjective_questions_count
+        new_paper_data["pending_manual_grading_count"] = subjective_questions_count
 
         created_paper_repo_record = await self.repository.create(
             PAPER_ENTITY_TYPE, new_paper_data
-        )  # 通过存储库创建
+        )
         _paper_crud_logger.debug(
-            f"用户 '{user_uid}' 的新试卷 {created_paper_repo_record.get('paper_id')} (难度: {difficulty.value}, 题目数: {num_questions_to_select}) 已创建并存储。 (New paper {created_paper_repo_record.get('paper_id')} for user '{user_uid}' (difficulty: {difficulty.value}, num_questions: {num_questions_to_select}) created and stored.)"
+            f"用户 '{user_uid}' 的新试卷 {created_paper_repo_record.get('paper_id')} (难度: {difficulty.value}, 题目数: {num_questions_to_select}) 已创建并存储。"
         )
 
-        client_paper_response_paper_field: List[Dict[str, Any]] = (
-            []
-        )  # 为客户端构造题目列表
+        client_paper_response_paper_field: List[Dict[str, Any]] = []
         for q_data in new_paper_data["paper_questions"]:
             all_choices = {
                 **q_data.get("correct_choices_map", {}),
@@ -231,14 +224,15 @@ class PaperCRUD:
             }
             client_paper_response_paper_field.append(
                 {
-                    "body": q_data.get("body", "题目内容缺失 (Question body missing)"),
-                    "choices": shuffle_dictionary_items(all_choices),  # 打乱选项顺序
-                    "question_type": q_data.get("question_type"),  # 包含题目类型
+                    "internal_question_id": q_data.get("internal_question_id"), # Pass internal_question_id to client
+                    "body": q_data.get("body", "题目内容缺失"),
+                    "choices": shuffle_dictionary_items(all_choices) if q_data.get("question_type") == QuestionTypeEnum.SINGLE_CHOICE.value else None,
+                    "question_type": q_data.get("question_type"),
                 }
             )
         return {
             "paper_id": paper_uuid,
-            "difficulty": difficulty,  # Pass the enum member directly
+            "difficulty": difficulty,
             "paper": client_paper_response_paper_field,
         }
 
@@ -246,15 +240,14 @@ class PaperCRUD:
         self,
         paper_id: UUID,
         user_uid: str,
-        submitted_answers: List[Optional[str]],
+        submitted_answers: List[Optional[str]], # For choice questions
+        # subjective_answers: Dict[str, str], # For subjective questions, keyed by internal_question_id
         request: Request,
     ) -> Dict[str, Any]:
-        """
-        更新用户未完成试卷的答题进度。
-        (Updates the progress of a user's unfinished paper.)
-        """
+        # Note: This method currently only saves objective answers via submitted_answers.
+        # Subjective answers are saved via grade_subjective_question or a future dedicated save endpoint.
         _paper_crud_logger.debug(
-            f"用户 '{user_uid}' 尝试更新试卷 '{paper_id}' 的进度。 (User '{user_uid}' attempting to update progress for paper '{paper_id}'.)"
+            f"用户 '{user_uid}' 尝试更新试卷 '{paper_id}' 的进度。"
         )
         target_paper_record = await self.repository.get_by_id(
             PAPER_ENTITY_TYPE, str(paper_id)
@@ -262,67 +255,55 @@ class PaperCRUD:
 
         if not target_paper_record or target_paper_record.get("user_uid") != user_uid:
             _paper_crud_logger.warning(
-                f"试卷 '{paper_id}' 未找到或用户 '{user_uid}' 无权访问。 (Paper '{paper_id}' not found or user '{user_uid}' has no access.)"
+                f"试卷 '{paper_id}' 未找到或用户 '{user_uid}' 无权访问。"
             )
-            return {
-                "code": CODE_INFO_OR_SPECIFIC_CONDITION,
-                "status_code": "NOT_FOUND",
-                "message": "试卷未找到或无权访问。 (Paper not found or access denied.)",
-            }
+            return { "status_code": "NOT_FOUND", "message": "试卷未找到或无权访问。"}
 
-        if target_paper_record.get("pass_status") in [
-            "PASSED",
-            "FAILED",
-        ]:  # 检查是否已完成
+        current_pass_status = target_paper_record.get("pass_status")
+        if current_pass_status and \
+           current_pass_status not in [PaperPassStatusEnum.PENDING.value, PaperPassStatusEnum.PENDING_REVIEW.value]:
             _paper_crud_logger.info(
-                f"试卷 '{paper_id}' 已完成，无法更新进度。 (Paper '{paper_id}' already completed, cannot update progress.)"
+                f"试卷 '{paper_id}' 状态为 {current_pass_status}，无法更新进度。"
             )
             return {
-                "code": CODE_INFO_OR_SPECIFIC_CONDITION,
-                "status_code": "ALREADY_COMPLETED",
-                "message": "此试卷已完成，无法更新。 (This paper has already been completed and cannot be updated.)",
+                "status_code": "ALREADY_COMPLETED_OR_GRADING",
+                "message": "此试卷已提交或正在批阅中，无法更新进度。",
                 "paper_id": str(paper_id),
             }
 
-        num_questions_in_paper = len(target_paper_record.get("paper_questions", []))
-        if len(submitted_answers) > num_questions_in_paper:  # 检查答案数量
-            _paper_crud_logger.warning(
-                f"试卷 '{paper_id}' 提交答案数量 ({len(submitted_answers)}) 超出题目总数 ({num_questions_in_paper})。 (Number of submitted answers ({len(submitted_answers)}) for paper '{paper_id}' exceeds total questions ({num_questions_in_paper}).)"
-            )
-            return {
-                "code": CODE_INFO_OR_SPECIFIC_CONDITION,
-                "status_code": "INVALID_ANSWERS_LENGTH",
-                "message": "提交的答案数量超出题目总数。 (Number of submitted answers exceeds total questions in the paper.)",
-            }
+        paper_questions = target_paper_record.get("paper_questions", [])
+        num_questions_in_paper = len(paper_questions)
+
+        # Update submitted_answers_card (for objective questions)
+        # Ensure submitted_answers list matches the total number of questions, padding with None if necessary
+        # This part primarily handles objective question answers. Subjective answers are handled differently.
+        processed_answers = [None] * num_questions_in_paper
+        for i, q_data in enumerate(paper_questions):
+            if q_data.get("question_type") == QuestionTypeEnum.SINGLE_CHOICE.value: # Only process for choice questions here
+                 if i < len(submitted_answers):
+                    processed_answers[i] = submitted_answers[i]
+            # For subjective questions, student_subjective_answer is updated elsewhere (e.g. during grading or a dedicated save)
 
         update_time = datetime.now(timezone.utc).isoformat()
-        # 更新记录中的字段 (Update fields in the record)
         update_fields = {
-            "submitted_answers_card": submitted_answers,
+            "submitted_answers_card": processed_answers, # Save processed answers for all questions
             "last_update_time_utc": update_time,
             "last_update_ip": get_client_ip_from_request(request=request),
         }
+
+        # Persist changes
         updated_record = await self.repository.update(
             PAPER_ENTITY_TYPE, str(paper_id), update_fields
         )
 
         if not updated_record:
-            _paper_crud_logger.error(
-                f"在存储库中更新试卷 '{paper_id}' 失败。 (Failed to update paper '{paper_id}' in repository.)"
-            )
-            return {
-                "code": CODE_INFO_OR_SPECIFIC_CONDITION,
-                "status_code": "UPDATE_FAILED",
-                "message": "保存试卷更新失败。 (Failed to persist paper updates.)",
-            }
+            _paper_crud_logger.error( f"在存储库中更新试卷 '{paper_id}' 失败。")
+            return { "status_code": "UPDATE_FAILED", "message": "保存试卷更新失败。" }
 
-        _paper_crud_logger.info(
-            f"用户 '{user_uid}' 的试卷 '{paper_id}' 进度已更新并存储。 (Progress for paper '{paper_id}' by user '{user_uid}' updated and stored.)"
-        )
+        _paper_crud_logger.info( f"用户 '{user_uid}' 的试卷 '{paper_id}' 进度已更新并存储。")
         return {
-            "code": CODE_SUCCESS,
             "status_code": "PROGRESS_SAVED",
-            "message": "试卷进度已成功保存。 (Paper progress saved successfully.)",
+            "message": "试卷进度已成功保存。",
             "paper_id": str(paper_id),
             "last_update_time_utc": update_time,
         }
@@ -331,263 +312,231 @@ class PaperCRUD:
         self,
         paper_id: UUID,
         user_uid: str,
-        submitted_answers: List[Optional[str]],
+        submitted_answers: List[Optional[str]], # Contains answers for objective questions
+                                                # And text for subjective questions, keyed by internal_question_id
         request: Request,
     ) -> Dict[str, Any]:
-        """
-        批改用户提交的试卷答案，计算得分，并确定通过状态。
-        (Grades the user's submitted paper answers, calculates the score, and determines pass status.)
-        """
-        _paper_crud_logger.info(
-            f"用户 '{user_uid}' 提交试卷 '{paper_id}' 进行批改。 (User '{user_uid}' submitting paper '{paper_id}' for grading.)"
-        )
-        target_paper_record = await self.repository.get_by_id(
-            PAPER_ENTITY_TYPE, str(paper_id)
-        )
+        _paper_crud_logger.info( f"用户 '{user_uid}' 提交试卷 '{paper_id}' 进行批改。")
+        target_paper_record = await self.repository.get_by_id( PAPER_ENTITY_TYPE, str(paper_id))
 
         if not target_paper_record or target_paper_record.get("user_uid") != user_uid:
-            _paper_crud_logger.warning(
-                f"试卷 '{paper_id}' 未找到或用户 '{user_uid}' 无权访问。 (Paper '{paper_id}' not found or user '{user_uid}' has no access.)"
-            )
-            return {
-                "code": CODE_INFO_OR_SPECIFIC_CONDITION,
-                "status_code": "NOT_FOUND",
-                "message": "试卷未找到或无权访问。",
-            }
+            _paper_crud_logger.warning(f"试卷 '{paper_id}' 未找到或用户 '{user_uid}' 无权访问。")
+            return {"status_code": "NOT_FOUND", "message": "试卷未找到或无权访问。"}
 
-        if target_paper_record.get("pass_status"):  # 检查是否已批改
-            _paper_crud_logger.info(
-                f"试卷 '{paper_id}' 已被批改过。 (Paper '{paper_id}' has already been graded.)"
-            )
+        current_pass_status = target_paper_record.get("pass_status")
+        if current_pass_status and \
+           current_pass_status not in [PaperPassStatusEnum.PENDING.value, PaperPassStatusEnum.PENDING_REVIEW.value]:
+            _paper_crud_logger.info(f"试卷 '{paper_id}' 已被批改过或处于非可提交状态 ({current_pass_status})。")
             return {
-                "code": CODE_INFO_OR_SPECIFIC_CONDITION,
-                "status_code": "ALREADY_GRADED",
-                "message": "此试卷已被批改。 (This paper has already been graded.)",
-                "previous_result": target_paper_record.get("pass_status"),
+                "status_code": "ALREADY_GRADED_OR_INVALID_STATE",
+                "message": "此试卷已被批改或当前状态无法提交。",
+                "previous_result": current_pass_status,
                 "score": target_paper_record.get("score"),
                 "passcode": target_paper_record.get("passcode"),
+                "pending_manual_grading_count": target_paper_record.get("pending_manual_grading_count",0)
             }
 
         paper_questions = target_paper_record.get("paper_questions", [])
         if not isinstance(paper_questions, list) or not paper_questions:
-            _paper_crud_logger.error(
-                f"试卷 '{paper_id}' 缺少 'paper_questions' 或为空，无法批改。 (Paper '{paper_id}' missing 'paper_questions' or empty, cannot grade.)"
-            )
-            return {
-                "code": CODE_INFO_OR_SPECIFIC_CONDITION,
-                "status_code": "INVALID_PAPER_STRUCTURE",
-                "message": "试卷结构无效，无法批改。 (Paper structure is invalid, cannot grade.)",
-            }
+            _paper_crud_logger.error(f"试卷 '{paper_id}' 缺少 'paper_questions' 或为空，无法批改。")
+            return {"status_code": "INVALID_PAPER_STRUCTURE", "message": "试卷结构无效，无法批改。"}
 
-        if len(submitted_answers) != len(
-            paper_questions
-        ):  # 检查答案数量是否匹配题目数量
-            _paper_crud_logger.warning(
-                f"试卷 '{paper_id}' 提交答案数 ({len(submitted_answers)}) 与题目数 ({len(paper_questions)}) 不符。 (Number of submitted answers ({len(submitted_answers)}) for paper '{paper_id}' does not match number of questions ({len(paper_questions)}).)"
-            )
-            return {
-                "code": CODE_INFO_OR_SPECIFIC_CONDITION,
-                "status_code": "INVALID_SUBMISSION",
-                "message": "提交的答案数量与题目总数不匹配。 (Number of submitted answers does not match total questions.)",
-            }
+        if len(submitted_answers) != len(paper_questions):
+            _paper_crud_logger.warning(f"试卷 '{paper_id}' 提交答案数 ({len(submitted_answers)}) 与题目数 ({len(paper_questions)}) 不符。")
+            return {"status_code": "INVALID_SUBMISSION", "message": "提交的答案数量与题目总数不匹配。"}
 
-        correct_answers_count = 0  # 计算正确答案数
-        for i, q_data in enumerate(paper_questions):
-            if (
-                isinstance(q_data, dict)
-                and "correct_choices_map" in q_data
-                and isinstance(q_data["correct_choices_map"], dict)
-                and q_data["correct_choices_map"]
-            ):
-                correct_choice_id = list(q_data["correct_choices_map"].keys())[0]
-                if (
-                    i < len(submitted_answers)
-                    and submitted_answers[i] == correct_choice_id
-                ):
-                    correct_answers_count += 1
-            else:
-                _paper_crud_logger.warning(
-                    f"用户 '{user_uid}' 的试卷 '{paper_id}' 的问题索引 {i} 结构不正确，跳过计分。 (Question index {i} in paper '{paper_id}' for user '{user_uid}' has incorrect structure, skipping scoring.)"
-                )
+        objective_questions_total = 0
+        correct_objective_answers_count = 0
+
+        internal_paper_questions = target_paper_record.get("paper_questions", [])
+        for i, q_data in enumerate(internal_paper_questions):
+            if not isinstance(q_data, dict): continue
+
+            q_type = q_data.get("question_type")
+            if q_type == QuestionTypeEnum.SINGLE_CHOICE.value:
+                objective_questions_total += 1
+                correct_map = q_data.get("correct_choices_map")
+                if correct_map and isinstance(correct_map, dict) and len(correct_map) == 1:
+                    correct_choice_id = list(correct_map.keys())[0]
+                    if i < len(submitted_answers) and submitted_answers[i] == correct_choice_id:
+                        correct_objective_answers_count += 1
+            elif q_type == QuestionTypeEnum.ESSAY_QUESTION.value:
+                if i < len(submitted_answers) and submitted_answers[i] is not None:
+                    # Store student's subjective answer text
+                    internal_paper_questions[i]["student_subjective_answer"] = str(submitted_answers[i])
+            # Other types like MULTIPLE_CHOICE, FILL_IN_BLANK would need their own grading logic here
 
         current_time_utc_iso = datetime.now(timezone.utc).isoformat()
-        score_percentage = (
-            (correct_answers_count / len(paper_questions)) * 100
-            if len(paper_questions) > 0
+        objective_score_percentage = (
+            (correct_objective_answers_count / objective_questions_total) * 100
+            if objective_questions_total > 0
             else 0.0
         )
 
-        # 更新试卷记录的字段 (Fields to update in the paper record)
         update_fields = {
-            "score": correct_answers_count,
-            "score_percentage": round(score_percentage, 2),
+            "score": correct_objective_answers_count, # Represents objective score at this stage
+            "score_percentage": round(objective_score_percentage, 2),
             "submitted_answers_card": submitted_answers,
+            "paper_questions": internal_paper_questions, # Persist updated subjective answers
             "submission_time_utc": current_time_utc_iso,
             "submission_ip": get_client_ip_from_request(request=request),
             "last_update_time_utc": current_time_utc_iso,
         }
-        update_fields["last_update_ip"] = update_fields[
-            "submission_ip"
-        ]  # last_update_ip 与 submission_ip 相同
+        update_fields["last_update_ip"] = update_fields["submission_ip"]
+
+        # Update paper record with objective scores and submitted subjective answers first
+        await self.repository.update(PAPER_ENTITY_TYPE, str(paper_id), update_fields)
+
+        # Re-fetch the record to get the latest pending_manual_grading_count (which was set at creation)
+        # and subjective_questions_count
+        updated_target_paper_record = await self.repository.get_by_id(PAPER_ENTITY_TYPE, str(paper_id))
+        if not updated_target_paper_record: # Should not happen if previous update succeeded
+             _paper_crud_logger.error(f"提交后无法重新获取试卷 '{paper_id}'。")
+             return {"status_code": "INTERNAL_ERROR", "message": "处理提交时发生内部错误。"}
+
 
         result_payload: Dict[str, Any] = {
-            "score": correct_answers_count,
-            "score_percentage": round(score_percentage, 2),
+            "score": correct_objective_answers_count,
+            "score_percentage": round(objective_score_percentage, 2),
+            "pending_manual_grading_count": updated_target_paper_record.get("pending_manual_grading_count", 0)
         }
 
-        if score_percentage >= settings.passing_score_percentage:  # 判断是否通过
-            update_fields["pass_status"] = "PASSED"
-            update_fields["passcode"] = generate_random_hex_string_of_bytes(
-                settings.generated_code_length_bytes
-            )
-            result_payload.update(
-                {
-                    "code": CODE_SUCCESS,
-                    "status_code": "PASSED",
-                    "passcode": update_fields["passcode"],
-                }
-            )
+        has_pending_subjective = updated_target_paper_record.get("pending_manual_grading_count", 0) > 0
+
+        final_pass_status_for_update = ""
+        if has_pending_subjective:
+            final_pass_status_for_update = PaperPassStatusEnum.PENDING_REVIEW.value
+            result_payload["status_code"] = PaperPassStatusEnum.PENDING_REVIEW.value
+            result_payload["message"] = "客观题已自动批改。试卷包含主观题，请等待人工批阅完成获取最终结果。"
             _paper_crud_logger.info(
-                f"用户 '{user_uid}' 试卷 '{paper_id}' 通过，得分 {correct_answers_count}/{len(paper_questions)} ({score_percentage:.2f}%)。 (User '{user_uid}' paper '{paper_id}' PASSED, score {correct_answers_count}/{len(paper_questions)} ({score_percentage:.2f}%).)"
+                f"用户 '{user_uid}' 试卷 '{paper_id}' 客观题得分 {correct_objective_answers_count}/{objective_questions_total} ({objective_score_percentage:.2f}%)，包含 {updated_target_paper_record.get('pending_manual_grading_count')} 道主观题待批阅。"
             )
         else:
-            update_fields["pass_status"] = "FAILED"
-            result_payload.update({"code": CODE_SUCCESS, "status_code": "FAILED"})
-            _paper_crud_logger.info(
-                f"用户 '{user_uid}' 试卷 '{paper_id}' 未通过，得分 {correct_answers_count}/{len(paper_questions)} ({score_percentage:.2f}%)。 (User '{user_uid}' paper '{paper_id}' FAILED, score {correct_answers_count}/{len(paper_questions)} ({score_percentage:.2f}%).)"
-            )
+            # If no subjective questions were pending (e.g. all objective, or all subjective already graded through another flow)
+            # then this objective score is the final score.
+            if objective_score_percentage >= settings.passing_score_percentage:
+                final_pass_status_for_update = PaperPassStatusEnum.PASSED.value
+                passcode = generate_random_hex_string_of_bytes(settings.generated_code_length_bytes)
+                update_fields["passcode"] = passcode # Add passcode to update_fields
+                result_payload.update(
+                    {"status_code": PaperPassStatusEnum.PASSED.value, "passcode": passcode, "message": "恭喜，您已通过本次考试！"})
+                _paper_crud_logger.info( f"用户 '{user_uid}' 试卷 '{paper_id}' 通过，得分 {correct_objective_answers_count}/{objective_questions_total} ({objective_score_percentage:.2f}%)。")
+            else:
+                final_pass_status_for_update = PaperPassStatusEnum.FAILED.value
+                result_payload.update({"status_code": PaperPassStatusEnum.FAILED.value, "message": "很遗憾，您未能通过本次考试。"})
+                _paper_crud_logger.info( f"用户 '{user_uid}' 试卷 '{paper_id}' 未通过，得分 {correct_objective_answers_count}/{objective_questions_total} ({objective_score_percentage:.2f}%)。")
 
-        updated_record = await self.repository.update(
-            PAPER_ENTITY_TYPE, str(paper_id), update_fields
+        update_fields["pass_status"] = final_pass_status_for_update
+
+        # Final update with pass_status
+        final_updated_record = await self.repository.update(
+            PAPER_ENTITY_TYPE, str(paper_id), {"pass_status": final_pass_status_for_update, "passcode": update_fields.get("passcode")}
         )
-        if not updated_record:
-            _paper_crud_logger.error(
-                f"在存储库中更新已批改的试卷 '{paper_id}' 失败。 (Failed to update graded paper '{paper_id}' in repository.)"
-            )
-            return {
-                "code": CODE_INFO_OR_SPECIFIC_CONDITION,
-                "status_code": "GRADING_PERSISTENCE_FAILED",
-                "message": "批改完成但保存结果失败。 (Grading complete but failed to save result.)",
-            }
+        if not final_updated_record:
+            _paper_crud_logger.error(f"在存储库中更新试卷 '{paper_id}' 的最终状态失败。")
+            return {"status_code": "GRADING_PERSISTENCE_FAILED", "message": "批改完成但保存最终状态失败。"}
 
         return result_payload
 
     async def get_user_history(self, user_uid: str) -> List[Dict[str, Any]]:
-        """
-        获取指定用户的答题历史记录列表。
-        (Retrieves the exam history list for a specified user.)
-        """
-        _paper_crud_logger.debug(
-            f"获取用户 '{user_uid}' 的答题历史。 (Fetching exam history for user '{user_uid}'.)"
-        )
+        _paper_crud_logger.debug(f"获取用户 '{user_uid}' 的答题历史。")
         user_papers_data = await self.repository.query(
             PAPER_ENTITY_TYPE,
             conditions={"user_uid": user_uid},
             limit=settings.num_questions_per_paper_default * 5,
-        )  # 限制返回数量
-
+        )
         history = []
         for paper_data in user_papers_data:
-            if paper_data and isinstance(paper_data, dict):  # 确保数据有效
+            if paper_data and isinstance(paper_data, dict):
                 history.append(
                     {
                         "paper_id": paper_data.get("paper_id"),
-                        "difficulty": DifficultyLevel(
-                            paper_data.get("difficulty", DifficultyLevel.hybrid.value)
-                        ),
-                        "score": paper_data.get("score"),
+                        "difficulty": DifficultyLevel(paper_data.get("difficulty", DifficultyLevel.hybrid.value)),
+                        "score": paper_data.get("score"), # This is objective score or final total if finalized
+                        "total_score": paper_data.get("total_score"), # Show total_score if available
                         "score_percentage": paper_data.get("score_percentage"),
                         "pass_status": paper_data.get("pass_status"),
                         "submission_time_utc": paper_data.get("submission_time_utc"),
+                        "subjective_questions_count": paper_data.get("subjective_questions_count"),
+                        "pending_manual_grading_count": paper_data.get("pending_manual_grading_count"),
                     }
                 )
-        # 按提交时间（或创建时间，如果未提交）降序排序
         return sorted(
             history,
-            key=lambda x: x.get("submission_time_utc")
-            or x.get("creation_time_utc", ""),
+            key=lambda x: x.get("submission_time_utc") or x.get("creation_time_utc", ""),
             reverse=True,
         )
 
     async def get_user_paper_detail_for_history(
         self, paper_id_str: str, user_uid: str
     ) -> Optional[Dict[str, Any]]:
-        """
-        获取用户某次历史答题的详细情况。
-        (Retrieves detailed information about a specific historical exam paper for a user.)
-        """
-        _paper_crud_logger.debug(
-            f"用户 '{user_uid}' 请求历史试卷 '{paper_id_str}' 的详情。 (User '{user_uid}' requesting details for history paper '{paper_id_str}'.)"
-        )
+        _paper_crud_logger.debug(f"用户 '{user_uid}' 请求历史试卷 '{paper_id_str}' 的详情。")
         paper_data = await self.repository.get_by_id(PAPER_ENTITY_TYPE, paper_id_str)
 
-        if paper_data and paper_data.get("user_uid") == user_uid:  # 验证归属权
+        if paper_data and paper_data.get("user_uid") == user_uid:
             history_questions: List[Dict[str, Any]] = []
             submitted_answers = paper_data.get("submitted_answers_card", [])
-            if "paper_questions" in paper_data and isinstance(
-                paper_data["paper_questions"], list
-            ):
-                for idx, q_internal in enumerate(
-                    paper_data["paper_questions"]
-                ):  # 构造客户端视图
+            paper_questions_internal = paper_data.get("paper_questions", [])
+            if isinstance(paper_questions_internal, list):
+                for idx, q_internal in enumerate(paper_questions_internal):
+                    if not isinstance(q_internal, dict): continue
                     all_choices_for_client = {
                         **q_internal.get("correct_choices_map", {}),
                         **q_internal.get("incorrect_choices_map", {}),
                     }
-                    submitted_choice_id_for_this_q: Optional[str] = (
-                        submitted_answers[idx]
-                        if idx < len(submitted_answers)
-                        and submitted_answers[idx] is not None
-                        else None
-                    )
-                    q_type = q_internal.get("question_type", "single_choice")
-                    detail_model = HistoryPaperQuestionClientView(
-                        body=q_internal.get("body", "N/A"),
-                        question_type=q_type,
-                        choices=(
-                            shuffle_dictionary_items(all_choices_for_client)
-                            if q_type in ["single_choice", "multiple_choice"]
-                            else None
-                        ),
-                        submitted_answer=submitted_choice_id_for_this_q,
-                    )
-                    history_questions.append(detail_model.model_dump(exclude_none=True))
+                    submitted_ans_for_this_q = submitted_answers[idx] if idx < len(submitted_answers) else None
+                    q_type_val = q_internal.get("question_type")
 
-            return {  # 返回包含所有必要信息的字典
+                    client_question = {
+                        "internal_question_id": q_internal.get("internal_question_id"),
+                        "body": q_internal.get("body", "N/A"),
+                        "question_type": q_type_val,
+                        "choices": shuffle_dictionary_items(all_choices_for_client) if q_type_val == QuestionTypeEnum.SINGLE_CHOICE.value else None,
+                        "submitted_answer": None, # Will be populated based on type
+                        "student_subjective_answer": None,
+                        "standard_answer_text": None,
+                        "manual_score": q_internal.get("manual_score"),
+                        "teacher_comment": q_internal.get("teacher_comment"),
+                        "is_graded_manually": q_internal.get("is_graded_manually", False)
+                    }
+
+                    if q_type_val == QuestionTypeEnum.ESSAY_QUESTION.value:
+                        client_question["student_subjective_answer"] = q_internal.get("student_subjective_answer")
+                        client_question["submitted_answer"] = q_internal.get("student_subjective_answer") # For consistency if client uses submitted_answer
+                        client_question["standard_answer_text"] = q_internal.get("standard_answer_text")
+                    else: # For single_choice etc.
+                        client_question["submitted_answer"] = submitted_ans_for_this_q
+
+                    history_questions.append(HistoryPaperQuestionClientView(**client_question).model_dump(exclude_none=True))
+
+            # Prepare final response dict
+            response_dict = {
                 "paper_id": paper_data["paper_id"],
-                "difficulty": DifficultyLevel(
-                    paper_data.get("difficulty", DifficultyLevel.hybrid.value)
-                ),
+                "difficulty": DifficultyLevel(paper_data.get("difficulty", DifficultyLevel.hybrid.value)),
                 "user_uid": user_uid,
                 "paper_questions": history_questions,
                 "score": paper_data.get("score"),
+                "total_score": paper_data.get("total_score"),
                 "score_percentage": paper_data.get("score_percentage"),
                 "submitted_answers_card": submitted_answers,
                 "pass_status": paper_data.get("pass_status"),
                 "passcode": paper_data.get("passcode"),
                 "submission_time_utc": paper_data.get("submission_time_utc"),
+                "subjective_questions_count": paper_data.get("subjective_questions_count"),
+                "graded_subjective_questions_count": paper_data.get("graded_subjective_questions_count"),
+                "pending_manual_grading_count": paper_data.get("pending_manual_grading_count"),
             }
-        _paper_crud_logger.warning(
-            f"用户 '{user_uid}' 尝试访问不属于自己的试卷 '{paper_id_str}' 或试卷不存在。 (User '{user_uid}' tried to access paper '{paper_id_str}' not belonging to them or paper does not exist.)"
-        )
+            return response_dict
+        _paper_crud_logger.warning(f"用户 '{user_uid}' 尝试访问不属于自己的试卷 '{paper_id_str}' 或试卷不存在。")
         return None
 
-    # --- Admin 相关方法 (Admin-related methods) ---
     async def admin_get_all_papers_summary(
         self, skip: int = 0, limit: int = 100
     ) -> List[Dict[str, Any]]:
-        """
-        管理员获取所有试卷的摘要信息列表。
-        (Admin: Get summary list of all papers.)
-        """
-        _paper_crud_logger.debug(
-            f"管理员请求所有试卷摘要，skip={skip}, limit={limit}。 (Admin requesting all paper summaries, skip={skip}, limit={limit}.)"
-        )
+        _paper_crud_logger.debug(f"管理员请求所有试卷摘要，skip={skip}, limit={limit}。")
         all_papers = await self.repository.get_all(
             PAPER_ENTITY_TYPE, skip=skip, limit=limit
         )
-        # 假设存储库的 get_all 支持排序或在此处进行排序 (Assume repository's get_all supports sorting or sort here)
-        # 当前实现依赖于 get_all 返回的数据顺序，或在repository层面实现排序
         return (
             sorted(
                 all_papers, key=lambda p: p.get("creation_time_utc", ""), reverse=True
@@ -599,48 +548,179 @@ class PaperCRUD:
     async def admin_get_paper_detail(
         self, paper_id_str: str
     ) -> Optional[Dict[str, Any]]:
-        """
-        管理员获取指定ID试卷的完整详细信息。
-        (Admin: Get full details of a specific paper by ID.)
-        """
-        _paper_crud_logger.debug(
-            f"管理员请求试卷 '{paper_id_str}' 的详细信息。 (Admin requesting details for paper '{paper_id_str}'.)"
-        )
+        _paper_crud_logger.debug(f"管理员请求试卷 '{paper_id_str}' 的详细信息。")
         return await self.repository.get_by_id(PAPER_ENTITY_TYPE, paper_id_str)
 
     async def admin_delete_paper(self, paper_id_str: str) -> bool:
-        """
-        管理员删除指定ID的试卷。
-        (Admin: Delete a specific paper by ID.)
-        """
-        _paper_crud_logger.info(
-            f"管理员尝试删除试卷 '{paper_id_str}'。 (Admin attempting to delete paper '{paper_id_str}'.)"
-        )
+        _paper_crud_logger.info(f"管理员尝试删除试卷 '{paper_id_str}'。")
         deleted = await self.repository.delete(PAPER_ENTITY_TYPE, paper_id_str)
-        if deleted:
-            _paper_crud_logger.info(
-                f"[Admin] 试卷 '{paper_id_str}' 已从存储库删除。 (Paper '{paper_id_str}' deleted from repository by admin.)"
-            )
-        else:
-            _paper_crud_logger.warning(
-                f"[Admin] 删除试卷 '{paper_id_str}' 失败（可能未找到）。 (Failed to delete paper '{paper_id_str}' (possibly not found) by admin.)"
-            )
+        if deleted: _paper_crud_logger.info(f"[Admin] 试卷 '{paper_id_str}' 已从存储库删除。")
+        else: _paper_crud_logger.warning(f"[Admin] 删除试卷 '{paper_id_str}' 失败（可能未找到）。")
         return deleted
 
+    async def grade_subjective_question(
+        self,
+        paper_id: UUID,
+        question_internal_id: str,
+        manual_score: float,
+        teacher_comment: Optional[str] = None,
+    ) -> bool:
+        _paper_crud_logger.info(f"开始人工批改试卷 '{paper_id}' 中的题目 '{question_internal_id}'。")
+        paper_data = await self.repository.get_by_id(PAPER_ENTITY_TYPE, str(paper_id))
+
+        if not paper_data:
+            _paper_crud_logger.warning(f"批改主观题失败：试卷 '{paper_id}' 未找到。")
+            raise ValueError(f"试卷 '{paper_id}' 未找到。")
+
+        paper_questions = paper_data.get("paper_questions", [])
+        if not isinstance(paper_questions, list):
+            _paper_crud_logger.error(f"试卷 '{paper_id}' 的题目列表格式不正确。")
+            raise ValueError(f"试卷 '{paper_id}' 题目数据损坏。")
+
+        question_found = False
+        question_updated = False
+        previously_graded = False
+
+        for q_idx, q_data in enumerate(paper_questions):
+            if isinstance(q_data, dict) and q_data.get("internal_question_id") == question_internal_id:
+                question_found = True
+                if q_data.get("question_type") != QuestionTypeEnum.ESSAY_QUESTION.value:
+                    _paper_crud_logger.warning(f"尝试批改的题目 '{question_internal_id}' (试卷 '{paper_id}') 不是主观题。")
+                    raise ValueError(f"题目 '{question_internal_id}' 不是主观题，无法人工批改。")
+
+                previously_graded = q_data.get("is_graded_manually", False)
+                paper_questions[q_idx]["manual_score"] = manual_score
+                paper_questions[q_idx]["teacher_comment"] = teacher_comment
+                paper_questions[q_idx]["is_graded_manually"] = True
+                question_updated = True
+                break
+
+        if not question_found:
+            _paper_crud_logger.warning(f"批改主观题失败：在试卷 '{paper_id}' 中未找到题目ID '{question_internal_id}'。")
+            raise ValueError(f"在试卷 '{paper_id}' 中未找到题目ID '{question_internal_id}'。")
+
+        if question_updated:
+            update_payload_for_repo = {
+                "paper_questions": paper_questions, # 更新后的题目列表
+                "last_update_time_utc": datetime.now(timezone.utc).isoformat(),
+            }
+            if not previously_graded:
+                current_graded_count = paper_data.get("graded_subjective_questions_count", 0)
+                current_pending_count = paper_data.get("pending_manual_grading_count", 0)
+                update_payload_for_repo["graded_subjective_questions_count"] = current_graded_count + 1
+                update_payload_for_repo["pending_manual_grading_count"] = max(0, current_pending_count - 1)
+
+            updated_record_partial = await self.repository.update(
+                PAPER_ENTITY_TYPE, str(paper_id), update_payload_for_repo
+            )
+            if updated_record_partial:
+                _paper_crud_logger.info(f"试卷 '{paper_id}' 中题目 '{question_internal_id}' 已成功人工批改。")
+                # Trigger finalization check (can run in background, or be awaited by API layer if needed)
+                asyncio.create_task(self.finalize_paper_grading_if_ready(paper_id))
+                return True
+            else:
+                _paper_crud_logger.error(f"更新试卷 '{paper_id}' 的主观题批改信息失败（存储库操作返回None）。")
+                return False
+        return False
+
+    async def get_papers_pending_manual_grading(self, skip: int = 0, limit: int = 100) -> List[Dict[str, Any]]:
+        _paper_crud_logger.info(f"获取待人工批阅试卷列表，skip={skip}, limit={limit}。")
+        # This query needs to be supported by the repository or done in multiple steps/filtered here.
+        # Assuming repository query can handle "field > value" or we fetch and filter.
+        # For simplicity with current IDataStorageRepository, we might fetch PENDING_REVIEW and then filter.
+        all_pending_review_papers = await self.repository.query(
+            entity_type=PAPER_ENTITY_TYPE,
+            conditions={"pass_status": PaperPassStatusEnum.PENDING_REVIEW.value},
+            # Limit might need to be higher if filtering significantly reduces results
+            # Or implement proper DB-level filtering for pending_manual_grading_count > 0
+            limit=limit * 5, # Fetch more to allow filtering, adjust as needed
+            skip=0 # Initial skip is 0, pagination handled after filtering
+        )
+
+        papers_needing_grading = [
+            p for p in all_pending_review_papers
+            if p.get("pending_manual_grading_count", 0) > 0 and p.get("subjective_questions_count", 0) > 0
+        ]
+
+        # Manual pagination on the filtered list
+        paginated_list = papers_needing_grading[skip : skip + limit]
+        _paper_crud_logger.info(f"发现 {len(papers_needing_grading)} 份试卷待批阅，返回 {len(paginated_list)} 份。")
+        return paginated_list
+
+    async def finalize_paper_grading_if_ready(self, paper_id: UUID) -> Optional[Dict[str, Any]]:
+        _paper_crud_logger.info(f"检查试卷 '{paper_id}' 是否可以最终定版批改。")
+        paper_data = await self.repository.get_by_id(PAPER_ENTITY_TYPE, str(paper_id))
+
+        if not paper_data:
+            _paper_crud_logger.warning(f"最终定版检查失败：试卷 '{paper_id}' 未找到。")
+            return None
+
+        if paper_data.get("pending_manual_grading_count", 0) == 0 and \
+           paper_data.get("pass_status") == PaperPassStatusEnum.PENDING_REVIEW.value:
+
+            _paper_crud_logger.info(f"试卷 '{paper_id}' 所有主观题已批改，开始最终计分和状态更新。")
+
+            objective_score = paper_data.get("score", 0) # This is current objective score
+            total_manual_score = 0.0
+            paper_questions = paper_data.get("paper_questions", [])
+
+            # Assume each question (objective or subjective) contributes to total_possible_points.
+            # For simplicity, assume each question is worth 1 point for percentage calculation,
+            # or that QuestionModel would need a 'points' field for accurate % calculation.
+            # Here, we'll sum objective score + all manual scores for a 'total_score'.
+            # Percentage calculation requires knowing the max possible score for subjective questions or total paper points.
+            # Let's assume for now the 'score' field will store the sum, and 'score_percentage' will be based on len(paper_questions).
+            # This part might need refinement based on how max scores for subjective Qs are defined.
+
+            for q_data in paper_questions:
+                if isinstance(q_data, dict) and q_data.get("question_type") == QuestionTypeEnum.ESSAY_QUESTION.value and q_data.get("is_graded_manually"):
+                    total_manual_score += q_data.get("manual_score", 0.0)
+
+            final_total_score = objective_score + total_manual_score
+
+            # This percentage calculation needs to be based on total *possible* score.
+            # If each question is 1 point, total_possible_points = len(paper_questions).
+            # If subjective questions have different max scores, this logic needs to be more complex.
+            # For now, let's assume each question is 1 point for simplicity of pass/fail.
+            total_possible_points = len(paper_questions) if paper_questions else 0
+            final_score_percentage = (final_total_score / total_possible_points) * 100 if total_possible_points > 0 else 0.0
+
+            update_fields = {
+                "score": round(final_total_score),
+                "total_score": round(final_total_score, 2), # Store the combined score explicitly
+                "score_percentage": round(final_score_percentage, 2),
+                "last_update_time_utc": datetime.now(timezone.utc).isoformat(),
+                "pass_status": "", # To be set below
+            }
+
+            if final_score_percentage >= settings.passing_score_percentage:
+                update_fields["pass_status"] = PaperPassStatusEnum.PASSED.value
+                update_fields["passcode"] = generate_random_hex_string_of_bytes(settings.generated_code_length_bytes)
+                _paper_crud_logger.info(f"试卷 '{paper_id}' 最终状态：通过。总分: {final_total_score}, 百分比: {final_score_percentage:.2f}%")
+            else:
+                update_fields["pass_status"] = PaperPassStatusEnum.FAILED.value
+                _paper_crud_logger.info(f"试卷 '{paper_id}' 最终状态：未通过。总分: {final_total_score}, 百分比: {final_score_percentage:.2f}%")
+
+            updated_paper = await self.repository.update(PAPER_ENTITY_TYPE, str(paper_id), update_fields)
+            if not updated_paper:
+                 _paper_crud_logger.error(f"更新试卷 '{paper_id}' 的最终批改状态失败。")
+                 return None
+            return updated_paper
+
+        _paper_crud_logger.info(f"试卷 '{paper_id}' 尚不满足最终定版条件 (待批改主观题: {paper_data.get('pending_manual_grading_count')}, 状态: {paper_data.get('pass_status')})。")
+        return None
 
 # endregion
 
 __all__ = [
-    "PaperCRUD",  # 导出PaperCRUD类 (Export PaperCRUD class)
-    "PAPER_ENTITY_TYPE",  # 导出实体类型常量 (Export entity type constant)
+    "PaperCRUD",
+    "PAPER_ENTITY_TYPE",
 ]
 
 if __name__ == "__main__":
-    # 此模块不应作为主脚本执行。它定义了试卷数据的CRUD操作类。
-    # (This module should not be executed as the main script. It defines the CRUD operations class for paper data.)
     _paper_crud_logger.info(
         f"模块 {__name__} 提供了试卷数据的CRUD操作类，不应直接执行。"
     )
     print(
-        f"模块 {__name__} 提供了试卷数据的CRUD操作类，不应直接执行。 (This module provides CRUD operations class for paper data and should not be executed directly.)"
+        f"模块 {__name__} 提供了试卷数据的CRUD操作类，不应直接执行。"
     )

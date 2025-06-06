@@ -93,7 +93,7 @@ class GradingResultResponse(BaseModel):
 
     # The 'code: int' field is removed as HTTP status codes will be the primary indicator.
     # The 'status_code: str' (now PaperPassStatusEnum) remains to indicate business outcome like PASSED/FAILED.
-    status_code: PaperPassStatusEnum = Field( # Now uses PaperPassStatusEnum
+    status_code: PaperPassStatusEnum = Field(  # Now uses PaperPassStatusEnum
         description="文本状态描述 (例如 'PASSED', 'FAILED', 'ALREADY_GRADED')。(Textual status description (e.g., 'PASSED', 'FAILED', 'ALREADY_GRADED').)"
     )
     message: Optional[str] = Field(
@@ -114,6 +114,9 @@ class GradingResultResponse(BaseModel):
     previous_result: Optional[str] = Field(
         None,
         description="如果试卷之前已被批改，此字段表示之前的状态。(If the paper was previously graded, this field indicates the prior status.)",
+    )
+    pending_manual_grading_count: Optional[int] = Field(
+        None, description="等待人工批阅的主观题数量。若为0或None，则表示所有题目已自动或人工批改完毕。 (Number of subjective questions pending manual grading. If 0 or None, all questions are graded.)"
     )
 
 
@@ -185,7 +188,20 @@ class HistoryPaperQuestionClientView(BaseModel):
     )
     submitted_answer: Optional[Union[str, List[str]]] = Field(
         None,
-        description="用户对此题提交的答案 (选择题为选项ID，填空题为文本，多选为ID列表)。(User's submitted answer for this question (option ID for multiple choice, text for fill-in-the-blank, list of IDs for multi-select).)",
+        description="用户对此题提交的答案 (选择题为选项ID或ID列表，填空题为文本列表，主观题为文本)。(User's submitted answer: option ID(s) for choice, list of texts for fill-in-blank, text for subjective.)",
+    )
+    # 主观题相关字段，供学生回顾查看 (Subjective question related fields for student review)
+    student_subjective_answer: Optional[str] = Field( # 重复了 submitted_answer 的部分功能，但更明确针对主观题文本
+        None, description="【主观题】学生提交的答案文本（如果题目是主观题）。(Student's submitted text answer if it's a subjective question.)"
+    )
+    standard_answer_text: Optional[str] = Field(
+        None, description="【主观题】参考答案或要点（如果允许学生查看）。(Standard answer/key points for subjective questions, if student viewing is allowed.)"
+    )
+    manual_score: Optional[float] = Field(
+        None, description="【主观题】此题目的人工批阅得分。(Manual score for this subjective question.)"
+    )
+    teacher_comment: Optional[str] = Field(
+        None, description="【主观题】教师对此题的评语。(Teacher's comment on this subjective question.)"
     )
 
 
@@ -227,6 +243,16 @@ class HistoryPaperDetailResponse(BaseModel):
     )
     submission_time_utc: Optional[str] = Field(
         None, description="试卷提交时间。(Paper submission time.)"
+    )
+    pending_manual_grading_count: Optional[int] = Field(
+        None, description="等待人工批阅的主观题数量。若为0或None，则表示所有题目已自动或人工批改完毕。 (Number of subjective questions pending manual grading. If 0 or None, all questions are graded.)"
+    )
+    # 也添加主观题统计信息到历史详情
+    subjective_questions_count: Optional[int] = Field(
+        None, description="试卷中主观题的总数量。(Total number of subjective questions in the paper.)"
+    )
+    graded_subjective_questions_count: Optional[int] = Field(
+        None, description="已人工批阅的主观题数量。(Number of manually graded subjective questions.)"
     )
 
 
@@ -276,32 +302,61 @@ class PaperAdminView(BaseModel):
     last_update_ip: Optional[str] = Field(
         None, description="最后更新IP地址。(Last update IP address.)"
     )
+    subjective_questions_count: Optional[int] = Field(
+        0, description="试卷中主观题的总数量。(Total number of subjective questions in the paper.)"
+    )
+    graded_subjective_questions_count: Optional[int] = Field(
+        0, description="已人工批阅的主观题数量。(Number of manually graded subjective questions.)"
+    )
 
 
 class PaperQuestionInternalDetail(BaseModel):
     """
     在Admin API GET /admin/paper/ (获取单个试卷详情) 中，
     表示 `paper_questions` 字段里单个问题的内部存储结构。
-    (Internal storage structure for a single question within the `paper_questions` field
-    in the Admin API GET /admin/paper/ (get single paper details).)
+    包含题目内容、选择题答案映射、以及主观题的作答与批阅信息。
+    (Internal storage structure for a single question within the `paper_questions` field.
+    Includes question content, choice answer mappings, and subjective question answering/grading info.)
     """
 
+    internal_question_id: str = Field(default_factory=lambda: str(uuid.uuid4()), description="试卷中此题目的唯一内部ID。(Unique internal ID for this question within the paper.)")
     body: str = Field(description="问题题干。(Question body.)")
-    # 存储时，正确和错误选项分别存储，并包含其唯一ID
-    # (When stored, correct and incorrect options are stored separately with their unique IDs)
+    # --- 选择题相关字段 (Choice-based question fields) ---
     correct_choices_map: Optional[Dict[str, str]] = Field(
-        None, description="正确选项 (ID -> 文本)。(Correct choices (ID -> text).)"
+        None, description="【选择题】正确选项 (ID -> 文本)。(Correct choices (ID -> text) for choice questions.)"
     )
     incorrect_choices_map: Optional[Dict[str, str]] = Field(
-        None, description="错误选项 (ID -> 文本)。(Incorrect choices (ID -> text).)"
+        None, description="【选择题】错误选项 (ID -> 文本)。(Incorrect choices (ID -> text) for choice questions.)"
     )
-    question_type: Optional[QuestionTypeEnum] = Field(  # 使用枚举 (Use enum)
+    # --- 通用题目信息 (General question information) ---
+    question_type: Optional[QuestionTypeEnum] = Field(
         None,
-        description="题目类型 (例如 'single_choice')。(Question type (e.g., 'single_choice').)",
+        description="题目类型 (例如 'single_choice', 'essay_question')。(Question type (e.g., 'single_choice', 'essay_question').)",
+    )
+    # 从 QuestionModel 复制的基础字段，用于批阅或展示 (Fields copied from QuestionModel for grading/display)
+    standard_answer_text: Optional[str] = Field(
+        None, description="【主观题】参考答案或答案要点。(Reference answer for subjective questions.)"
+    )
+    scoring_criteria: Optional[str] = Field(
+        None, description="【主观题】评分标准。(Scoring criteria for subjective questions.)"
     )
     ref: Optional[str] = Field(
         None,
-        description="答案解析或参考信息。(Answer explanation or reference information.)",
+        description="通用答案解析或参考信息。(General answer explanation or reference information.)",
+    )
+
+    # --- 主观题作答与批阅信息 (Subjective question answer and grading information) ---
+    student_subjective_answer: Optional[str] = Field(
+        None, description="学生提交的主观题答案文本。(Student's submitted text answer for subjective questions.)"
+    )
+    manual_score: Optional[float] = Field(
+        None, description="人工批阅得分（针对单个主观题）。(Manual score for this subjective question.)"
+    )
+    teacher_comment: Optional[str] = Field(
+        None, description="教师对学生此题作答的评语。(Teacher's comment on this subjective question.)"
+    )
+    is_graded_manually: Optional[bool] = Field(
+        False, description="此主观题是否已被人工批阅。(Whether this subjective question has been manually graded.)"
     )
 
 
@@ -345,6 +400,12 @@ class PaperFullDetailModel(BaseModel):
     last_update_ip: Optional[str] = Field(
         None, description="最后更新IP地址。(Last update IP address.)"
     )
+    subjective_questions_count: Optional[int] = Field(
+        None, description="试卷中主观题的总数量。(Total number of subjective questions in the paper.)"
+    )
+    graded_subjective_questions_count: Optional[int] = Field(
+        None, description="已人工批阅的主观题数量。(Number of manually graded subjective questions.)"
+    )
 
 
 # endregion
@@ -361,7 +422,53 @@ __all__ = [
     "PaperAdminView",
     "PaperQuestionInternalDetail",
     "PaperFullDetailModel",
+    # Models for Grading Subjective Questions
+    "PendingGradingPaperItem",
+    "SubjectiveQuestionForGrading",
+    "GradeSubmissionPayload",
 ]
+
+# region Models for Grading Subjective Questions
+
+class PendingGradingPaperItem(BaseModel):
+    """
+    待批阅试卷列表中的项目模型。
+    (Item model for the list of papers pending manual grading.)
+    """
+    paper_id: str = Field(description="试卷ID。(Paper ID.)")
+    user_uid: Optional[str] = Field(None, description="用户UID。(User UID.)")
+    submission_time_utc: Optional[str] = Field(None, description="提交时间 (UTC)。(Submission time (UTC).)")
+    subjective_questions_count: Optional[int] = Field(0, description="主观题总数。(Total subjective questions.)")
+    pending_manual_grading_count: Optional[int] = Field(0, description="待批改主观题数量。(Pending subjective questions.)")
+    difficulty: Optional[str] = Field(None, description="试卷难度。(Paper difficulty.)")
+
+
+class SubjectiveQuestionForGrading(BaseModel):
+    """
+    获取待批阅主观题详情时，单个题目的数据模型。
+    (Data model for a single question when fetching subjective questions for grading.)
+    """
+    internal_question_id: str = Field(description="题目在试卷中的唯一内部ID。(Internal unique ID of the question in the paper.)")
+    body: str = Field(description="问题题干。(Question body.)")
+    question_type: QuestionTypeEnum = Field(description="题目类型 (应为 essay_question)。(Question type (should be essay_question).)")
+    student_subjective_answer: Optional[str] = Field(None, description="学生提交的答案文本。(Student's submitted text answer.)")
+    standard_answer_text: Optional[str] = Field(None, description="参考答案或答案要点。(Standard answer or key points.)")
+    scoring_criteria: Optional[str] = Field(None, description="评分标准。(Scoring criteria.)")
+    # 当前已保存的批阅信息 (Current saved grading info, if any)
+    manual_score: Optional[float] = Field(None, description="当前已保存的人工得分。(Current saved manual score.)")
+    teacher_comment: Optional[str] = Field(None, description="当前已保存的教师评语。(Current saved teacher comment.)")
+    is_graded_manually: Optional[bool] = Field(False, description="此题是否已批阅。(Whether this question has been graded.)")
+
+
+class GradeSubmissionPayload(BaseModel):
+    """
+    提交单个主观题批阅结果的请求体模型。
+    (Request body model for submitting the grading result of a single subjective question.)
+    """
+    manual_score: float = Field(..., ge=0, description="人工给出的分数 (非负)。(Manually assigned score (non-negative).)")
+    teacher_comment: Optional[str] = Field(None, max_length=1000, description="教师评语 (可选, 最长1000字符)。(Teacher's comment (optional, max 1000 chars).)")
+
+# endregion
 
 if __name__ == "__main__":
     # 此模块不应作为主脚本执行。它定义了与试卷和答题相关的Pydantic模型。

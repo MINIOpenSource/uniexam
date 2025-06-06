@@ -133,7 +133,8 @@ class JsonStorageRepository(IDataStorageRepository):
             )
             return None
 
-        # Assuming the 'id' field is standard, or a way to specify the ID field is needed.
+        # 假设 'id' 字段是标准的，或者需要一种方式来指定ID字段。
+        # (Assuming the 'id' field is standard, or a way to specify the ID field is needed.)
         # 为了简化和通用性，这里假设ID字段是 'id', 'uid', 或 'paper_id' 等。
         # 在更复杂的场景下，可能需要为每种实体类型指定主键字段名。
         id_fields_to_check = [
@@ -247,7 +248,7 @@ class JsonStorageRepository(IDataStorageRepository):
             return False
 
         id_fields_to_check = ["id", f"{entity_type}_id", "uid", "paper_id"]
-        # initial_len = len(self.in_memory_data[entity_type]) # Unused
+        # initial_len = len(self.in_memory_data[entity_type]) # 未使用 (Unused)
 
         # 构建一个不包含待删除项的新列表
         items_to_keep = []
