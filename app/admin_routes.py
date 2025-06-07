@@ -11,7 +11,7 @@
 
 所有此模块下的路由都需要管理员权限（通过 `require_admin` 依赖项进行验证）。
 """
-# region 模块导入
+# region 模块导入区域开始
 import asyncio
 import json
 import logging
@@ -70,9 +70,9 @@ from .models.user_models import (
     UserTag,
 )
 
-# endregion
+# endregion 模块导入区域结束
 
-# region 全局变量与初始化
+# region 全局变量与初始化区域开始
 _admin_routes_logger = logging.getLogger(__name__)
 
 admin_router = APIRouter(
@@ -83,10 +83,10 @@ admin_router = APIRouter(
         http_status.HTTP_403_FORBIDDEN: {"description": "权限不足 (非管理员用户) (Forbidden)"},
     },
 )
-# endregion
+# endregion 全局变量与初始化区域结束
 
 
-# region Admin Settings API 端点
+# region 管理员设置API端点 (Admin Settings API)
 @admin_router.get(
     "/settings",
     response_model=SettingsResponseModel,
@@ -112,7 +112,7 @@ async def admin_get_settings(request: Request):
     description="高级管理员 (具有 MANAGER 标签) 更新应用的部分或全部可配置项...",
     dependencies=[Depends(RequireTags({UserTag.MANAGER}))]
 )
-async def admin_update_settings(request: Request, payload: SettingsUpdatePayload): # payload is body, request is dependency
+async def admin_update_settings(request: Request, payload: SettingsUpdatePayload): # [中文]: payload 是请求体, request 是依赖项
     actor_info = getattr(request.state, "user_info_from_token", {"user_uid": "unknown_manager", "tags": [UserTag.MANAGER]})
     actor_uid = actor_info.get("user_uid", "unknown_manager")
     client_ip = get_client_ip_from_request(request)
@@ -161,9 +161,9 @@ async def admin_update_settings(request: Request, payload: SettingsUpdatePayload
             details={"error": f"未知错误: {e}", "attempted_keys": updated_keys}
         )
         raise HTTPException(status_code=http_status.HTTP_500_INTERNAL_SERVER_ERROR, detail="更新配置时发生意外错误。") from e
-# endregion
+# endregion 管理员设置API端点结束
 
-# region Admin User Management API 端点
+# region 管理员用户管理API端点 (Admin User Management API)
 @admin_router.get(
     "/users",
     summary="管理员获取用户列表 (支持CSV/XLSX导出)",
@@ -297,9 +297,9 @@ async def admin_update_user_info(
         details={"updated_fields": list(update_payload.model_dump(exclude_unset=True).keys())}
     )
     return UserPublicProfile.model_validate(updated_user)
-# endregion
+# endregion 管理员用户管理API端点结束
 
-# region Admin Paper Management API 端点
+# region 管理员试卷管理API端点 (Admin Paper Management API)
 @admin_router.get(
     "/papers",
     summary="管理员获取所有试卷摘要列表 (支持CSV/XLSX导出)",
@@ -390,7 +390,7 @@ async def admin_get_all_papers_summary(
         raise HTTPException(status_code=http_status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"获取试卷列表时发生错误: {str(e)}") from e
 
 @admin_router.get("/papers/{paper_id}", response_model=PaperFullDetailModel, summary="管理员获取特定试卷的完整信息")
-async def admin_get_paper_detail(request: Request, paper_id: str = Path(..., description="要获取详情的试卷ID (UUID格式)")):
+async def admin_get_paper_detail(request: Request, paper_id: str = Path(..., description="要获取详情的试卷ID（UUID格式）")):
     _admin_routes_logger.info(f"管理员请求试卷 '{paper_id}' 的详细信息。")
     paper_data = await paper_crud.admin_get_paper_detail(paper_id)
     if not paper_data:
@@ -413,9 +413,9 @@ async def admin_delete_paper(request: Request, paper_id: str = Path(..., descrip
         raise HTTPException(status_code=http_status.HTTP_404_NOT_FOUND, detail=f"试卷ID '{paper_id}' 未找到，无法删除。")
     _admin_routes_logger.info(f"管理员已成功删除试卷: {paper_id}。")
     return None
-# endregion
+# endregion 管理员试卷管理API端点结束
 
-# region Admin Question Bank Management API 端点
+# region 管理员题库管理API端点 (Admin Question Bank Management API)
 @admin_router.get("/question-banks", response_model=List[LibraryIndexItem], summary="管理员获取所有题库的元数据列表")
 async def admin_get_all_qbank_metadata(request: Request):
     _admin_routes_logger.info("管理员请求获取所有题库的元数据。")
@@ -475,9 +475,9 @@ async def admin_delete_question_from_bank(request: Request, difficulty_id: Diffi
     except Exception as e:
         _admin_routes_logger.error(f"从题库 '{difficulty_id.value}' 删除题目时发生意外错误: {e}", exc_info=True)
         raise HTTPException(status_code=http_status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"从题库 '{difficulty_id.value}' 删除题目时发生服务器错误。")
-# endregion
+# endregion 管理员题库管理API端点结束
 
-# region Admin Grading API 端点 (管理员阅卷接口)
+# region 管理员阅卷接口 (Admin Grading API)
 grading_router = APIRouter(
     prefix="/grading",
     tags=["阅卷接口 (Grading)"],
@@ -559,9 +559,9 @@ async def grade_single_subjective_question(
         raise HTTPException(status_code=http_status.HTTP_500_INTERNAL_SERVER_ERROR, detail="批改主观题时发生意外错误。")
 
 admin_router.include_router(grading_router)
-# endregion
+# endregion 管理员阅卷接口结束
 
-# region Admin Token Management API 端点
+# region 管理员Token管理API端点 (Admin Token Management API)
 token_admin_router = APIRouter(
     prefix="/tokens",
     tags=["管理接口 - Token管理 (Admin - Token Management)"],
@@ -635,9 +635,9 @@ async def admin_invalidate_single_token(token_string: str = Path(..., descriptio
     return None
 
 admin_router.include_router(token_admin_router)
-# endregion
+# endregion 管理员Token管理API端点结束
 
-# region Admin Audit Log Viewing API 端点
+# region 管理员审计日志查看API端点 (Admin Audit Log Viewing API)
 
 def _parse_log_timestamp(timestamp_str: str) -> Optional[datetime]:
     """安全地将ISO格式的时间戳字符串解析为datetime对象。"""
@@ -721,7 +721,7 @@ async def admin_view_audit_logs(
 
     return paginated_logs
 
-# endregion
+# endregion 管理员审计日志查看API端点结束
 
 __all__ = ["admin_router"]
 
