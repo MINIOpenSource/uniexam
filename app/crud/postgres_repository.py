@@ -101,9 +101,7 @@ class PostgresStorageRepository(IDataStorageRepository):
             "password": password,
             "database": database,
         }
-        if (
-            not self.dsn
-        ):  # 如果不使用DSN，则过滤掉值为None的参数 (If not using DSN, filter out None parameters)
+        if not self.dsn:  # 如果不使用DSN，则过滤掉值为None的参数 (If not using DSN, filter out None parameters)
             self.conn_params = {
                 k: v for k, v in self.conn_params.items() if v is not None
             }
@@ -181,11 +179,13 @@ class PostgresStorageRepository(IDataStorageRepository):
                 "连接池未初始化，尝试在 init_storage_if_needed 中连接。 (Connection pool not initialized, attempting to connect in init_storage_if_needed.)"
             )
             await self.connect()
-        assert (
-            self.pool is not None
-        ), "数据库连接池在init_storage_if_needed时必须可用。 (DB pool must be available.)"
+        assert self.pool is not None, (
+            "数据库连接池在init_storage_if_needed时必须可用。 (DB pool must be available.)"
+        )
 
-        async with self.pool.acquire() as conn:  # 从连接池获取一个连接 (Acquire a connection from the pool)
+        async with (
+            self.pool.acquire() as conn
+        ):  # 从连接池获取一个连接 (Acquire a connection from the pool)
             # 根据实体类型定义表结构并创建 (Define and create table structure based on entity type)
             if entity_type == "user":  # 用户表
                 await conn.execute(

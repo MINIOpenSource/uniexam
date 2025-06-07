@@ -4,14 +4,20 @@
 FastAPI 应用主入口文件。
 
 负责初始化FastAPI应用实例，加载配置，设置中间件，
-挂载各个功能模块的API路由 (用户认证、核心答题、管理员接口等)，
+挂载各个功能模块的API路由 (用户认证、核心答题、WebSocket 通信、管理员接口等)，
 并定义应用的生命周期事件 (启动和关闭时的任务)。
+(This is the main entry point file for the FastAPI application.
+ It is responsible for initializing the FastAPI app instance, loading configurations,
+ setting up middleware, mounting API routers for various functional modules
+ (user authentication, core exam-taking, WebSocket communication, admin interfaces, etc.),
+ and defining application lifecycle events (tasks for startup and shutdown).)
 """
 
 import asyncio
 import logging  # 用于配置应用级日志
 import os
-from typing import List, Optional  # 确保导入 Dict
+from datetime import datetime  # For export filename timestamp
+from typing import Any, Dict, List, Optional  # 确保导入 Dict, Any
 from uuid import UUID
 
 import uvicorn
@@ -72,11 +78,17 @@ from .models.user_models import (  # 用户相关Pydantic模型
     UserProfileUpdate,
     UserPublicProfile,
 )
+from .services.audit_logger import audit_logger_service  # Audit logger
+from .services.websocket_manager import websocket_manager  # WebSocket Manager
+
+# --- 工具函数导入 ---
+from .utils.export_utils import data_to_csv, data_to_xlsx  # Export utilities
 from .utils.helpers import (  # 工具函数
     format_short_uuid,
     get_client_ip_from_request,
     get_current_timestamp_str,
 )
+from .websocket_routes import ws_router  # WebSocket 接口路由
 
 # endregion
 
@@ -260,6 +272,13 @@ async def sign_up_new_user(payload: UserCreate, request: Request):
     client_ip = get_client_ip_from_request(request)
     if is_rate_limited(client_ip, "auth_attempts"):
         app_logger.warning(f"用户注册请求过于频繁 (IP: {client_ip})。")
+        # Audit log for rate limit
+        await audit_logger_service.log_event(
+            action_type="USER_REGISTER",
+            status="FAILURE",
+            actor_ip=client_ip,
+            details={"message": "注册请求过于频繁", "target_resource_id": payload.uid},
+        )
         raise HTTPException(
             status_code=http_status.HTTP_429_TOO_MANY_REQUESTS,
             detail="注册请求过于频繁，请稍后再试。",
@@ -270,6 +289,14 @@ async def sign_up_new_user(payload: UserCreate, request: Request):
         app_logger.warning(
             f"用户注册失败：用户名 '{payload.uid}' 已存在 (IP: {client_ip})。"
         )
+        # Audit log for registration failure (user exists)
+        await audit_logger_service.log_event(
+            action_type="USER_REGISTER",
+            status="FAILURE",
+            actor_uid=payload.uid,
+            actor_ip=client_ip,
+            details={"message": "用户名已存在"},
+        )
         raise HTTPException(
             status_code=http_status.HTTP_409_CONFLICT,
             detail=f"用户名 '{payload.uid}' 已被注册。",
@@ -277,6 +304,14 @@ async def sign_up_new_user(payload: UserCreate, request: Request):
 
     token_str = await create_access_token(user.uid, user.tags)
     app_logger.info(f"新用户 '{payload.uid}' 注册成功并登录 (IP: {client_ip})。")
+    # Audit log for successful registration
+    await audit_logger_service.log_event(
+        action_type="USER_REGISTER",
+        status="SUCCESS",
+        actor_uid=user.uid,
+        actor_ip=client_ip,
+        details={"message": "新用户注册成功"},
+    )
     return Token(access_token=token_str)  # 返回Token
 
 
@@ -306,6 +341,16 @@ async def login_for_access_token(payload: UserCreate, request: Request):
     client_ip = get_client_ip_from_request(request)
     if is_rate_limited(client_ip, "auth_attempts"):
         app_logger.warning(f"用户登录请求过于频繁 (IP: {client_ip})。")
+        # Audit log for rate limit
+        await audit_logger_service.log_event(
+            action_type="USER_LOGIN",
+            status="FAILURE",
+            actor_ip=client_ip,
+            details={
+                "message": "登录请求过于频繁",
+                "target_resource_id": payload.uid if payload else "N/A",
+            },
+        )
         raise HTTPException(
             status_code=http_status.HTTP_429_TOO_MANY_REQUESTS,
             detail="登录请求过于频繁，请稍后再试。",
@@ -318,6 +363,14 @@ async def login_for_access_token(payload: UserCreate, request: Request):
         app_logger.warning(
             f"用户 '{payload.uid}' 登录失败：用户名或密码错误 (IP: {client_ip})。"
         )
+        # Audit log for login failure
+        await audit_logger_service.log_event(
+            action_type="USER_LOGIN",
+            status="FAILURE",
+            actor_uid=payload.uid,
+            actor_ip=client_ip,
+            details={"message": "用户名或密码错误"},
+        )
         raise HTTPException(
             status_code=http_status.HTTP_401_UNAUTHORIZED,
             detail="用户名或密码不正确。",
@@ -325,6 +378,14 @@ async def login_for_access_token(payload: UserCreate, request: Request):
 
     token_str = await create_access_token(user.uid, user.tags)
     app_logger.info(f"用户 '{payload.uid}' 登录成功 (IP: {client_ip})。")
+    # Audit log for successful login
+    await audit_logger_service.log_event(
+        action_type="USER_LOGIN",
+        status="SUCCESS",
+        actor_uid=user.uid,
+        actor_ip=client_ip,
+        details={"message": "用户登录成功"},
+    )
     return Token(access_token=token_str)
 
 
@@ -623,11 +684,22 @@ async def request_new_exam_paper(
             f"[{timestamp_str}] 用户 '{current_user_uid}' (IP {client_ip}) 成功创建新试卷 [{difficulty.value}]：{short_id}"
         )
         # 构造并返回响应
-        return ExamPaperResponse(
+        response = ExamPaperResponse(
             paper_id=new_paper_client_data["paper_id"],
             difficulty=new_paper_client_data["difficulty"],
             paper=new_paper_client_data["paper"],
         )
+        # WebSocket 广播: 考试开始
+        ws_message_started = {
+            "event_type": "EXAM_STARTED",
+            "user_uid": current_user_uid,
+            "paper_id": str(new_paper_client_data["paper_id"]),
+            "difficulty": new_paper_client_data["difficulty"].value,
+            "num_questions": len(new_paper_client_data["paper"]),
+            "message": f"用户 {current_user_uid} 开始了新试卷 {str(new_paper_client_data['paper_id'])} (难度: {new_paper_client_data['difficulty'].value})。",
+        }
+        await websocket_manager.broadcast_message(ws_message_started)
+        return response
     except ValueError as ve:  # 例如题库题目不足或难度无效
         app_logger.warning(
             f"[{timestamp_str}] 用户 '{current_user_uid}' (IP {client_ip}) 创建新试卷失败 (业务逻辑错误): {ve}"
@@ -697,6 +769,22 @@ async def update_exam_progress(
             app_logger.info(
                 f"[{timestamp_str}] 用户 '{current_user_uid}' (IP {client_ip}) 成功保存试卷 {short_paper_id} 进度。"
             )
+            # WebSocket 广播: 考试进度更新
+            ws_message_progress = {
+                "event_type": "EXAM_PROGRESS_UPDATE",
+                "user_uid": current_user_uid,
+                "paper_id": str(payload.paper_id),
+                "num_answered": len(
+                    payload.result
+                ),  # 注意: payload.result 是当前提交的答案，不一定是总答题数
+                # update_result 可能包含更准确的总答题数字段
+                "message": f"用户 {current_user_uid} 更新了试卷 {short_paper_id} 的进度。",
+            }
+            # 如果 update_result 包含更准确的已回答问题数, 例如:
+            # if "answered_count" in update_result:
+            #    ws_message_progress["num_answered"] = update_result["answered_count"]
+            await websocket_manager.broadcast_message(ws_message_progress)
+
             # 移除旧的自定义 'code' 字段，因为HTTP状态码现在是主要指标
             update_result.pop("code", None)
             return UpdateProgressResponse(**update_result)
@@ -785,9 +873,22 @@ async def submit_exam_paper(
                 f"{log_msg_prefix}，结果: {status_text}, 详情: {outcome}"
             )
         # 返回包含批改结果的JSON响应
-        return JSONResponse(
+        json_response = JSONResponse(
             content=response_data.model_dump(exclude_none=True), status_code=200
         )
+        # WebSocket 广播: 考试提交
+        ws_message_submitted = {
+            "event_type": "EXAM_SUBMITTED",
+            "user_uid": current_user_uid,
+            "paper_id": str(payload.paper_id),
+            "score": response_data.score,
+            "score_percentage": response_data.score_percentage,
+            "pass_status": outcome.get("status_code")
+            == "PASSED",  # 使用原始 outcome 的 status_code
+            "message": f"用户 {current_user_uid} 提交了试卷 {short_paper_id}，得分: {response_data.score if response_data.score is not None else 'N/A'}",
+        }
+        await websocket_manager.broadcast_message(ws_message_submitted)
+        return json_response
     except HTTPException as http_exc:
         raise http_exc
     except Exception as e:
@@ -805,21 +906,115 @@ async def submit_exam_paper(
 
 @exam_router.get(
     "/history",
-    response_model=List[HistoryItem],
-    summary="获取用户答题历史",
-    description="获取当前认证用户的简要答题历史记录列表，包含每次答题的试卷ID、难度、得分等信息。列表按提交时间倒序排列。",
+    # response_model=List[HistoryItem], # Conditional return
+    summary="获取用户答题历史 (支持CSV/XLSX导出)",
+    description="获取当前认证用户的简要答题历史记录列表。可通过 'format' 查询参数导出为 CSV 或 XLSX 文件。",
     responses={
-        http_status.HTTP_200_OK: {"description": "成功获取答题历史"},
+        http_status.HTTP_200_OK: {
+            "description": "成功获取答题历史 (JSON, CSV, or XLSX)"
+        },
         http_status.HTTP_401_UNAUTHORIZED: {"description": "令牌无效或已过期"},
     },
 )
 async def get_user_exam_history(
     current_user_uid: str = Depends(get_current_active_user_uid),
+    export_format: Optional[str] = Query(
+        None, description="导出格式 (csv 或 xlsx)", alias="format", regex="^(csv|xlsx)$"
+    ),
 ):
-    """获取当前认证用户的简要答题历史记录列表 (试卷ID, 难度, 得分等)。"""
+    """获取当前认证用户的简要答题历史记录列表 (试卷ID, 难度, 得分等)。支持导出。"""
     timestamp_str = get_current_timestamp_str()
-    app_logger.info(f"[{timestamp_str}] 用户 '{current_user_uid}' 请求答题历史记录。")
-    history_data = await paper_crud_instance.get_user_history(current_user_uid)
+    app_logger.info(
+        f"[{timestamp_str}] 用户 '{current_user_uid}' 请求答题历史记录 (格式: {export_format or 'json'})。"
+    )
+
+    history_data = await paper_crud_instance.get_user_history(
+        current_user_uid
+    )  # This returns List[Dict]
+
+    if export_format:
+        if not history_data:
+            app_logger.info(
+                f"[{timestamp_str}] 用户 '{current_user_uid}' 没有答题历史数据可导出。"
+            )
+            # Return empty file for export
+
+        data_to_export: List[Dict[str, Any]] = []
+        for item in history_data:  # item is a dict
+            pass_status_str = (
+                "未完成"  # Default if no pass_status or status is not 'completed'
+            )
+            if (
+                item.get("status") == "completed"
+            ):  # Assuming 'status' field indicates completion
+                if item.get("pass_status") is True:
+                    pass_status_str = "通过"
+                elif item.get("pass_status") is False:
+                    pass_status_str = "未通过"
+
+            difficulty_val = item.get("difficulty", "")
+            difficulty_str = (
+                difficulty_val.value
+                if isinstance(difficulty_val, DifficultyLevel)
+                else str(difficulty_val)
+            )
+
+            data_to_export.append(
+                {
+                    "试卷ID": str(item.get("paper_id", "")),
+                    "难度": difficulty_str,
+                    "状态": str(
+                        item.get("status", "")
+                    ),  # Assuming status is an enum or string
+                    "总得分": item.get("total_score_obtained", ""),
+                    "百分制得分": (
+                        f"{item.get('score_percentage'):.2f}"
+                        if item.get("score_percentage") is not None
+                        else ""
+                    ),
+                    "通过状态": pass_status_str,
+                    "提交时间": (
+                        item.get("submission_time").strftime("%Y-%m-%d %H:%M:%S")
+                        if item.get("submission_time")
+                        else ""
+                    ),
+                }
+            )
+
+        headers = [
+            "试卷ID",
+            "难度",
+            "状态",
+            "总得分",
+            "百分制得分",
+            "通过状态",
+            "提交时间",
+        ]
+        current_time_for_file = datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename = (
+            f"答题历史_{current_user_uid}_{current_time_for_file}.{export_format}"
+        )
+
+        if export_format == "csv":
+            app_logger.info(
+                f"[{timestamp_str}] 用户 '{current_user_uid}' 准备导出答题历史到 CSV 文件: {filename}"
+            )
+            return data_to_csv(
+                data_list=data_to_export, headers=headers, filename=filename
+            )
+        elif export_format == "xlsx":
+            app_logger.info(
+                f"[{timestamp_str}] 用户 '{current_user_uid}' 准备导出答题历史到 XLSX 文件: {filename}"
+            )
+            return data_to_xlsx(
+                data_list=data_to_export, headers=headers, filename=filename
+            )
+
+    # Default JSON response
+    if not history_data:
+        app_logger.info(f"[{timestamp_str}] 用户 '{current_user_uid}' 答题历史为空。")
+        # Return empty list, which is fine.
+
     return [HistoryItem(**item) for item in history_data]
 
 
@@ -976,6 +1171,7 @@ app.include_router(users_public_router)  # 挂载用户目录路由
 # region Admin API 路由挂载
 # 管理员相关API路由在 admin_routes.py 中定义，并在此处挂载到主应用
 app.include_router(admin_router, prefix="/admin")  # 所有管理员接口统一前缀 /admin
+app.include_router(ws_router)  # 挂载 WebSocket 路由
 # endregion
 
 # region 主执行块 (用于直接运行此文件进行开发)

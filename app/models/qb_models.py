@@ -10,6 +10,7 @@ question bank index metadata, and the overall structure of a question bank.
 These models are used for data validation, serialization, and for passing
 question bank information within the application and through API interfaces.)
 """
+
 # region 模块导入 (Module Imports)
 import logging
 from typing import List, Optional
@@ -73,11 +74,11 @@ class QuestionModel(BaseModel):
     # --- 主观题相关字段 (Subjective/Essay Question related fields) ---
     standard_answer_text: Optional[str] = Field(
         None,
-        description="【主观题】参考答案或答案要点。用于教师批阅时参考，或在回顾时展示给学生。对于非主观题，此字段应为None。 (Reference answer or key points for subjective questions. For teacher grading reference or student review. Should be None for non-subjective questions.)"
+        description="【主观题】参考答案或答案要点。用于教师批阅时参考，或在回顾时展示给学生。对于非主观题，此字段应为None。 (Reference answer or key points for subjective questions. For teacher grading reference or student review. Should be None for non-subjective questions.)",
     )
     scoring_criteria: Optional[str] = Field(
         None,
-        description="【主观题】评分标准或详细评分细则。供教师批阅时参考。对于非主观题，此字段应为None。 (Scoring criteria or detailed rubrics for subjective questions. For teacher grading reference. Should be None for non-subjective questions.)"
+        description="【主观题】评分标准或详细评分细则。供教师批阅时参考。对于非主观题，此字段应为None。 (Scoring criteria or detailed rubrics for subjective questions. For teacher grading reference. Should be None for non-subjective questions.)",
     )
 
     # --- 通用参考/解释字段 (General Reference/Explanation field) ---

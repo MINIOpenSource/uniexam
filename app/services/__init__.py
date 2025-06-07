@@ -8,7 +8,18 @@ app.services 包初始化文件。
 目前此包为空，未来可以根据需求添加具体服务模块。
 """
 
-__all__ = []
+# from . import some_service # Example placeholder
+from .websocket_manager import (
+    WebSocketManager,
+    websocket_manager,
+)  # 导入新的WebSocket管理器
+
+__all__ = [
+    # "some_service", # Example placeholder
+    # "SomeServiceClass", # Example placeholder
+    "WebSocketManager",
+    "websocket_manager",
+]
 
 # Example of how to structure when services are added:
 #

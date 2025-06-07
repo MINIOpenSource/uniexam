@@ -54,3 +54,6 @@ Dockerfile
 
 # Other
 *.swp
+
+# MkDocs build output
+/site/
