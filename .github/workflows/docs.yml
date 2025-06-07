@@ -1,0 +1,37 @@
+name: Build and Deploy MkDocs
+
+on:
+  push:
+    branches:
+      - dev-1.0
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy-docs:
+    name: Build and Deploy Documentation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10' # Or the version specified in project if any
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install mkdocs mkdocs-material # Assuming mkdocs-material is used, or adjust as needed
+
+      - name: Build MkDocs site
+        run: mkdocs build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
+          # Optional: specify a custom domain if you have one
+          # cname: docs.example.com
