@@ -964,7 +964,10 @@ app.add_middleware(
 # region Cloudflare IP范围获取与更新任务
 async def fetch_and_update_cloudflare_ips_once():
     """获取一次Cloudflare IP范围并更新全局变量。"""
-    global cloudflare_ipv4_ranges, cloudflare_ipv6_ranges, cloudflare_ranges_last_updated
+    global \
+        cloudflare_ipv4_ranges, \
+        cloudflare_ipv6_ranges, \
+        cloudflare_ranges_last_updated
     try:
         app_logger.info("尝试获取Cloudflare IP地址范围...")
         async with httpx.AsyncClient() as client:

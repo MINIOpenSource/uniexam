@@ -115,7 +115,9 @@ class MySQLStorageRepository(IDataStorageRepository):
         """关闭 MySQL 连接池。(Closes the MySQL connection pool.)"""
         if self.pool:
             self.pool.close()
-            await self.pool.wait_closed()  # 等待所有连接关闭 (Wait for all connections to close)
+            await (
+                self.pool.wait_closed()
+            )  # 等待所有连接关闭 (Wait for all connections to close)
             self.pool = None
             _mysql_repo_logger.info(
                 "MySQL 连接池已关闭。 (MySQL connection pool closed.)"
@@ -148,9 +150,9 @@ class MySQLStorageRepository(IDataStorageRepository):
                 "连接池未初始化，尝试在 init_storage_if_needed 中连接。 (Connection pool not initialized, attempting to connect in init_storage_if_needed.)"
             )
             await self.connect()
-        assert (
-            self.pool is not None
-        ), "数据库连接池在init_storage_if_needed时必须可用。 (Database connection pool must be available in init_storage_if_needed.)"
+        assert self.pool is not None, (
+            "数据库连接池在init_storage_if_needed时必须可用。 (Database connection pool must be available in init_storage_if_needed.)"
+        )
 
         async with self.pool.acquire() as conn:
             async with conn.cursor() as cur:

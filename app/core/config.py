@@ -16,8 +16,9 @@ for dynamically generating the `DifficultyLevel` enum and setting up logging.)
 import asyncio  # 导入 asyncio 用于锁 (Import asyncio for locks)
 import json
 import logging  # 导入标准日志模块 (Import standard logging module)
-import logging.handlers # 导入日志处理器模块 (Import logging handlers module)
+import logging.handlers  # 导入日志处理器模块 (Import logging handlers module)
 import os
+from datetime import datetime, timezone  # 确保 timezone 也被导入 for JsonFormatter
 from enum import Enum  # 确保 Enum 被导入 (Ensure Enum is imported)
 from pathlib import Path  # 用于处理文件路径 (For handling file paths)
 from typing import Any, Dict, List, Optional
@@ -34,9 +35,9 @@ from pydantic import (
 
 # 导入自定义枚举类型 (Import custom enum type)
 from ..models.enums import AuthStatusCodeEnum, LogLevelEnum  # 导入认证状态码枚举
-from datetime import datetime, timezone # 确保 timezone 也被导入 for JsonFormatter
 
 # endregion
+
 
 # region 自定义JSON日志格式化器 (Custom JSON Log Formatter)
 class JsonFormatter(logging.Formatter):
@@ -44,15 +45,18 @@ class JsonFormatter(logging.Formatter):
     自定义日志格式化器，将日志记录转换为JSON格式字符串。
     (Custom log formatter that converts log records into JSON formatted strings.)
     """
+
     def format(self, record: logging.LogRecord) -> str:
         """
         将 LogRecord 对象格式化为JSON字符串。
         (Formats a LogRecord object into a JSON string.)
         """
         log_object: Dict[str, Any] = {
-            "timestamp": datetime.fromtimestamp(record.created, tz=timezone.utc).isoformat(),
+            "timestamp": datetime.fromtimestamp(
+                record.created, tz=timezone.utc
+            ).isoformat(),
             "level": record.levelname,
-            "message": record.getMessage(), # 获取格式化后的主消息
+            "message": record.getMessage(),  # 获取格式化后的主消息
             "logger_name": record.name,
             "module": record.module,
             "function": record.funcName,
@@ -71,21 +75,50 @@ class JsonFormatter(logging.Formatter):
         # 添加通过 extra 传递的额外字段 (Add extra fields passed via extra)
         # 标准 LogRecord 属性列表，用于排除它们，只提取 "extra" 内容
         standard_record_attrs = {
-            'args', 'asctime', 'created', 'exc_info', 'exc_text', 'filename',
-            'funcName', 'levelname', 'levelno', 'lineno', 'message', 'module',
-            'msecs', 'msg', 'name', 'pathname', 'process', 'processName',
-            'relativeCreated', 'stack_info', 'thread', 'threadName',
+            "args",
+            "asctime",
+            "created",
+            "exc_info",
+            "exc_text",
+            "filename",
+            "funcName",
+            "levelname",
+            "levelno",
+            "lineno",
+            "message",
+            "module",
+            "msecs",
+            "msg",
+            "name",
+            "pathname",
+            "process",
+            "processName",
+            "relativeCreated",
+            "stack_info",
+            "thread",
+            "threadName",
             # Formatter可能添加的内部属性，以及我们已经明确记录的
-            'currentframe', 'taskName', 'timestamp', 'level', 'logger_name', 'function', 'line',
-            'thread_id', 'thread_name', 'process_id'
+            "currentframe",
+            "taskName",
+            "timestamp",
+            "level",
+            "logger_name",
+            "function",
+            "line",
+            "thread_id",
+            "thread_name",
+            "process_id",
         }
 
         # 遍历record中所有非下划线开头的属性
         for key, value in record.__dict__.items():
-            if not key.startswith('_') and key not in standard_record_attrs:
+            if not key.startswith("_") and key not in standard_record_attrs:
                 log_object[key] = value
 
-        return json.dumps(log_object, ensure_ascii=False, default=str) # default=str 处理无法序列化的对象
+        return json.dumps(
+            log_object, ensure_ascii=False, default=str
+        )  # default=str 处理无法序列化的对象
+
 
 # endregion
 
@@ -440,6 +473,9 @@ class Settings(BaseModel):
         LogLevelEnum.INFO,  # Pydantic将自动使用枚举成员的值 (如 "INFO")
         description="应用日志级别 (DEBUG, INFO, WARNING, ERROR, CRITICAL) (Application log level)",
     )
+    audit_log_file_path: str = Field(
+        "data/logs/audit.log", description="审计日志文件路径 (Audit log file path)"
+    )
 
     database_files: DatabaseFilesConfig = Field(
         default_factory=DatabaseFilesConfig,
@@ -654,22 +690,22 @@ def setup_logging(
     # 为文件处理器创建并设置JSON格式化器 (Create and set JSON formatter for file handler)
     log_file_path = data_dir / log_file_name
     try:
-        json_formatter = JsonFormatter() # 使用自定义的JsonFormatter
+        json_formatter = JsonFormatter()  # 使用自定义的JsonFormatter
         # 使用 TimedRotatingFileHandler 实现日志按天轮转，保留7天备份
         # (Use TimedRotatingFileHandler for daily log rotation, keep 7 backups)
         file_handler = logging.handlers.TimedRotatingFileHandler(
             filename=log_file_path,
-            when='midnight',       # 每天午夜轮转 (Rotate at midnight)
-            interval=1,            # 每天一次 (Once a day)
-            backupCount=7,         # 保留7个备份文件 (Keep 7 backup files)
-            encoding='utf-8',
-            utc=True,              # 使用UTC时间进行轮转 (Use UTC for rotation)
-            delay=False            # False: 在创建处理器时即打开文件 (Open file on handler creation)
+            when="midnight",  # 每天午夜轮转 (Rotate at midnight)
+            interval=1,  # 每天一次 (Once a day)
+            backupCount=7,  # 保留7个备份文件 (Keep 7 backup files)
+            encoding="utf-8",
+            utc=True,  # 使用UTC时间进行轮转 (Use UTC for rotation)
+            delay=False,  # False: 在创建处理器时即打开文件 (Open file on handler creation)
         )
-        file_handler.setFormatter(json_formatter) # 应用JsonFormatter
+        file_handler.setFormatter(json_formatter)  # 应用JsonFormatter
         app_root_logger.addHandler(file_handler)
         # 初始日志消息仍将使用根记录器的控制台格式，直到文件处理器被添加。
-        _config_module_logger.info( # 此消息本身会通过 console_handler 以文本格式输出
+        _config_module_logger.info(  # 此消息本身会通过 console_handler 以文本格式输出
             f"应用日志将以JSON格式按天轮转写入到 (Application logs will be written in daily rotated JSON format to): {log_file_path} (级别 (Level): {log_level_str})"
         )
     except Exception as e:
@@ -802,9 +838,9 @@ def load_settings() -> Settings:
         dotenv_path=project_root / ".env"
     )  # 加载 .env 文件中的环境变量 (Load .env file)
 
-    json_config: Dict[str, Any] = (
-        {}
-    )  # 用于存放从 settings.json 读取的配置 (For config from settings.json)
+    json_config: Dict[
+        str, Any
+    ] = {}  # 用于存放从 settings.json 读取的配置 (For config from settings.json)
     if settings_file.exists() and settings_file.is_file():
         try:
             with open(settings_file, "r", encoding="utf-8") as f:

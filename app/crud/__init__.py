@@ -45,7 +45,12 @@ async def initialize_crud_instances():
     然后使用该存储库实例化各个 CRUD 操作类。
     此函数应在应用启动时调用。
     """
-    global user_crud_instance, paper_crud_instance, qb_crud_instance, settings_crud_instance, repository_instance
+    global \
+        user_crud_instance, \
+        paper_crud_instance, \
+        qb_crud_instance, \
+        settings_crud_instance, \
+        repository_instance
 
     if settings.data_storage_type == "json":
         file_paths_config = {

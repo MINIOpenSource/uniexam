@@ -35,12 +35,12 @@ _rate_limiter_logger = logging.getLogger(__name__)  # 获取本模块的日志�
 # 键为IP地址 (str)，值为对应操作的请求时间戳列表 (List[float])
 # (Key is IP address (str), value is a list of request timestamps (List[float]) for the corresponding action)
 # 分开存储不同操作的速率限制数据 (Store rate limit data for different actions separately)
-ip_exam_request_timestamps: Dict[str, List[float]] = (
-    {}
-)  # 获取新试卷 ("get_exam" action)
-ip_auth_attempt_timestamps: Dict[str, List[float]] = (
-    {}
-)  # 登录/注册等认证尝试 ("auth_attempts" action)
+ip_exam_request_timestamps: Dict[
+    str, List[float]
+] = {}  # 获取新试卷 ("get_exam" action)
+ip_auth_attempt_timestamps: Dict[
+    str, List[float]
+] = {}  # 登录/注册等认证尝试 ("auth_attempts" action)
 
 # endregion
 

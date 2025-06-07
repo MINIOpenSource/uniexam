@@ -159,9 +159,9 @@ class RedisStorageRepository(IDataStorageRepository):
         """通过ID从Redis检索单个实体（存储为JSON字符串）。(Retrieves a single entity by ID from Redis (stored as JSON string)."""
         if not self.redis:
             await self.connect()
-        assert (
-            self.redis is not None
-        ), "Redis连接未初始化 (Redis connection not initialized)"
+        assert self.redis is not None, (
+            "Redis连接未初始化 (Redis connection not initialized)"
+        )
 
         key_name = self._get_entity_key(entity_type, entity_id)
         json_string = await self.redis.get(key_name)
@@ -190,9 +190,9 @@ class RedisStorageRepository(IDataStorageRepository):
         """
         if not self.redis:
             await self.connect()
-        assert (
-            self.redis is not None
-        ), "Redis连接未初始化 (Redis connection not initialized)"
+        assert self.redis is not None, (
+            "Redis连接未初始化 (Redis connection not initialized)"
+        )
 
         ids_set_key = self._get_entity_ids_set_key(entity_type)
         entity_ids = list(
@@ -240,9 +240,9 @@ class RedisStorageRepository(IDataStorageRepository):
         """在Redis中创建新实体（存储为JSON字符串）。(Creates a new entity in Redis (stored as JSON string)."""
         if not self.redis:
             await self.connect()
-        assert (
-            self.redis is not None
-        ), "Redis连接未初始化 (Redis connection not initialized)"
+        assert self.redis is not None, (
+            "Redis连接未初始化 (Redis connection not initialized)"
+        )
 
         entity_id: str
         # 从 entity_data 中确定主键ID (Determine primary key ID from entity_data)
@@ -301,9 +301,9 @@ class RedisStorageRepository(IDataStorageRepository):
         """通过ID在Redis中更新现有实体。(Updates an existing entity by ID in Redis.)"""
         if not self.redis:
             await self.connect()
-        assert (
-            self.redis is not None
-        ), "Redis连接未初始化 (Redis connection not initialized)"
+        assert self.redis is not None, (
+            "Redis连接未初始化 (Redis connection not initialized)"
+        )
 
         key_name = self._get_entity_key(entity_type, entity_id)
         current_json_string = await self.redis.get(key_name)
@@ -329,9 +329,9 @@ class RedisStorageRepository(IDataStorageRepository):
         """通过ID从Redis中删除实体及其在ID集合中的引用。(Deletes an entity by ID from Redis and its reference in the ID set.)"""
         if not self.redis:
             await self.connect()
-        assert (
-            self.redis is not None
-        ), "Redis连接未初始化 (Redis connection not initialized)"
+        assert self.redis is not None, (
+            "Redis连接未初始化 (Redis connection not initialized)"
+        )
 
         key_name = self._get_entity_key(entity_type, entity_id)
         ids_set_key = self._get_entity_ids_set_key(entity_type)
@@ -360,9 +360,9 @@ class RedisStorageRepository(IDataStorageRepository):
         """
         if not self.redis:
             await self.connect()
-        assert (
-            self.redis is not None
-        ), "Redis连接未初始化 (Redis connection not initialized)"
+        assert self.redis is not None, (
+            "Redis连接未初始化 (Redis connection not initialized)"
+        )
         _redis_repo_logger.warning(
             "正在Redis上执行低效查询（获取所有后过滤）。对于大数据集，请优化。 (Performing inefficient query on Redis (get all then filter). Please optimize for large datasets.)"
         )
@@ -427,9 +427,9 @@ class RedisStorageRepository(IDataStorageRepository):
         """
         if not self.redis:
             await self.connect()
-        assert (
-            self.redis is not None
-        ), "Redis连接未初始化 (Redis connection not initialized)"
+        assert self.redis is not None, (
+            "Redis连接未初始化 (Redis connection not initialized)"
+        )
 
         cursor = b"0"  # aioredis scan cursor starts as bytes
         found_types = set()
@@ -438,9 +438,7 @@ class RedisStorageRepository(IDataStorageRepository):
             cursor, keys = await self.redis.scan(
                 cursor=cursor, match=prefix_to_scan, count=100
             )
-            for (
-                key_str
-            ) in (
+            for key_str in (
                 keys
             ):  # Keys are already decoded if decode_responses=True for Redis client
                 entity_type = key_str.split(":", 1)[

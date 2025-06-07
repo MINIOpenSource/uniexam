@@ -125,9 +125,7 @@ async def create_access_token(user_uid: str, user_tags: List[UserTag]) -> str:
     返回 (Returns):
         str: 生成的访问Token字符串。(The generated access token string.)
     """
-    async with (
-        _token_lock
-    ):  # 确保对 _active_tokens 的操作是原子性的 (Ensure atomic operation on _active_tokens)
+    async with _token_lock:  # 确保对 _active_tokens 的操作是原子性的 (Ensure atomic operation on _active_tokens)
         token_bytes_length = (
             settings.token_length_bytes
         )  # 从配置获取Token长度 (Get token length from config)
@@ -252,6 +250,96 @@ async def cleanup_expired_tokens_periodically():  # 函数名已修正，原为 
             _security_module_logger.info(
                 f"后台任务：共清理了 {expired_count} 个过期Token。(Background task: Cleaned a total of {expired_count} expired tokens.)"
             )
+        if expired_count > 0:
+            _security_module_logger.info(
+                f"后台任务：共清理了 {expired_count} 个过期Token。(Background task: Cleaned a total of {expired_count} expired tokens.)"
+            )
+
+
+async def get_all_active_token_info() -> List[Dict[str, Any]]:
+    """
+    获取所有当前活动Token的信息列表。
+    (Retrieves a list of information for all currently active tokens.)
+
+    返回 (Returns):
+        List[Dict[str, Any]]: 每个字典包含token_prefix, user_uid, tags, 和 expires_at (ISO格式字符串)。
+                              (Each dictionary contains token_prefix, user_uid, tags, and expires_at (ISO format string).)
+    """
+    active_token_details = []
+    async with _token_lock:
+        if not _active_tokens:
+            return []
+
+        current_time = time.time()
+        # Iterate over a copy of items in case of modification (though less likely here than in cleanup)
+        for token_str, token_data in list(_active_tokens.items()):
+            # Double check expiry, though cleanup should handle most, this function might be called between cleanups
+            if token_data["expires_at"] <= current_time:
+                # Token is expired, might as well remove it if found here, though cleanup is primary
+                # _active_tokens.pop(token_str, None) # Avoid modifying during unprotected iteration if not list(_active_tokens.items())
+                # For safety, let cleanup_expired_tokens_periodically handle actual removal
+                continue
+
+            active_token_details.append(
+                {
+                    "token_prefix": token_str[:8] + "...",
+                    "user_uid": token_data["user_uid"],
+                    "tags": token_data[
+                        "tags"
+                    ],  # Tags are already stored as list of strings
+                    "expires_at": datetime.fromtimestamp(
+                        token_data["expires_at"], tz=timezone.utc
+                    ).isoformat(),
+                }
+            )
+    return active_token_details
+
+
+async def invalidate_all_tokens_for_user(user_uid: str) -> int:
+    """
+    使指定用户的所有活动Token立即失效。
+    (Invalidates all active tokens for a specified user immediately.)
+
+    参数 (Args):
+        user_uid (str): 需要使其Token失效的用户的UID。
+                        (The UID of the user whose tokens need to be invalidated.)
+
+    返回 (Returns):
+        int: 被成功失效的Token数量。
+             (The number of tokens that were successfully invalidated.)
+    """
+    invalidated_count = 0
+    tokens_to_remove = []
+    async with _token_lock:
+        # First, identify tokens to remove to avoid modifying dict while iterating
+        for token_str, token_data in _active_tokens.items():
+            if token_data["user_uid"] == user_uid:
+                tokens_to_remove.append(token_str)
+
+        # Now, remove the identified tokens
+        for token_str in tokens_to_remove:
+            if (
+                token_str in _active_tokens
+            ):  # Check if still exists (might be removed by another process/task if not careful)
+                _active_tokens.pop(token_str)
+                invalidated_count += 1
+                _security_module_logger.info(
+                    f"已为用户 '{user_uid}' 失效Token (部分): {token_str[:8]}..."
+                    f"(Invalidated token (partial) for user '{user_uid}': {token_str[:8]}...)"
+                )
+
+    if invalidated_count > 0:
+        _security_module_logger.info(
+            f"共为用户 '{user_uid}' 失效了 {invalidated_count} 个Token。"
+            f"(Invalidated a total of {invalidated_count} tokens for user '{user_uid}'.)"
+        )
+    else:
+        _security_module_logger.info(
+            f"未找到用户 '{user_uid}' 的活动Token进行失效操作。"
+            f"(No active tokens found for user '{user_uid}' to invalidate.)"
+        )
+
+    return invalidated_count
 
 
 # endregion
@@ -288,7 +376,7 @@ async def get_current_user_info_from_token(
         )
         raise HTTPException(
             status_code=http_status.HTTP_401_UNAUTHORIZED,
-            detail="无效或已过期的Token", # 完全中文 (Fully Chinese)
+            detail="无效或已过期的Token",  # 完全中文 (Fully Chinese)
             headers={
                 "WWW-Authenticate": "Bearer scheme='QueryToken'"
             },  # 提示客户端使用QueryToken方案
@@ -301,7 +389,7 @@ async def get_current_user_info_from_token(
         )
         raise HTTPException(
             status_code=http_status.HTTP_403_FORBIDDEN,
-            detail="用户账户已被封禁", # 完全中文 (Fully Chinese)
+            detail="用户账户已被封禁",  # 完全中文 (Fully Chinese)
         )
     return user_info
 
@@ -446,6 +534,8 @@ __all__ = [
     "validate_token_and_get_user_info",
     "invalidate_token",
     "cleanup_expired_tokens_periodically",  # 函数名已修正
+    "get_all_active_token_info",  # New function
+    "invalidate_all_tokens_for_user",  # New function
     "get_current_user_info_from_token",
     "get_current_active_user_uid",
     # "get_current_admin_user", # 已移除 (Removed)

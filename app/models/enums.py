@@ -7,6 +7,7 @@
 (This module defines enumeration types that may be reused by multiple modules
 across the application.)
 """
+
 from enum import Enum
 
 
@@ -48,7 +49,7 @@ class PaperPassStatusEnum(str, Enum):
         "GRADING"  # 批改中 (Grading in progress - if async/manual grading is needed)
     )
     PENDING = "PENDING"  # 待提交或待批改 (Pending submission or grading)
-    PENDING_REVIEW = "PENDING_REVIEW" # 客观题已批改，主观题待阅 (Objective part graded, subjective pending review)
+    PENDING_REVIEW = "PENDING_REVIEW"  # 客观题已批改，主观题待阅 (Objective part graded, subjective pending review)
     # 可以根据需要添加更多状态，例如 CANCELED, ERROR_IN_GRADING 等
     # (More statuses like CANCELED, ERROR_IN_GRADING can be added as needed)
 
