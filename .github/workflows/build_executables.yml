@@ -26,61 +26,61 @@ jobs:
             output_cli_app: uniexam-cli_windows.exe
             nuitka_plugins: "fastapi,pydantic,multiprocessing"
 
-steps:
-  - name: Checkout repository
-    uses: actions/checkout@v4
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-  - name: Set up Python ${{ matrix.python-version }}
-    uses: actions/setup-python@v5
-    with:
-      python-version: ${{ matrix.python-version }}
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
 
-  - name: Install dependencies
-    run: |
-      python -m pip install --upgrade pip
-      pip install -r requirements.txt
-      pip install nuitka # Ensure Nuitka is installed
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install nuitka # Ensure Nuitka is installed
 
-  - name: Install platform-specific dependencies (if any)
-    # Example: If you had GUI libs for Linux like PyQt5
-    # if: matrix.os == 'ubuntu-latest'
-    # run: sudo apt-get update && sudo apt-get install -y libxcb-xinerama0
-    run: echo "No platform-specific system dependencies to install for this build."
+      - name: Install platform-specific dependencies (if any)
+        # Example: If you had GUI libs for Linux like PyQt5
+        # if: matrix.os == 'ubuntu-latest'
+        # run: sudo apt-get update && sudo apt-get install -y libxcb-xinerama0
+        run: echo "No platform-specific system dependencies to install for this build."
 
-  - name: Compile Main Application (run.py) with Nuitka
-    run: |
-      python -m nuitka --standalone --onefile \
-        --output-dir=dist/${{ matrix.os_name }}_main \
-        --output-filename=${{ matrix.output_main_app }} \
-        --enable-plugin=${{ matrix.nuitka_plugins }} \
-        --include-package=app \
-        --include-data-dir=data=data \
-        --include-data-file=.env.example=.env.example \
-        --remove-output \
-        run.py
-    # Note: --onefile can lead to slower startup. Consider removing if that's an issue.
-    # For data, .env.example is included; actual .env should be handled at runtime.
+      - name: Compile Main Application (run.py) with Nuitka
+        run: |
+          python -m nuitka --standalone --onefile \
+            --output-dir=dist/${{ matrix.os_name }}_main \
+            --output-filename=${{ matrix.output_main_app }} \
+            --enable-plugin=${{ matrix.nuitka_plugins }} \
+            --include-package=app \
+            --include-data-dir=data=data \
+            --include-data-file=.env.example=.env.example \
+            --remove-output \
+            run.py
+        # Note: --onefile can lead to slower startup. Consider removing if that's an issue.
+        # For data, .env.example is included; actual .env should be handled at runtime.
 
-  - name: Compile CLI Tool (examctl.py) with Nuitka
-    run: |
-      python -m nuitka --standalone --onefile \
-        --output-dir=dist/${{ matrix.os_name }}_cli \
-        --output-filename=${{ matrix.output_cli_app }} \
-        --enable-plugin=${{ matrix.nuitka_plugins }} \
-        --include-package=app \
-        --include-data-dir=data=data \
-        --include-data-file=.env.example=.env.example \
-        --remove-output \
-        examctl.py
+      - name: Compile CLI Tool (examctl.py) with Nuitka
+        run: |
+          python -m nuitka --standalone --onefile \
+            --output-dir=dist/${{ matrix.os_name }}_cli \
+            --output-filename=${{ matrix.output_cli_app }} \
+            --enable-plugin=${{ matrix.nuitka_plugins }} \
+            --include-package=app \
+            --include-data-dir=data=data \
+            --include-data-file=.env.example=.env.example \
+            --remove-output \
+            examctl.py
 
-  - name: Upload Main Application Artifact
-    uses: actions/upload-artifact@v4
-    with:
-      name: ${{ matrix.output_main_app }}
-      path: dist/${{ matrix.os_name }}_main/${{ matrix.output_main_app }}
+      - name: Upload Main Application Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.output_main_app }}
+          path: dist/${{ matrix.os_name }}_main/${{ matrix.output_main_app }}
 
-  - name: Upload CLI Tool Artifact
-    uses: actions/upload-artifact@v4
-    with:
-      name: ${{ matrix.output_cli_app }}
-      path: dist/${{ matrix.os_name }}_cli/${{ matrix.output_cli_app }}
+      - name: Upload CLI Tool Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.output_cli_app }}
+          path: dist/${{ matrix.os_name }}_cli/${{ matrix.output_cli_app }}
