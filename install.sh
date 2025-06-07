@@ -24,11 +24,11 @@ fi
 echo "To activate the virtual environment, run: source .venv/bin/activate"
 
 # Install dependencies
-echo "Installing dependencies from requirements.txt..."
+echo "Installing dependencies from pyproject.toml (including dev and docs extras)..."
 # Ensure pip is called from the virtual environment if script is run directly
 # or if the user hasn't activated it yet.
 if [ -f ".venv/bin/pip" ]; then
-    .venv/bin/pip install -r requirements.txt
+    .venv/bin/pip install .[dev,docs]
 else
     echo "Pip not found in .venv/bin. Please ensure the virtual environment was created correctly."
     exit 1
