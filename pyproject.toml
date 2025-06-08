@@ -45,6 +45,10 @@ atomic = true
 lines_after_imports = 2
 filter_files = true
 
+[tool.setuptools.packages.find]
+include = ["app*"]
+exclude = ["data*"]
+
 [tool.ruff]
 line-length = 88
 src = ["app", "tests"]
