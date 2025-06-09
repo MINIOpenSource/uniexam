@@ -18,7 +18,9 @@ from typing import List, Optional
 
 from pydantic import BaseModel, EmailStr, Field, field_validator
 
-from ..core.config import settings  # 导入全局配置 (Import global settings)
+# from ..core.config import settings  # Removed
+from ..core.config_types import UserValidationConfig # CHANGED
+_DEFAULT_USER_CONFIG = UserValidationConfig() # Instantiation remains the same
 
 # endregion
 
@@ -56,9 +58,9 @@ class UserBase(BaseModel):
 
     uid: str = Field(
         ...,
-        min_length=settings.user_config.uid_min_len,
-        max_length=settings.user_config.uid_max_len,
-        description=f"用户名 ({settings.user_config.uid_min_len}-{settings.user_config.uid_max_len}位，只能是小写字母、数字或下划线)。(Username ({settings.user_config.uid_min_len}-{settings.user_config.uid_max_len} chars, lowercase letters, numbers, or underscores only).)",
+        min_length=_DEFAULT_USER_CONFIG.uid_min_len, # CHANGED
+        max_length=_DEFAULT_USER_CONFIG.uid_max_len, # CHANGED
+        description=f"用户名 ({_DEFAULT_USER_CONFIG.uid_min_len}-{_DEFAULT_USER_CONFIG.uid_max_len}位，只能是小写字母、数字或下划线)。(Username ({_DEFAULT_USER_CONFIG.uid_min_len}-{_DEFAULT_USER_CONFIG.uid_max_len} chars, lowercase letters, numbers, or underscores only).)", # CHANGED
     )
     nickname: Optional[str] = Field(
         None,
@@ -85,6 +87,7 @@ class UserBase(BaseModel):
         验证UID是否符合配置中定义的正则表达式和长度。
         (Validates if UID conforms to the regex and length defined in settings.)
         """
+        from app.core.config import settings # LOCAL IMPORT
         uid_config = settings.user_config
         if not (uid_config.uid_min_len <= len(value) <= uid_config.uid_max_len):
             raise ValueError(
@@ -109,9 +112,9 @@ class UserCreate(UserBase):
 
     password: str = Field(
         ...,
-        min_length=settings.user_config.password_min_len,
-        max_length=settings.user_config.password_max_len,
-        description=f"密码 ({settings.user_config.password_min_len}-{settings.user_config.password_max_len} 位)。(Password ({settings.user_config.password_min_len}-{settings.user_config.password_max_len} chars).)",
+        min_length=_DEFAULT_USER_CONFIG.password_min_len, # CHANGED
+        max_length=_DEFAULT_USER_CONFIG.password_max_len, # CHANGED
+        description=f"密码 ({_DEFAULT_USER_CONFIG.password_min_len}-{_DEFAULT_USER_CONFIG.password_max_len} 位)。(Password ({_DEFAULT_USER_CONFIG.password_min_len}-{_DEFAULT_USER_CONFIG.password_max_len} chars).)", # CHANGED
     )
 
 
@@ -154,9 +157,9 @@ class UserPasswordUpdate(BaseModel):
     current_password: str = Field(..., description="当前密码。(Current password.)")
     new_password: str = Field(
         ...,
-        min_length=settings.user_config.password_min_len,
-        max_length=settings.user_config.password_max_len,
-        description=f"新密码 ({settings.user_config.password_min_len}-{settings.user_config.password_max_len} 位)。(New password ({settings.user_config.password_min_len}-{settings.user_config.password_max_len} chars).)",
+        min_length=_DEFAULT_USER_CONFIG.password_min_len, # CHANGED
+        max_length=_DEFAULT_USER_CONFIG.password_max_len, # CHANGED
+        description=f"新密码 ({_DEFAULT_USER_CONFIG.password_min_len}-{_DEFAULT_USER_CONFIG.password_max_len} 位)。(New password ({_DEFAULT_USER_CONFIG.password_min_len}-{_DEFAULT_USER_CONFIG.password_max_len} chars).)", # CHANGED
     )
 
 
@@ -232,9 +235,9 @@ class AdminUserUpdate(BaseModel):
     )
     new_password: Optional[str] = Field(
         None,
-        min_length=settings.user_config.password_min_len,
-        max_length=settings.user_config.password_max_len,
-        description=f"(可选) 为用户设置新密码 ({settings.user_config.password_min_len}-{settings.user_config.password_max_len} 位)。如果提供，将覆盖用户现有密码。((Optional) Set a new password for the user ({settings.user_config.password_min_len}-{settings.user_config.password_max_len} chars). Overwrites existing password if provided.)",
+        min_length=_DEFAULT_USER_CONFIG.password_min_len, # CHANGED
+        max_length=_DEFAULT_USER_CONFIG.password_max_len, # CHANGED
+        description=f"(可选) 为用户设置新密码 ({_DEFAULT_USER_CONFIG.password_min_len}-{_DEFAULT_USER_CONFIG.password_max_len} 位)。如果提供，将覆盖用户现有密码。((Optional) Set a new password for the user ({_DEFAULT_USER_CONFIG.password_min_len}-{_DEFAULT_USER_CONFIG.password_max_len} chars). Overwrites existing password if provided.)", # CHANGED
     )
 
 

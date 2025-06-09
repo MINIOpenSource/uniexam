@@ -17,13 +17,17 @@ from typing import List, Optional
 
 from pydantic import BaseModel, Field, ValidationInfo, field_validator, model_validator
 
-from ..core.config import DifficultyLevel, settings  # 导入难度枚举和全局配置
-from .enums import QuestionTypeEnum  # 导入题目类型枚举
+from .enums import DifficultyLevel, QuestionTypeEnum  # 导入枚举
+# Removed: from ..core.config import settings
 
 # endregion
 
 _qb_models_logger = logging.getLogger(__name__)  # 获取本模块的日志记录器实例
 
+# Helper function for default_factory to avoid import cycle with settings
+def _get_default_questions_count() -> int:
+    from app.core.config import settings # Local import
+    return settings.num_questions_per_paper_default
 
 # region 题库题目模型 (QuestionModel)
 class QuestionModel(BaseModel):
@@ -162,7 +166,7 @@ class LibraryIndexItem(BaseModel):
         description="题库的详细描述。(Detailed description of the bank.)",
     )
     default_questions: int = Field(
-        default_factory=lambda: settings.num_questions_per_paper_default,
+        default_factory=_get_default_questions_count, # USE HELPER
         ge=1,
         description="从此题库出题时的默认题目数量。(Default number of questions when generating a paper from this bank.)",
     )

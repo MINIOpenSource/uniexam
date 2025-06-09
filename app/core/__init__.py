@@ -10,7 +10,7 @@ __all__ = [
     "interfaces",
     "IDataStorageRepository",  # 来自 interfaces 模块
     "rate_limiter",
-    "RateLimiter",  # 来自 rate_limiter 模块
+    # "RateLimiter", # Class does not exist in rate_limiter.py
     "security",
     "create_access_token",  # 来自 security 模块
     "get_current_active_user",  # 来自 security 模块 (假设存在或后续会添加)
@@ -24,9 +24,10 @@ __all__ = [
 # (Re-export specific important names for easier access directly from app.core)
 settings = config.settings
 IDataStorageRepository = interfaces.IDataStorageRepository
-RateLimiter = (
-    rate_limiter.RateLimiter
-)  # 假设 RateLimiter 类在 rate_limiter 模块中定义并导出
+# RateLimiter class does not exist in rate_limiter.py
+# RateLimiter = (
+#     rate_limiter.RateLimiter
+# )
 create_access_token = security.create_access_token
 get_password_hash = security.get_password_hash
 verify_password = security.verify_password

@@ -62,7 +62,7 @@ if [ -d "$VENV_DIR" ]; then
         echo "正在删除现有的虚拟环境..."
         rm -rf "$VENV_DIR"
         echo "正在创建新的虚拟环境..."
-        python3 -m venv "$VENV_DIR"
+        virtualenv "$VENV_DIR"
         if [ $? -ne 0 ]; then
             echo "错误: 创建虚拟环境失败。"
             exit 1
@@ -73,7 +73,7 @@ if [ -d "$VENV_DIR" ]; then
     fi
 else
     echo "正在创建虚拟环境 '$VENV_DIR'..."
-    python3 -m venv "$VENV_DIR"
+    virtualenv "$VENV_DIR"
     if [ $? -ne 0 ]; then
         echo "错误: 创建虚拟环境失败。"
         exit 1

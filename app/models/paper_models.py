@@ -18,10 +18,7 @@ from typing import Dict, List, Optional, Union
 # from uuid import UUID  # 用于处理UUID类型 (For handling UUID type) -> This is fine, but default_factory needs the module
 from pydantic import BaseModel, Field
 
-from ..core.config import (
-    DifficultyLevel,
-)  # 导入难度级别枚举 (Import DifficultyLevel enum)
-from .enums import PaperPassStatusEnum, QuestionTypeEnum  # 导入新的枚举类型
+from .enums import PaperPassStatusEnum, QuestionTypeEnum, DifficultyLevel  # 导入新的枚举类型 (DifficultyLevel ADDED HERE)
 
 # endregion
 
