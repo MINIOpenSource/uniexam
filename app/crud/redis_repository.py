@@ -22,7 +22,7 @@ from app.core.interfaces import (
     IDataStorageRepository,
 )  # 导入抽象基类 (Import abstract base class)
 
-from .qb_crud import (
+from .qb import ( # CORRECTED IMPORT
     QB_CONTENT_ENTITY_TYPE_PREFIX,
 )  # 用于键名构造 (For key name construction)
 

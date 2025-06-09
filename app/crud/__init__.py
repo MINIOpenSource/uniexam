@@ -15,7 +15,7 @@ app.crud 包初始化文件。
 from pathlib import Path
 from typing import Optional
 
-from app.core.config import settings
+from app.core.config import settings as global_app_settings # ALIASED
 from app.core.interfaces import IDataStorageRepository
 
 from .json_repository import JsonStorageRepository
@@ -52,57 +52,57 @@ async def initialize_crud_instances():
         settings_crud_instance, \
         repository_instance
 
-    if settings.data_storage_type == "json":
+    if global_app_settings.data_storage_type == "json": # CHANGED
         file_paths_config = {
-            "user": Path(settings.database_files.users),
-            "paper": Path(settings.database_files.papers),
+            "user": Path(global_app_settings.database_files.users), # CHANGED
+            "paper": Path(global_app_settings.database_files.papers), # CHANGED
             # TODO: 未来根据需要添加其他实体类型及其文件路径配置
             # (TODO: Add other entity types and their file paths as needed in the future)
             # "settings_app": Path("app_settings.json"), # 应用设置的JSON文件名示例
-            # "question_bank_meta": Path(settings.question_library_index_file), # 题库元数据文件名示例
+            # "question_bank_meta": Path(global_app_settings.question_library_index_file), # 题库元数据文件名示例
         }
         current_repository = JsonStorageRepository(
-            file_paths_config=file_paths_config, base_data_dir=settings.data_dir
+            file_paths_config=file_paths_config, base_data_dir=global_app_settings.data_dir # CHANGED
         )
-    elif settings.data_storage_type == "postgres":
+    elif global_app_settings.data_storage_type == "postgres": # CHANGED
         current_repository = PostgresStorageRepository(
-            dsn=settings.POSTGRES_DSN,
-            host=settings.POSTGRES_HOST,
-            port=settings.POSTGRES_PORT,
-            user=settings.POSTGRES_USER,
-            password=settings.POSTGRES_PASSWORD,
-            database=settings.POSTGRES_DB,
+            dsn=global_app_settings.POSTGRES_DSN, # CHANGED
+            host=global_app_settings.POSTGRES_HOST, # CHANGED
+            port=global_app_settings.POSTGRES_PORT, # CHANGED
+            user=global_app_settings.POSTGRES_USER, # CHANGED
+            password=global_app_settings.POSTGRES_PASSWORD, # CHANGED
+            database=global_app_settings.POSTGRES_DB, # CHANGED
         )
-    elif settings.data_storage_type == "mysql":
+    elif global_app_settings.data_storage_type == "mysql": # CHANGED
         if not all(
             [
-                settings.MYSQL_HOST,
-                settings.MYSQL_USER,
-                settings.MYSQL_PASSWORD,
-                settings.MYSQL_DB,
+                global_app_settings.MYSQL_HOST, # CHANGED
+                global_app_settings.MYSQL_USER, # CHANGED
+                global_app_settings.MYSQL_PASSWORD, # CHANGED
+                global_app_settings.MYSQL_DB, # CHANGED
             ]
         ):
             raise ValueError("配置中缺少必要的MySQL连接参数。")
         current_repository = MySQLStorageRepository(
-            host=settings.MYSQL_HOST,
-            port=(settings.MYSQL_PORT if settings.MYSQL_PORT is not None else 3306),
-            user=settings.MYSQL_USER,
-            password=settings.MYSQL_PASSWORD,
-            db=settings.MYSQL_DB,
+            host=global_app_settings.MYSQL_HOST, # CHANGED
+            port=(global_app_settings.MYSQL_PORT if global_app_settings.MYSQL_PORT is not None else 3306), # CHANGED
+            user=global_app_settings.MYSQL_USER, # CHANGED
+            password=global_app_settings.MYSQL_PASSWORD, # CHANGED
+            db=global_app_settings.MYSQL_DB, # CHANGED
         )
-    elif settings.data_storage_type == "redis":
+    elif global_app_settings.data_storage_type == "redis": # CHANGED
         current_repository = RedisStorageRepository(
-            redis_url=settings.REDIS_URL,
-            host=settings.REDIS_HOST,
-            port=settings.REDIS_PORT,
-            db=settings.REDIS_DB,
-            password=settings.REDIS_PASSWORD,
+            redis_url=global_app_settings.REDIS_URL, # CHANGED
+            host=global_app_settings.REDIS_HOST, # CHANGED
+            port=global_app_settings.REDIS_PORT, # CHANGED
+            db=global_app_settings.REDIS_DB, # CHANGED
+            password=global_app_settings.REDIS_PASSWORD, # CHANGED
         )
-    elif settings.data_storage_type == "sqlite":
-        db_path = Path(settings.SQLITE_DB_PATH)
+    elif global_app_settings.data_storage_type == "sqlite": # CHANGED
+        db_path = Path(global_app_settings.SQLITE_DB_PATH) # CHANGED
         current_repository = SQLiteStorageRepository(db_file_path=db_path)
     else:
-        raise ValueError(f"不支持的数据存储类型: {settings.data_storage_type}")
+        raise ValueError(f"不支持的数据存储类型: {global_app_settings.data_storage_type}") # CHANGED
 
     await current_repository.connect()
     repository_instance = current_repository

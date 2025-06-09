@@ -26,7 +26,7 @@ from app.core.interfaces import (
 
 # QB_CONTENT_ENTITY_TYPE_PREFIX 用于动态识别题库内容实体类型
 # (QB_CONTENT_ENTITY_TYPE_PREFIX for dynamically identifying QB content entity types)
-from .qb_crud import QB_CONTENT_ENTITY_TYPE_PREFIX
+from .qb import QB_CONTENT_ENTITY_TYPE_PREFIX # CORRECTED IMPORT
 
 _sqlite_repo_logger = logging.getLogger(__name__)  # 获取本模块的日志记录器实例
 

@@ -31,8 +31,8 @@ from fastapi import (
 
 from app.utils.export_utils import data_to_csv, data_to_xlsx
 
-from ..services.audit_logger import audit_logger_service
-from ..utils.helpers import get_client_ip_from_request
+from .services.audit_logger import audit_logger_service # CORRECTED IMPORT
+from .utils.helpers import get_client_ip_from_request # CORRECTED IMPORT
 from .core.config import DifficultyLevel, settings
 from .core.security import (
     RequireTags,
@@ -218,7 +218,7 @@ async def admin_get_all_users(
     return [UserPublicProfile.model_validate(user) for user in users_in_db]
 
 @admin_router.get("/users/{user_uid}", response_model=UserPublicProfile, summary="管理员获取特定用户信息")
-async def admin_get_user(user_uid: str = Path(..., description="要获取详情的用户的UID"), request: Request = Depends(lambda r: r) ):
+async def admin_get_user(request: Request, user_uid: str = Path(..., description="要获取详情的用户的UID")): # CORRECTED PARAMETER
     actor_uid = getattr(request.state, "current_user_uid", "unknown_admin")
     client_ip = get_client_ip_from_request(request)
     _admin_routes_logger.info(f"管理员 '{actor_uid}' (IP: {client_ip}) 请求用户 '{user_uid}' 的详细信息。")
@@ -231,8 +231,8 @@ async def admin_get_user(user_uid: str = Path(..., description="要获取详情�
 @admin_router.put("/users/{user_uid}", response_model=UserPublicProfile, summary="管理员更新特定用户信息")
 async def admin_update_user_info(
     update_payload: AdminUserUpdate, # Body parameter first
-    user_uid: str = Path(..., description="要更新信息的用户的UID"),
-    request: Request = Depends(lambda r: r)
+    request: Request, # MOVED AND CORRECTED
+    user_uid: str = Path(..., description="要更新信息的用户的UID")
 ):
     current_admin_info = getattr(request.state, "user_info_from_token", {"user_uid": "unknown_admin", "tags": []})
     actor_uid = current_admin_info.get("user_uid", "unknown_admin")
@@ -593,7 +593,7 @@ async def admin_list_active_tokens(request: Request):
     summary="管理员吊销特定用户的所有活动Token",
     description="立即吊销（删除）指定用户ID的所有活动访问Token。此操作会强制该用户在所有设备上登出。"
 )
-async def admin_invalidate_user_tokens(user_uid: str = Path(..., description="要吊销其Token的用户的UID"), request: Request = Depends(lambda r: r)):
+async def admin_invalidate_user_tokens(request: Request, user_uid: str = Path(..., description="要吊销其Token的用户的UID")): # CORRECTED
     actor_uid = getattr(request.state, "current_user_uid", "unknown_admin")
     client_ip = get_client_ip_from_request(request)
     _admin_routes_logger.info(f"管理员 '{actor_uid}' (IP: {client_ip}) 尝试吊销用户 '{user_uid}' 的所有Token。")
@@ -618,7 +618,7 @@ async def admin_invalidate_user_tokens(user_uid: str = Path(..., description="�
     summary="管理员吊销指定的单个活动Token",
     description="立即吊销（删除）指定的单个活动访问Token。管理员需要提供完整的Token字符串。请谨慎使用，确保Token字符串的准确性。"
 )
-async def admin_invalidate_single_token(token_string: str = Path(..., description="要吊销的完整Token字符串"), request: Request = Depends(lambda r: r)):
+async def admin_invalidate_single_token(request: Request, token_string: str = Path(..., description="要吊销的完整Token字符串")): # CORRECTED
     actor_uid = getattr(request.state, "current_user_uid", "unknown_admin")
     client_ip = get_client_ip_from_request(request)
     token_prefix_for_log = token_string[:8] + "..."
