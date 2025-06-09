@@ -87,8 +87,8 @@ class UserBase(BaseModel):
         验证UID是否符合配置中定义的正则表达式和长度。
         (Validates if UID conforms to the regex and length defined in settings.)
         """
-        from app.core.config import settings # LOCAL IMPORT
-        uid_config = settings.user_config
+        # Use the _DEFAULT_USER_CONFIG directly to avoid circular import with app.core.config.settings
+        uid_config = _DEFAULT_USER_CONFIG
         if not (uid_config.uid_min_len <= len(value) <= uid_config.uid_max_len):
             raise ValueError(
                 f"用户名的长度必须在 {uid_config.uid_min_len} 和 {uid_config.uid_max_len} 之间。(Username length must be between {uid_config.uid_min_len} and {uid_config.uid_max_len}.)"

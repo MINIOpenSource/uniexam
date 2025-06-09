@@ -31,7 +31,7 @@ from fastapi import (  # FastAPI 相关导入
 )
 from passlib.context import CryptContext  # 用于密码哈希 (For password hashing)
 
-from ..models.user_models import UserTag  # 用户标签枚举 (UserTag enum from models)
+# from ..models.user_models import UserTag  # 用户标签枚举 (UserTag enum from models) # MOVED TO LOCAL IMPORTS
 from .config import settings  # 应用全局配置 (Application global settings)
 
 # endregion
@@ -110,7 +110,7 @@ def get_password_hash(password: str) -> str:
 # region Token 工具函数 (Token Utility Functions)
 
 
-async def create_access_token(user_uid: str, user_tags: List[UserTag]) -> str:
+async def create_access_token(user_uid: str, user_tags: List["UserTag"]) -> str:
     """
     为指定用户生成一个新的访问Token，并将其存储在内存的活动Token列表中。
     Token是使用 `secrets.token_hex` 生成的伪随机十六进制字符串。
@@ -169,6 +169,7 @@ async def validate_token_and_get_user_info(token: str) -> Optional[Dict[str, Any
                                     and "tags" (List[UserTag]). If the token is invalid or expired,
                                     returns None and internally cleans up the expired token.)
     """
+    from ..models.user_models import UserTag # LOCAL IMPORT
     async with _token_lock:
         token_data = _active_tokens.get(token)
         current_time = time.time()
@@ -382,6 +383,7 @@ async def get_current_user_info_from_token(
             },  # 提示客户端使用QueryToken方案
         )
 
+    from ..models.user_models import UserTag # LOCAL IMPORT
     if UserTag.BANNED in user_info.get("tags", []):  # 检查用户是否被封禁
         _security_module_logger.warning(
             f"用户 '{user_info['user_uid']}' (Token: {token[:8]}...) 因被封禁而访问被拒。"
@@ -458,17 +460,17 @@ class RequireTags:
     API endpoints, ensuring that only users with particular permissions (tags) can access them.)
     """
 
-    def __init__(self, required_tags: Set[UserTag]):
+    def __init__(self, required_tags: Set[str]): # Changed UserTag to str
         """
         初始化权限检查器。(Initializes the permission checker.)
 
         参数 (Args):
-            required_tags (Set[UserTag]): 一个包含必需的 `UserTag` 枚举成员的集合。
+            required_tags (Set[str]): 一个包含必需的 `UserTag` 标签名称 (字符串) 的集合。
                                          用户必须拥有此集合中的所有标签才能通过检查。
-                                         (A set containing required `UserTag` enum members.
+                                         (A set containing required `UserTag` tag names (strings).
                                           The user must possess all tags in this set to pass the check.)
         """
-        self.required_tags = required_tags
+        self.required_tags_str = required_tags # Store as strings
 
     async def __call__(
         self, user_info: Dict[str, Any] = Depends(get_current_user_info_from_token)
@@ -489,14 +491,25 @@ class RequireTags:
         异常 (Raises):
             HTTPException (403): 如果用户不具备所有必需的标签。(If the user does not possess all required tags.)
         """
-        user_tags_set = set(user_info.get("tags", []))
-        if not self.required_tags.issubset(
-            user_tags_set
-        ):  # 检查用户是否拥有所有必需标签
-            missing_tags = self.required_tags - user_tags_set
+        from ..models.user_models import UserTag # LOCAL IMPORT
+
+        user_tags_enum_set = set(user_info.get("tags", [])) # These are already UserTag enums from validate_token_and_get_user_info
+
+        # Convert self.required_tags_str (string set) to a set of UserTag enums for comparison
+        required_tags_enum_set = set()
+        for tag_str in self.required_tags_str:
+            try:
+                required_tags_enum_set.add(UserTag(tag_str))
+            except ValueError:
+                _security_module_logger.error(f"RequireTags: 无效的预定义标签字符串 (Invalid predefined tag string): '{tag_str}'")
+                # Potentially raise an error here or handle as a configuration issue
+                # For now, this tag will be ignored in the check if it's invalid
+
+        if not required_tags_enum_set.issubset(user_tags_enum_set):  # 检查用户是否拥有所有必需标签
+            missing_tags_enum = required_tags_enum_set - user_tags_enum_set
             _security_module_logger.warning(
                 f"用户 '{user_info['user_uid']}' 缺少必需标签 (User '{user_info['user_uid']}' missing required tags) "
-                f"{[tag.value for tag in missing_tags]}，尝试访问受限资源 (attempting to access restricted resource)."
+                f"{[tag.value for tag in missing_tags_enum]}，尝试访问受限资源 (attempting to access restricted resource)."
             )
             raise HTTPException(
                 status_code=http_status.HTTP_403_FORBIDDEN,
@@ -507,24 +520,12 @@ class RequireTags:
 
 # 预定义的权限检查依赖项实例，方便在路由中直接使用
 # (Predefined permission check dependency instances for direct use in routes)
-require_admin = RequireTags(
-    {UserTag.ADMIN}
-)  # 要求用户具有ADMIN标签 (Requires ADMIN tag)
-require_user = RequireTags(
-    {UserTag.USER}
-)  # 要求用户具有USER标签 (通常所有普通登录用户都有)
-# (Requires USER tag (typically all normal logged-in users have this))
-require_grader = RequireTags(
-    {UserTag.GRADER}
-)  # 要求用户具有GRADER标签 (批改员) (Requires GRADER tag (grader))
-require_examiner = RequireTags(
-    {UserTag.EXAMINER}
-)  # 要求用户具有EXAMINER标签 (出题员/试卷管理员)
-# (Requires EXAMINER tag (question/paper admin))
-require_manager = RequireTags(
-    {UserTag.MANAGER}
-)  # 要求用户具有MANAGER标签 (系统管理员的子集，可能有特定管理权限)
-# (Requires MANAGER tag (subset of admin, may have specific management perms))
+# These now use string values for tags
+require_admin = RequireTags({"admin"})
+require_user = RequireTags({"user"})
+require_grader = RequireTags({"grader"})
+require_examiner = RequireTags({"examiner"})
+require_manager = RequireTags({"manager"})
 # endregion
 
 __all__ = [

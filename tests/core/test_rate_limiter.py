@@ -5,7 +5,7 @@ from unittest.mock import patch, MagicMock
 
 # Module to test
 from app.core import rate_limiter
-from app.core.config import Settings, RateLimitConfig, UserRateLimits
+from app.core.config import Settings, RateLimitConfig, UserTypeRateLimits # CORRECTED IMPORT
 from app.models.user_models import UserTag
 
 # Helper to reset global state between tests
@@ -24,11 +24,11 @@ def mock_settings_rate_limits(monkeypatch):
     # Define some default rate limits for testing
     mock_config = Settings(
         rate_limits={
-            "default_user": UserRateLimits(
+            "default_user": UserTypeRateLimits( # CORRECTED CLASS NAME
                 get_exam=RateLimitConfig(limit=3, window=60),      # 3 requests per 60s
                 auth_attempts=RateLimitConfig(limit=5, window=300) # 5 attempts per 300s
             ),
-            "limited_user": UserRateLimits(
+            "limited_user": UserTypeRateLimits( # CORRECTED CLASS NAME
                 get_exam=RateLimitConfig(limit=1, window=60),      # 1 request per 60s
                 auth_attempts=RateLimitConfig(limit=2, window=300) # 2 attempts per 300s
             )
