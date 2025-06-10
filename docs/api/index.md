@@ -85,7 +85,7 @@
 
 ### UserTag (用户标签)
 
-定义在 `app/models/user_models.py` 中的 `UserTag` 枚举，主要包括：
+定义在 `app/models/user.py` 中的 `UserTag` 枚举，主要包括：
 
 -   `admin`: 管理员
 -   `user`: 普通用户

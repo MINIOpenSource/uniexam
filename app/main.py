@@ -34,7 +34,7 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import JSONResponse
 
 # --- 路由模块导入 ---
-from .admin_routes import admin_router  # 管理员接口路由
+from .routers.api import admin_router, ws_router # NEW: Consolidated router import
 
 # --- 核心模块导入 (使用相对路径) ---
 from .core.config import (  # 全局配置和枚举
@@ -57,7 +57,7 @@ from .crud import (
     repository_instance,
     user_crud_instance,
 )
-from .models.paper_models import (  # 试卷相关Pydantic模型
+from .models.paper import (  # 试卷相关Pydantic模型
     ExamPaperResponse,
     GradingResultResponse,
     HistoryItem,
@@ -65,13 +65,13 @@ from .models.paper_models import (  # 试卷相关Pydantic模型
     PaperSubmissionPayload,
     UpdateProgressResponse,
 )
-from .models.qb_models import LibraryIndexItem  # 用于 /difficulties 接口的题库索引模型
-from .models.token_models import (  # Token及认证状态相关Pydantic模型
+from .models.qb import LibraryIndexItem  # 用于 /difficulties 接口的题库索引模型
+from .models.token import (  # Token及认证状态相关Pydantic模型
     Token,
 )
 
 # --- Pydantic 模型导入 ---
-from .models.user_models import (  # 用户相关Pydantic模型
+from .models.user import (  # 用户相关Pydantic模型
     UserCreate,
     UserDirectoryEntry,
     UserPasswordUpdate,
@@ -88,7 +88,7 @@ from .utils.helpers import (  # 工具函数
     get_client_ip_from_request,
     get_current_timestamp_str,
 )
-from .websocket_routes import ws_router  # WebSocket 接口路由
+# OLD: from .websocket_routes import ws_router  # WebSocket 接口路由 - REMOVED
 
 # endregion
 

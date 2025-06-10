@@ -31,7 +31,7 @@ from fastapi import (  # FastAPI 相关导入
 )
 from passlib.context import CryptContext  # 用于密码哈希 (For password hashing)
 
-# from ..models.user_models import UserTag  # 用户标签枚举 (UserTag enum from models) # MOVED TO LOCAL IMPORTS
+# from ..models.user import UserTag  # 用户标签枚举 (UserTag enum from models) # MOVED TO LOCAL IMPORTS
 from .config import settings  # 应用全局配置 (Application global settings)
 
 # endregion
@@ -169,7 +169,7 @@ async def validate_token_and_get_user_info(token: str) -> Optional[Dict[str, Any
                                     and "tags" (List[UserTag]). If the token is invalid or expired,
                                     returns None and internally cleans up the expired token.)
     """
-    from ..models.user_models import UserTag # LOCAL IMPORT
+    from ..models.user import UserTag # LOCAL IMPORT
     async with _token_lock:
         token_data = _active_tokens.get(token)
         current_time = time.time()
@@ -383,7 +383,7 @@ async def get_current_user_info_from_token(
             },  # 提示客户端使用QueryToken方案
         )
 
-    from ..models.user_models import UserTag # LOCAL IMPORT
+    from ..models.user import UserTag # LOCAL IMPORT
     if UserTag.BANNED in user_info.get("tags", []):  # 检查用户是否被封禁
         _security_module_logger.warning(
             f"用户 '{user_info['user_uid']}' (Token: {token[:8]}...) 因被封禁而访问被拒。"
@@ -491,7 +491,7 @@ class RequireTags:
         异常 (Raises):
             HTTPException (403): 如果用户不具备所有必需的标签。(If the user does not possess all required tags.)
         """
-        from ..models.user_models import UserTag # LOCAL IMPORT
+        from ..models.user import UserTag # LOCAL IMPORT
 
         user_tags_enum_set = set(user_info.get("tags", [])) # These are already UserTag enums from validate_token_and_get_user_info
 

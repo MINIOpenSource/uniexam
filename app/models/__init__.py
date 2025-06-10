@@ -19,7 +19,7 @@ app.models 包初始化文件。
 # Explicitly import models from submodules to avoid F403 and F405 errors from ruff/pyflakes
 # and to make it clear what is being exported.
 
-from .config_models import (
+from .config import (
     CloudflareIPsConfigPayload,
     DatabaseFilesConfigPayload,
     RateLimitConfigPayload,
@@ -28,7 +28,7 @@ from .config_models import (
     UserTypeRateLimitsPayload,
     UserValidationConfigPayload,
 )
-from .paper_models import (
+from .paper import (
     ExamPaperResponse,
     GradingResultResponse,
     HistoryItem,
@@ -42,7 +42,7 @@ from .paper_models import (
     PaperSubmissionPayload,
     UpdateProgressResponse,
 )
-from .qb_models import (
+from .qb import (
     DifficultyLevel,  # Enum
     LibraryIndexItem,
     QuestionBank,  # This is a model, not QuestionBankContent or QuestionBankMetadata directly
@@ -51,12 +51,12 @@ from .qb_models import (
     # QuestionType, # Not defined as a separate enum in qb_models.py, part of QuestionModel
     QuestionModel,
 )
-from .token_models import (
+from .token import (
     AuthStatusResponse,
     Token,
     TokenData,
 )
-from .user_models import (
+from .user import (
     AdminUserUpdate,
     UserBase,
     UserCreate,
@@ -71,7 +71,7 @@ from .user_models import (
 )
 
 __all__ = [
-    # from config_models.py
+    # from config.py
     "RateLimitConfigPayload",
     "UserTypeRateLimitsPayload",
     "CloudflareIPsConfigPayload",
@@ -79,7 +79,7 @@ __all__ = [
     "UserValidationConfigPayload",
     "SettingsResponseModel",
     "SettingsUpdatePayload",
-    # from paper_models.py
+    # from paper.py
     "ExamPaperResponse",
     "PaperSubmissionPayload",
     "UpdateProgressResponse",
@@ -90,19 +90,19 @@ __all__ = [
     "PaperAdminView",
     "PaperFullDetailModel",
     "PaperQuestionInternalDetail",
-    # "UserAnswer", # Ensure this is defined in paper_models.py if exported
-    # "PaperProgressData", # Ensure this is defined in paper_models.py if exported
-    # from qb_models.py
+    # "UserAnswer", # Ensure this is defined in paper.py if exported
+    # "PaperProgressData", # Ensure this is defined in paper.py if exported
+    # from qb.py
     "DifficultyLevel",
     # "QuestionType", # If it's a separate Enum
     "QuestionModel",
     "LibraryIndexItem",
     "QuestionBank",  # Represents the full bank with metadata and questions
-    # from token_models.py
+    # from token.py
     "Token",
     "TokenData",
     "AuthStatusResponse",
-    # from user_models.py
+    # from user.py
     "UserBase",
     "UserCreate",
     # "UserUpdate", # Removed as it's not defined

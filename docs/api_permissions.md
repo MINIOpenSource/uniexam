@@ -1,6 +1,6 @@
 # API 端点权限需求
 
-本文档定义了在线考试系统中各个API端点所需的最低用户权限级别。权限基于 `app.models.user_models.UserTag` 枚举中定义的标签。
+本文档定义了在线考试系统中各个API端点所需的最低用户权限级别。权限基于 `app.models.user.UserTag` 枚举中定义的标签。
 
 ## 权限说明
 
@@ -13,7 +13,7 @@
 
 | HTTP方法 | URL路径                                     | 功能描述                     | 所需最低权限/UserTag(s)             |
 | :------- | :------------------------------------------ | :--------------------------- | :---------------------------------- |
-| **app/main.py (用户 & 公共 APIs)**      |                                             |                              |                                     |
+| **app/main.py (用户 & 公共 APIs) & app/routers/api.py (WebSocket APIs)**      |                                             |                              |                                     |
 | POST     | `/auth/signin`                              | 用户注册                     | (公开)                              |
 | POST     | `/auth/login`                               | 用户登录                     | (公开)                              |
 | GET      | `/auth/login`                               | 刷新Token                    | (认证用户) - 依赖旧Token有效性      |
@@ -27,7 +27,7 @@
 | GET      | `/history_paper`                            | 获取指定历史试卷详情         | 认证用户 (默认拥有USER标签)         |
 | GET      | `/difficulties`                             | 获取可用题库难度列表         | (公开)                              |
 | GET      | `/users/directory`                          | 获取公开用户目录             | (公开)                              |
-| **app/admin_routes.py (Admin APIs)**    |                                             |                              |                                     |
+| **app/routers/api.py (Admin APIs)**    |                                             |                              |                                     |
 | GET      | `/admin/settings`                           | 获取当前系统配置             | ADMIN                               |
 | POST     | `/admin/settings`                           | 更新系统配置                 | ADMIN                               |
 | GET      | `/admin/users`                              | 管理员获取用户列表           | ADMIN                               |
@@ -40,7 +40,7 @@
 | GET      | `/admin/question-banks/{difficulty_id}/content` | 管理员获取特定题库的完整内容 | ADMIN                               |
 | POST     | `/admin/question-banks/{difficulty_id}/questions` | 管理员向特定题库添加新题目   | ADMIN                               |
 | DELETE   | `/admin/question-banks/{difficulty_id}/questions` | 管理员从特定题库删除题目     | ADMIN                               |
-| **app/admin_routes.py (Grading APIs)**  |                                             |                              |                                     |
+| **app/routers/api.py (Grading APIs)**  |                                             |                              |                                     |
 | GET      | `/admin/grading/pending-papers`             | 获取待人工批阅的试卷列表     | ADMIN (未来可考虑GRADER)            |
 | GET      | `/admin/grading/papers/{paper_id}/subjective-questions` | 获取试卷中待批阅主观题详情 | ADMIN (未来可考虑GRADER)            |
 | POST     | `/admin/grading/papers/{paper_id}/questions/{question_internal_id}/grade` | 提交单个主观题的批阅结果   | ADMIN (未来可考虑GRADER)            |
