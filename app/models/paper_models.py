@@ -432,7 +432,19 @@ __all__ = [
     "PendingGradingPaperItem",
     "SubjectiveQuestionForGrading",
     "GradeSubmissionPayload",
+    "UserAnswerInternalDetail", # Added for export
 ]
+
+# Placeholder for UserAnswerInternalDetail if not fully defined yet
+# This is used by PaperCRUD.get_paper_by_id for parsing user_answers
+class UserAnswerInternalDetail(BaseModel):
+    # Define fields based on what `ans_data` in PaperCRUD.get_paper_by_id might contain
+    # For now, a generic placeholder or common fields.
+    # Example:
+    selected_choice_id: Optional[str] = None
+    subjective_answer_text: Optional[str] = None
+    # Add other fields as necessary based on actual structure of ans_data
+    model_config = {"extra": "allow"} # Allow extra fields if ans_data has more
 
 # region Models for Grading Subjective Questions
 

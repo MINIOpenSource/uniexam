@@ -74,7 +74,7 @@ def qb_crud_instance(mocker, mock_settings: Settings) -> QuestionBankCRUD:
     """
     # 使用 mocker.patch.object 来替换模块中导入的 settings 实例
     # (Use mocker.patch.object to replace the imported settings instance in the module)
-    mocker.patch("app.crud.qb.settings", mock_settings)
+    # mocker.patch("app.crud.qb.settings", mock_settings) # Removed: app.crud.qb doesn't import/use settings directly.
 
     # QuestionBankCRUD 内部也可能使用 repository_instance 进行锁管理
     # (QuestionBankCRUD might also use repository_instance for lock management)

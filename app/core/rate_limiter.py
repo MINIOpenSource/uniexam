@@ -22,7 +22,7 @@ from fastapi import (
 )  # 导入FastAPI的Request对象 (Import FastAPI's Request object)
 
 # from .security import get_current_user_info_from_token # (可选) 如需基于用户标签的速率限制
-from ..models.user_models import UserTag  # 用户标签枚举
+# from ..models.user_models import UserTag  # 用户标签枚举 # MOVED TO LOCAL IMPORT
 from .config import settings  # 应用全局配置
 
 # endregion
@@ -50,7 +50,7 @@ ip_auth_attempt_timestamps: Dict[
 def is_rate_limited(
     client_ip: str,
     action_type: str,  # 例如 "get_exam", "auth_attempts" (e.g., "get_exam", "auth_attempts")
-    user_tags: Optional[List[UserTag]] = None,
+    user_tags: Optional[List["UserTag"]] = None,  # Stringified UserTag for type hint
 ) -> bool:
     """
     检查指定IP和操作类型是否超出速率限制。
@@ -76,6 +76,8 @@ def is_rate_limited(
     # 管理员 (admin) 通常不受此速率限制 (此判断应在调用此函数前完成)
     # (Admins are typically not rate-limited (this check should be done before calling this function))
     limit_config_key = "default_user"
+    # LOCAL IMPORT of UserTag to break circular dependency
+    from ..models.user_models import UserTag
     if user_tags and UserTag.LIMITED in user_tags:
         limit_config_key = "limited_user"
 

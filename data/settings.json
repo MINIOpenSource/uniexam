@@ -1,7 +1,6 @@
 {
-    "app_name": "在线考试系统",
-    "default_admin_password_override": null,
-    "token_expiry_hours": 24,
+    "app_name": "新应用名",
+    "token_expiry_hours": 48,
     "num_questions_per_paper_default": 50,
     "passing_score_percentage": 60.0,
     "db_persist_interval_seconds": 60,
