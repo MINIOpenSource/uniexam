@@ -1,23 +1,17 @@
 # -*- coding: utf-8 -*-
 """
-管理员后台 API 路由模块。
+合并后的 API 路由模块。
 
-此模块定义了所有与管理员操作相关的API端点，例如：
-- 应用配置管理 (获取、更新)
-- 用户管理 (列表、详情、更新)
-- 试卷管理 (列表、详情、删除)
-- 题库管理 (查看题库、添加题目、删除题目)
-- 阅卷接口 (获取待批阅列表、获取题目详情、提交批阅结果)
-
-所有此模块下的路由都需要管理员权限（通过 `require_admin` 依赖项进行验证）。
+此模块定义了所有与管理员操作相关的API端点，以及WebSocket通信端点。
 """
 # region 模块导入
 import asyncio
 import json
-import logging
+import logging # logging was already imported
 from datetime import datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional # Optional was already imported
 from uuid import UUID
+from pathlib import Path # Added import
 
 from fastapi import (
     APIRouter,
@@ -27,53 +21,59 @@ from fastapi import (
     Query,
     Request,
     status as http_status,
+    WebSocket, # Added from websocket_routes
+    WebSocketDisconnect, # Added from websocket_routes
 )
 
-from app.utils.export_utils import data_to_csv, data_to_xlsx
+from ..utils.export_utils import data_to_csv, data_to_xlsx # This is an app level import, should become ..utils when fixing imports
 
-from .services.audit_logger import audit_logger_service # CORRECTED IMPORT
-from .utils.helpers import get_client_ip_from_request # CORRECTED IMPORT
-from .core.config import DifficultyLevel, settings
-from .core.security import (
+# Imports that will need adjustment from . to ..
+from ..services.audit_logger import audit_logger_service
+from ..utils.helpers import get_client_ip_from_request # CORRECTED IMPORT
+from ..core.config import DifficultyLevel, settings
+from ..core.security import (
     RequireTags,
     get_all_active_token_info,
     invalidate_all_tokens_for_user,
     invalidate_token,
     require_admin,
 )
-from .crud import (
+from ..crud import (
     paper_crud_instance as paper_crud,
     qb_crud_instance as qb_crud,
     settings_crud_instance as settings_crud,
     user_crud_instance as user_crud,
 )
-from .models.config_models import (
+from ..models.config import (
     SettingsResponseModel,
     SettingsUpdatePayload,
 )
-from .models.enums import QuestionTypeEnum
-from .models.paper_models import (
+from ..models.enums import QuestionTypeEnum
+from ..models.paper import (
     GradeSubmissionPayload,
     PaperAdminView,
     PaperFullDetailModel,
     PendingGradingPaperItem,
     SubjectiveQuestionForGrading,
 )
-from .models.qb_models import (
+from ..models.qb import (
     LibraryIndexItem,
     QuestionBank,
     QuestionModel,
 )
-from .models.user_models import (
+from ..models.user import (
     AdminUserUpdate,
     UserPublicProfile,
     UserTag,
 )
+# Imports from websocket_routes that will need adjustment
+from ..services.websocket_manager import websocket_manager
+# Note: .core.security import require_admin is already present from admin_routes
 
 # endregion
 
-# region 全局变量与初始化
-_admin_routes_logger = logging.getLogger(__name__)
+# region 全局变量与初始化 (Admin)
+_admin_routes_logger = logging.getLogger(__name__) # Will be main logger for this file
 
 admin_router = APIRouter(
     tags=["管理员接口 (Admin)"],
@@ -84,7 +84,6 @@ admin_router = APIRouter(
     },
 )
 # endregion
-
 
 # region Admin Settings API 端点
 @admin_router.get(
@@ -112,7 +111,7 @@ async def admin_get_settings(request: Request):
     description="高级管理员 (具有 MANAGER 标签) 更新应用的部分或全部可配置项...",
     dependencies=[Depends(RequireTags({UserTag.MANAGER}))]
 )
-async def admin_update_settings(request: Request, payload: SettingsUpdatePayload): # payload is body, request is dependency
+async def admin_update_settings(request: Request, payload: SettingsUpdatePayload):
     actor_info = getattr(request.state, "user_info_from_token", {"user_uid": "unknown_manager", "tags": [UserTag.MANAGER]})
     actor_uid = actor_info.get("user_uid", "unknown_manager")
     client_ip = get_client_ip_from_request(request)
@@ -218,7 +217,7 @@ async def admin_get_all_users(
     return [UserPublicProfile.model_validate(user) for user in users_in_db]
 
 @admin_router.get("/users/{user_uid}", response_model=UserPublicProfile, summary="管理员获取特定用户信息")
-async def admin_get_user(request: Request, user_uid: str = Path(..., description="要获取详情的用户的UID")): # CORRECTED PARAMETER
+async def admin_get_user(request: Request, user_uid: str = Path(..., description="要获取详情的用户的UID")):
     actor_uid = getattr(request.state, "current_user_uid", "unknown_admin")
     client_ip = get_client_ip_from_request(request)
     _admin_routes_logger.info(f"管理员 '{actor_uid}' (IP: {client_ip}) 请求用户 '{user_uid}' 的详细信息。")
@@ -230,8 +229,8 @@ async def admin_get_user(request: Request, user_uid: str = Path(..., description
 
 @admin_router.put("/users/{user_uid}", response_model=UserPublicProfile, summary="管理员更新特定用户信息")
 async def admin_update_user_info(
-    update_payload: AdminUserUpdate, # Body parameter first
-    request: Request, # MOVED AND CORRECTED
+    update_payload: AdminUserUpdate,
+    request: Request,
     user_uid: str = Path(..., description="要更新信息的用户的UID")
 ):
     current_admin_info = getattr(request.state, "user_info_from_token", {"user_uid": "unknown_admin", "tags": []})
@@ -593,7 +592,7 @@ async def admin_list_active_tokens(request: Request):
     summary="管理员吊销特定用户的所有活动Token",
     description="立即吊销（删除）指定用户ID的所有活动访问Token。此操作会强制该用户在所有设备上登出。"
 )
-async def admin_invalidate_user_tokens(request: Request, user_uid: str = Path(..., description="要吊销其Token的用户的UID")): # CORRECTED
+async def admin_invalidate_user_tokens(request: Request, user_uid: str = Path(..., description="要吊销其Token的用户的UID")):
     actor_uid = getattr(request.state, "current_user_uid", "unknown_admin")
     client_ip = get_client_ip_from_request(request)
     _admin_routes_logger.info(f"管理员 '{actor_uid}' (IP: {client_ip}) 尝试吊销用户 '{user_uid}' 的所有Token。")
@@ -618,7 +617,7 @@ async def admin_invalidate_user_tokens(request: Request, user_uid: str = Path(..
     summary="管理员吊销指定的单个活动Token",
     description="立即吊销（删除）指定的单个活动访问Token。管理员需要提供完整的Token字符串。请谨慎使用，确保Token字符串的准确性。"
 )
-async def admin_invalidate_single_token(request: Request, token_string: str = Path(..., description="要吊销的完整Token字符串")): # CORRECTED
+async def admin_invalidate_single_token(request: Request, token_string: str = Path(..., description="要吊销的完整Token字符串")):
     actor_uid = getattr(request.state, "current_user_uid", "unknown_admin")
     client_ip = get_client_ip_from_request(request)
     token_prefix_for_log = token_string[:8] + "..."
@@ -669,7 +668,10 @@ async def admin_view_audit_logs(
     start_time_filter: Optional[datetime] = Query(None, alias="start_time", description="起始时间筛选 (ISO格式)"),
     end_time_filter: Optional[datetime] = Query(None, alias="end_time", description="结束时间筛选 (ISO格式)")
 ):
-    log_file_path = settings.audit_log_file_path
+    log_file_path = settings.audit_log_file_path # This settings will need to be from ..core.config
+    # Path will need to be imported from pathlib
+    # For now, I will assume it's already available or will be fixed in next step.
+    # from pathlib import Path # Should be added at the top
     if not Path(log_file_path).exists():
         _admin_routes_logger.info(f"审计日志文件 '{log_file_path}' 未找到。")
         return []
@@ -720,15 +722,57 @@ async def admin_view_audit_logs(
     paginated_logs = filtered_logs[start_index:end_index]
 
     return paginated_logs
-
 # endregion
 
-__all__ = ["admin_router"]
+# region WebSocket Router and Endpoints
+# _ws_logger = logging.getLogger(__name__) # Use existing _admin_routes_logger or rename it to _api_logger
+# Using _admin_routes_logger for now for simplicity.
+
+ws_router = APIRouter(
+    tags=["WebSocket接口 (WebSocket Interface)"],
+    dependencies=[Depends(require_admin)],
+)
+
+@ws_router.websocket("/ws/exam_monitor")
+async def websocket_exam_monitor(websocket: WebSocket):
+    client_host = websocket.client.host if websocket.client else "未知主机"
+    client_port = websocket.client.port if websocket.client else "未知端口"
+
+    _admin_routes_logger.info( # Changed _ws_logger to _admin_routes_logger
+        f"管理员客户端 {client_host}:{client_port} 已连接到考试监控 WebSocket。"
+        f"(Admin client {client_host}:{client_port} connected to exam monitoring WebSocket.)"
+    )
+
+    await websocket_manager.connect(websocket) # websocket_manager will need correct import path
+    try:
+        while True:
+            data = await websocket.receive_text()
+            _admin_routes_logger.debug( # Changed _ws_logger to _admin_routes_logger
+                f"从管理员客户端 {client_host}:{client_port} 收到监控 WebSocket 文本消息: {data}"
+                f"(Received text message from admin client {client_host}:{client_port} on monitoring WebSocket: {data})"
+            )
+    except WebSocketDisconnect:
+        _admin_routes_logger.info( # Changed _ws_logger to _admin_routes_logger
+            f"管理员客户端 {client_host}:{client_port} 已从考试监控 WebSocket 断开。"
+            f"(Admin client {client_host}:{client_port} disconnected from exam monitoring WebSocket.)"
+        )
+    except Exception as e:
+        _admin_routes_logger.error( # Changed _ws_logger to _admin_routes_logger
+            f"考试监控 WebSocket ({client_host}:{client_port}) 发生错误: {e}. "
+            f"英文详情 (English details): (Exam monitoring WebSocket ({client_host}:{client_port}) encountered an error: {e})",
+            exc_info=True,
+        )
+    finally:
+        await websocket_manager.disconnect(websocket)
+# endregion
+
+
+__all__ = ["admin_router", "ws_router"] # Updated __all__
 
 if __name__ == "__main__":
-    _admin_routes_logger.info(
-        f"模块 {__name__} 定义了管理员相关的API路由，不应直接执行。它应被 FastAPI 应用导入。"
+    _admin_routes_logger.info( # Changed _ws_logger to _admin_routes_logger
+        f"模块 {__name__} 定义了API及WebSocket路由，不应直接执行。它应被 FastAPI 应用导入。"
     )
     print(
-        f"模块 {__name__} 定义了管理员相关的API路由，不应直接执行。它应被 FastAPI 应用导入。"
+        f"模块 {__name__} 定义了API及WebSocket路由，不应直接执行。它应被 FastAPI 应用导入。"
     )

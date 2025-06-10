@@ -42,6 +42,73 @@ ask_for_var() {
     fi
 }
 
+# Function to setup systemd service
+setup_systemd_service() {
+    echo ""
+    echo "步骤 5: 设置 systemd 服务 (可选)..."
+    if ask_yes_no "您想设置 systemd 服务以便在后台运行应用吗？"; then
+        echo "设置 systemd 服务需要 sudo 权限来复制服务文件。"
+        local service_name="yourapp" # Default service name, can be customized
+        # Consider prompting for service_name if needed:
+        # read -p "请输入服务名称 (默认: yourapp): " custom_service_name
+        # if [ -n "$custom_service_name" ]; then
+        #    service_name="$custom_service_name"
+        # fi
+        local service_file_tmp="${service_name}.service.tmp"
+        local service_file_target="/etc/systemd/system/${service_name}.service"
+        local app_dir=$(pwd)
+        local python_exec="$app_dir/$VENV_DIR/bin/python"
+        local app_main_script="$app_dir/app/main.py"
+        local env_file_abs="$app_dir/.env"
+        local current_user=$(whoami)
+
+        echo "正在生成服务文件内容到 '$service_file_tmp'..."
+
+        cat > "$service_file_tmp" << EOF
+[Unit]
+Description=My Application Service
+After=network.target
+
+[Service]
+User=$current_user
+WorkingDirectory=$app_dir
+EnvironmentFile=$env_file_abs
+ExecStart=$python_exec $app_main_script
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+EOF
+        echo "成功: 服务文件内容已生成到 '$service_file_tmp'."
+        echo ""
+        echo "请执行以下命令来安装和启动服务:"
+        echo "---------------------------------------------------------------------"
+        echo "1. 复制服务文件:"
+        echo "   sudo cp \"$service_file_tmp\" \"$service_file_target\""
+        echo ""
+        echo "2. 重新加载 systemd 管理器配置:"
+        echo "   sudo systemctl daemon-reload"
+        echo ""
+        echo "3. 启用服务 (开机自启):"
+        echo "   sudo systemctl enable \"${service_name}.service\""
+        echo ""
+        echo "4. 启动服务:"
+        echo "   sudo systemctl start \"${service_name}.service\""
+        echo ""
+        echo "5. 检查服务状态:"
+        echo "   sudo systemctl status \"${service_name}.service\""
+        echo ""
+        echo "6. (可选) 清理临时服务文件:"
+        echo "   rm \"$service_file_tmp\""
+        echo "---------------------------------------------------------------------"
+        echo "注意: 如果您更改了应用路径、虚拟环境位置或 .env 文件路径，"
+        echo "您需要更新服务文件 ($service_file_target) 并重新加载/重启服务。"
+    else
+        echo "跳过 systemd 服务设置。"
+    fi
+}
+
 # 1. Check for Python 3.8+
 echo ""
 echo "步骤 1: 检查 Python 版本..."
@@ -107,7 +174,7 @@ fi
 
 # 4. Guide .env file creation
 echo ""
-echo "步骤 4: 配置 .env 文件..."
+echo "步骤 4: 配置 .env 文件..." # This line is just for context, no change here
 ENV_FILE=".env"
 ENV_EXAMPLE_FILE=".env.example"
 
@@ -241,7 +308,10 @@ else
     fi
 fi
 
-# 5. Final Instructions
+# Call systemd setup function
+setup_systemd_service
+
+# 6. Final Instructions (renumbered from 5)
 echo ""
 echo "---------------------------------------------------------------------"
 echo "安装脚本执行完毕！"
@@ -249,15 +319,27 @@ echo ""
 echo "重要后续步骤:"
 echo ""
 echo "1. 激活虚拟环境:"
+echo "   为了确保应用能够正确运行，请务必激活 Python 虚拟环境。"
+echo "   请运行以下命令:"
 echo "   source $VENV_DIR/bin/activate"
 echo ""
 echo "2. (如果尚未配置或需要修改) 编辑 .env 文件:"
 echo "   nano .env  (或其他文本编辑器)"
+echo "   确保所有的配置 (如数据库连接、域名等) 都已根据您的环境正确设置。"
 echo ""
-echo "3. 运行应用:"
-echo "   $PYTHON_CMD run.py"
+echo "3. 手动运行应用 (如果未设置 systemd 服务):"
+echo "   如果您选择不设置 systemd 服务，或者想要在前台手动运行应用，"
+echo "   请在激活虚拟环境后，使用以下命令:"
+echo "   $PYTHON_CMD app/main.py"
 echo ""
-echo "如果您修改了 Python 代码或依赖，可能需要重新激活虚拟环境或重新安装依赖。"
+echo "4. 如果您设置了 systemd 服务:"
+echo "   请按照上面 步骤 5 中提供的 'sudo systemctl' 系列命令来管理服务。"
+echo "   服务启动后，应用将在后台运行。"
+echo ""
+echo "如果您修改了 Python 代码或依赖，请记得重新激活虚拟环境 (如果已退出)，"
+echo "并可能需要重新安装依赖 (参照步骤 3 中的依赖安装说明)。"
+echo "如果更改了 .env 文件，并且应用正在作为 systemd 服务运行，请重启服务:"
+echo "   sudo systemctl restart yourapp.service  (将 'yourapp.service' 替换为您的服务名)"
 echo "---------------------------------------------------------------------"
 
 exit 0

@@ -17,7 +17,7 @@ from datetime import datetime  # Ensure datetime is imported for AuditLogEntry
 from typing import Any, Dict, Optional
 
 from app.core.config import settings  # Application settings
-from app.models.audit_log_models import AuditLogEntry  # Audit log Pydantic model
+from app.models.audit_log import AuditLogEntry  # Audit log Pydantic model
 
 # 审计日志文件的路径，从配置中读取
 # (Path to the audit log file, read from configuration)

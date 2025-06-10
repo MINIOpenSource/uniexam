@@ -7,12 +7,12 @@
 -   **API接口文档**:
     -   [API详细说明](./api/index.md)
 -   **项目设置与配置**:
-    -   **安装与启动**: 请参考项目根目录的 `README.md` 文件中的“快速开始”部分，使用 `install.sh` 脚本进行环境初始化和依赖安装，并通过 `python run.py` 启动应用。
+    -   **安装与启动**: 请参考项目根目录的 `README.md` 文件中的“快速开始”部分，使用 `install.sh` 脚本进行环境初始化和依赖安装，并通过 `python app/main.py` 启动应用。
     -   **核心配置**: 应用的核心配置通过 `app/core/config.py` 中的 `Settings` 模型进行管理，可以加载 `.env` 文件以及 `data/settings.json` 中的设置。详细的配置项说明请参考该代码文件。
 -   **项目结构**:
     -   项目采用FastAPI框架构建，主要业务逻辑位于 `app/` 目录下。
-        -   `app/main.py`: 定义面向用户的API端点。
-        -   `app/admin_routes.py`: 定义管理员相关的API端点。
+        -   `app/main.py`: FastAPI应用主入口，加载配置，挂载路由，定义生命周期事件。
+        -   `app/routers/`: 包含API路由定义 (例如 app/routers/api.py)。
         -   `app/core/`: 包含核心配置、安全、接口定义等。
         -   `app/crud/`: 包含数据存储和读写操作的实现。
         -   `app/models/`: 定义Pydantic数据模型。

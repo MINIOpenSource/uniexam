@@ -18,14 +18,14 @@ from typing import Optional
 from app.core.config import settings as global_app_settings # ALIASED
 from app.core.interfaces import IDataStorageRepository
 
-from .json_repository import JsonStorageRepository
-from .mysql_repository import MySQLStorageRepository
+from .repository.json_repository import JsonStorageRepository
+from .repository.mysql_repository import MySQLStorageRepository
 from .paper import PaperCRUD
-from .postgres_repository import PostgresStorageRepository
+from .repository.postgres_repository import PostgresStorageRepository
 from .qb import QuestionBankCRUD
-from .redis_repository import RedisStorageRepository
+from .repository.redis_repository import RedisStorageRepository
 from .settings import SettingsCRUD
-from .sqlite_repository import SQLiteStorageRepository
+from .repository.sqlite_repository import SQLiteStorageRepository
 from .user import UserCRUD
 
 # 全局实例将由 initialize_crud_instances 函数设置

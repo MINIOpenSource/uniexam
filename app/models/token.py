@@ -21,7 +21,7 @@ from typing import List, Optional
 from pydantic import BaseModel, Field
 
 from .enums import AuthStatusCodeEnum  # 导入认证状态码枚举
-from .user_models import UserTag  # 导入用户标签枚举 (Import UserTag enum)
+from .user import UserTag  # 导入用户标签枚举 (Import UserTag enum)
 
 # endregion
 

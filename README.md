@@ -44,7 +44,7 @@
     ```
 7.  运行应用：
     ```bash
-    python run.py
+    python app/main.py
     ```
 8.  API 文档 (Swagger UI) 通常可在应用启动后访问，具体地址视您的 `.env` 配置 (默认为 `http://localhost:17071/docs`)。
 

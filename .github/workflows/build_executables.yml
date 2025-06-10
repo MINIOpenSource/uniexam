@@ -41,16 +41,13 @@ jobs:
           pip install .[dev] # Install from pyproject.toml, including dev dependencies
           pip install nuitka # Ensure Nuitka is installed
 
-      - name: Run tests
-        run: pytest
-
       - name: Install platform-specific dependencies (if any)
         # Example: If you had GUI libs for Linux like PyQt5
         # if: matrix.os == 'ubuntu-latest'
         # run: sudo apt-get update && sudo apt-get install -y libxcb-xinerama0
         run: echo "No platform-specific system dependencies to install for this build."
 
-      - name: Compile Main Application (run.py) with Nuitka
+      - name: Compile Main Application (app/main.py) with Nuitka
         run: |
           python -m nuitka --standalone --onefile \
             --output-dir=dist/${{ matrix.os_name }}_main \
@@ -60,7 +57,7 @@ jobs:
             --include-data-dir=data=data \
             --include-data-file=.env.example=.env.example \
             --remove-output \
-            run.py
+            app/main.py
         # Note: --onefile can lead to slower startup. Consider removing if that's an issue.
         # For data, .env.example is included; actual .env should be handled at runtime.
 

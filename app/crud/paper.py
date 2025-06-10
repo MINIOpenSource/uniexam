@@ -13,7 +13,7 @@ from ..core.interfaces import IDataStorageRepository as IRepository
 from app.crud.qb import QuestionBankCRUD as ICrudQB
 # from ..models.db_models import PAPER_ENTITY_TYPE, USER_ANSWER_ENTITY_TYPE # Defined locally
 from ..models.enums import PaperPassStatusEnum, QuestionTypeEnum
-from ..models.paper_models import (
+from ..models.paper import (
     PaperFullDetailModel,
     # PaperQuestionData, # This was ExamQuestionClientView, using ExamQuestionClientView directly
     PaperQuestionInternalDetail as PaperQuestionInternal, # Alias for compatibility
@@ -21,7 +21,7 @@ from ..models.paper_models import (
     ExamQuestionClientView, # Explicit import for client responses
     UserAnswerInternalDetail, # For user_answers parsing in get_paper_by_id
 )
-from ..models.qb_models import QuestionModel, QuestionBank, LibraryIndexItem # Added QuestionBank, LibraryIndexItem
+from ..models.qb import QuestionModel, QuestionBank, LibraryIndexItem # Added QuestionBank, LibraryIndexItem
 from ..utils.helpers import get_client_ip_from_request, format_short_uuid # format_short_uuid added
 
 _paper_crud_logger = logging.getLogger(__name__)

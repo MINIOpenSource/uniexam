@@ -24,7 +24,7 @@ from app.core.interfaces import (
 # 其实际值应与 qb_crud.py 中定义的一致，或通过配置传入。
 # (QB_CONTENT_ENTITY_TYPE_PREFIX is used for dynamically identifying question bank content entity types.
 #  Its actual value should be consistent with the definition in qb.py or passed via configuration.)
-from .qb import QB_CONTENT_ENTITY_TYPE_PREFIX # CORRECTED IMPORT
+from ..qb import QB_CONTENT_ENTITY_TYPE_PREFIX # CORRECTED IMPORT
 
 _postgres_repo_logger = logging.getLogger(__name__)  # 获取本模块的日志记录器实例
 

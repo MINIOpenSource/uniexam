@@ -26,7 +26,7 @@ from ..core.interfaces import (
 from ..core.security import (
     get_password_hash,
 )  # 导入密码哈希工具 (Import password hashing utility)
-from ..models.user_models import (  # 用户相关的Pydantic模型 (User-related Pydantic models)
+from ..models.user import (  # 用户相关的Pydantic模型 (User-related Pydantic models)
     AdminUserUpdate,
     UserCreate,
     UserInDB,

@@ -22,7 +22,7 @@ from fastapi import (
 )  # 导入FastAPI的Request对象 (Import FastAPI's Request object)
 
 # from .security import get_current_user_info_from_token # (可选) 如需基于用户标签的速率限制
-# from ..models.user_models import UserTag  # 用户标签枚举 # MOVED TO LOCAL IMPORT
+# from ..models.user import UserTag  # 用户标签枚举 # MOVED TO LOCAL IMPORT
 from .config import settings  # 应用全局配置
 
 # endregion
@@ -77,7 +77,7 @@ def is_rate_limited(
     # (Admins are typically not rate-limited (this check should be done before calling this function))
     limit_config_key = "default_user"
     # LOCAL IMPORT of UserTag to break circular dependency
-    from ..models.user_models import UserTag
+    from ..models.user import UserTag
     if user_tags and UserTag.LIMITED in user_tags:
         limit_config_key = "limited_user"
 

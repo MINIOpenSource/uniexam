@@ -23,7 +23,7 @@ from ..core.config import (
 from ..core.interfaces import (
     IDataStorageRepository,
 )  # 数据存储库接口 (Data storage repository interface)
-from ..models.qb_models import (
+from ..models.qb import (
     LibraryIndexItem,
     QuestionBank,
     QuestionModel,
