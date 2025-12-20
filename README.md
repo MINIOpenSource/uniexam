@@ -1,65 +1,54 @@
-# 在线考试系统后端 API
+# Online Exam System (Refactored)
 
-> **该项目为全 AI 项目，由 Gemini 2.5 Pro 完成开发，将于六月的晚些时候由人工重构**
+This is a production-ready, refactored version of the Online Exam System, built with **FastAPI**, **SQLAlchemy (Async)**, and **SQLite**.
 
-欢迎使用在线考试系统后端 API 项目！这是一个基于 Python 和 FastAPI 构建的 RESTful API 服务，旨在为在线考试应用提供核心后端支持。
+## Features
 
-## 项目概述
+*   **Robust Architecture**: Clean architecture with separation of concerns (API, Services, Database, Schemas).
+*   **Security**:
+    *   **Argon2** Password Hashing.
+    *   **Opaque Tokens**: Secure, random tokens stored in the database (no JWT).
+    *   **Rate Limiting**: Persistent, SQLite-backed rate limiting to prevent abuse.
+    *   **Audit Logging**: Tracks critical actions (login, data modification) in the database.
+*   **Database**: SQLite with async support (via `aiosqlite`) using SQLAlchemy 2.0.
+*   **Grading**:
+    *   Auto-grading for Single Choice, Multiple Choice, and Fill-in-the-Blank.
+    *   Manual grading interface for Subjective/Essay questions.
+*   **REST API**: Fully versioned RESTful API (`/api/v1`).
 
-本项目提供了一套完整的 API 接口，用于实现在线考试的各项功能，包括用户管理、试卷生成、答题、自动批改、历史记录查询以及管理员后台管理等。系统设计注重模块化和可扩展性，方便后续的功能迭代和维护。
+## Installation
 
-## 主要功能
-
--   用户认证与管理 (注册、登录、Token刷新、资料修改)
--   动态试卷生成与考试流程控制 (答题、进度保存、自动批改)
--   多难度题库管理 (查看、添加、删除题目)
--   管理员后台 (用户、试卷、题库、系统配置管理)
--   安全性 (密码哈希、API速率限制、基于角色的访问控制)
--   详细的日志记录与命令行管理工具
-
-## 技术栈
-
--   **后端框架**: FastAPI
--   **数据验证**: Pydantic
--   **Web 服务器**: Uvicorn
--   **密码哈希**: Passlib
--   **环境变量管理**: python-dotenv
--   **数据库适配器**: `aiosqlite`, `asyncpg`, `aiomysql`, `aioredis` (支持多种数据库后端)
--   **开发语言**: Python 3.8+
-
-## 快速开始
-
-1.  确保您已安装 Python 3.8 或更高版本。
-2.  克隆本仓库 (如果尚未操作)。
-3.  在项目根目录下，为安装脚本添加执行权限并运行它：
+1.  **Clone the repository**.
+2.  **Create a virtual environment**:
     ```bash
-    chmod +x install.sh
-    ./install.sh
-    ```
-4.  `install.sh` 脚本会创建虚拟环境 (`.venv`) 并安装所有必要的依赖。
-5.  根据 `install.sh` 脚本末尾的提示，创建 `.env` 文件并配置必要的环境变量（如数据库连接信息、初始管理员密码等）。
-6.  激活虚拟环境：
-    ```bash
+    python -m venv .venv
     source .venv/bin/activate
     ```
-7.  运行应用：
+3.  **Install dependencies**:
     ```bash
-    python app/main.py
+    pip install -r requirements.txt
     ```
-8.  API 文档 (Swagger UI) 通常可在应用启动后访问，具体地址视您的 `.env` 配置 (默认为 `http://localhost:17071/docs`)。
 
-## 详细文档
+## Usage
 
-更多关于项目结构、API接口细节、各项配置说明、贡献指南等详细信息，请参阅 [docs/index.md](./docs/index.md) (或直接浏览 `docs` 文件夹)。
+1.  **Start the server**:
+    ```bash
+    uvicorn app.main:app --reload
+    ```
+2.  **Access Documentation**:
+    *   Swagger UI: `http://localhost:8000/docs`
+    *   ReDoc: `http://localhost:8000/redoc`
 
-## 贡献
+## Initial Setup
 
-欢迎对本项目进行贡献！如果您有任何建议、发现 Bug 或希望添加新功能，请随时通过 Issue 或 Pull Request 的方式参与。详细的贡献指南请参见 `docs/CONTRIBUTING.md`。
+*   The system automatically creates a default admin account on startup:
+    *   **Username**: `admin`
+    *   **Password**: `admin` (Change this immediately via API!)
 
-## 许可证
+## Testing
 
-本项目采用 GPLv3 许可证。
+Run the test suite using `pytest`:
 
----
-
-感谢您的使用！
+```bash
+pytest
+```
