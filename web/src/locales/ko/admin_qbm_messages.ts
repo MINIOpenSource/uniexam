@@ -1,0 +1,25 @@
+
+export const translations = {
+  'admin.questionBankManager.deleteDialog.title': '삭제 확인',
+  'admin.questionBankManager.deleteDialog.description': '문제 {index}: "{body}..."을(를) 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.',
+  'admin.questionBankManager.deleteDialog.cancel': '취소',
+  'admin.questionBankManager.deleteDialog.delete': '문제 삭제',
+  'admin.questionBankManager.deleteDialog.deleting': '삭제 중...',
+
+  'admin.questionBankManager.toast.refreshed.title': '새로 고침됨',
+  'admin.questionBankManager.toast.refreshed.description': '{difficulty} 문제 은행이 업데이트되었습니다.',
+  'admin.questionBankManager.toast.refreshError.title': '새로 고침 오류',
+  'admin.questionBankManager.toast.refreshError.description': '문제를 새로 고치는 데 실패했습니다.',
+  'admin.questionBankManager.toast.validationError.title': '유효성 검사 오류',
+  'admin.questionBankManager.toast.validationError.bodyMissing': '문제 본문을 입력해야 합니다.',
+  'admin.questionBankManager.toast.validationError.correctChoiceMissing': '최소 하나의 정답 선택지가 필요합니다.',
+  'admin.questionBankManager.toast.validationError.incorrectChoiceMissing': '최소 하나의 오답 선택지가 필요합니다.',
+  'admin.questionBankManager.toast.addSuccess.title': '성공',
+  'admin.questionBankManager.toast.addSuccess.description': '문제가 성공적으로 추가되었습니다.',
+  'admin.questionBankManager.toast.addError.title': '문제 추가 오류',
+  'admin.questionBankManager.toast.addError.description': '문제 추가에 실패했습니다.',
+  'admin.questionBankManager.toast.deleteSuccess.title': '성공',
+  'admin.questionBankManager.toast.deleteSuccess.description': '문제 {index}이(가) 성공적으로 삭제되었습니다.',
+  'admin.questionBankManager.toast.deleteError.title': '문제 삭제 오류',
+  'admin.questionBankManager.toast.deleteError.description': '문제 {index} 삭제에 실패했습니다.',
+};

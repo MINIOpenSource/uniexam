@@ -1,22 +1,30 @@
-from passlib.context import CryptContext
 import secrets
-from datetime import datetime, timedelta, timezone
-from typing import Optional
+from argon2 import PasswordHasher
+from argon2.exceptions import VerifyMismatchError, InvalidHashError, VerificationError
 
-pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
+_ph = PasswordHasher()
+
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """Verifies a plain password against the hashed password."""
-    return pwd_context.verify(plain_password, hashed_password)
+    """Verifies a plain password against the Argon2 hashed password."""
+    if not plain_password or not hashed_password:
+        return False
+    try:
+        return _ph.verify(hashed_password, plain_password)
+    except (VerifyMismatchError, InvalidHashError, VerificationError):
+        return False
+
 
 def get_password_hash(password: str) -> str:
     """Hashes a password using Argon2."""
-    return pwd_context.hash(password)
+    return _ph.hash(password)
 
-def generate_opaque_token(length: int = 48) -> str:
-    """Generates a secure, random opaque token."""
+
+def generate_opaque_token(length: int = 128) -> str:
+    """Generates a high-entropy random opaque token (128 random bytes -> ~171 urlsafe chars)."""
     return secrets.token_urlsafe(length)
+
 
 def generate_reset_token() -> str:
     """Generates a token for password reset."""
-    return secrets.token_urlsafe(32)
+    return secrets.token_urlsafe(64)

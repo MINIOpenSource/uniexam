@@ -1,0 +1,25 @@
+
+export const translations = {
+  'admin.questionBankManager.deleteDialog.title': '确认删除',
+  'admin.questionBankManager.deleteDialog.description': '您确定要删除问题 {index}：“{body}...”吗？此操作无法撤销。',
+  'admin.questionBankManager.deleteDialog.cancel': '取消',
+  'admin.questionBankManager.deleteDialog.delete': '删除题目',
+  'admin.questionBankManager.deleteDialog.deleting': '删除中...',
+
+  'admin.questionBankManager.toast.refreshed.title': '已刷新',
+  'admin.questionBankManager.toast.refreshed.description': '{difficulty} 题库已更新。',
+  'admin.questionBankManager.toast.refreshError.title': '刷新失败',
+  'admin.questionBankManager.toast.refreshError.description': '刷新题目失败。',
+  'admin.questionBankManager.toast.validationError.title': '验证错误',
+  'admin.questionBankManager.toast.validationError.bodyMissing': '必须填写题干。',
+  'admin.questionBankManager.toast.validationError.correctChoiceMissing': '至少需要一个正确选项。',
+  'admin.questionBankManager.toast.validationError.incorrectChoiceMissing': '至少需要一个错误选项。',
+  'admin.questionBankManager.toast.addSuccess.title': '成功',
+  'admin.questionBankManager.toast.addSuccess.description': '题目添加成功。',
+  'admin.questionBankManager.toast.addError.title': '添加题目失败',
+  'admin.questionBankManager.toast.addError.description': '添加题目失败。',
+  'admin.questionBankManager.toast.deleteSuccess.title': '成功',
+  'admin.questionBankManager.toast.deleteSuccess.description': '题目 {index} 删除成功。',
+  'admin.questionBankManager.toast.deleteError.title': '删除题目失败',
+  'admin.questionBankManager.toast.deleteError.description': '删除题目 {index} 失败。',
+};

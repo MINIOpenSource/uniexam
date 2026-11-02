@@ -1,0 +1,25 @@
+
+export const translations = {
+  'admin.questionBankManager.deleteDialog.title': 'Confirmer la suppression',
+  'admin.questionBankManager.deleteDialog.description': 'Êtes-vous sûr de vouloir supprimer la question {index}: "{body}..." ? Cette action est irréversible.',
+  'admin.questionBankManager.deleteDialog.cancel': 'Annuler',
+  'admin.questionBankManager.deleteDialog.delete': 'Supprimer la question',
+  'admin.questionBankManager.deleteDialog.deleting': 'Suppression...',
+
+  'admin.questionBankManager.toast.refreshed.title': 'Actualisé',
+  'admin.questionBankManager.toast.refreshed.description': 'La banque de questions pour {difficulty} a été mise à jour.',
+  'admin.questionBankManager.toast.refreshError.title': 'Erreur d\'actualisation',
+  'admin.questionBankManager.toast.refreshError.description': 'Échec de l\'actualisation des questions.',
+  'admin.questionBankManager.toast.validationError.title': 'Erreur de validation',
+  'admin.questionBankManager.toast.validationError.bodyMissing': 'Le corps de la question doit être rempli.',
+  'admin.questionBankManager.toast.validationError.correctChoiceMissing': 'Au moins un choix correct est requis.',
+  'admin.questionBankManager.toast.validationError.incorrectChoiceMissing': 'Au moins un choix incorrect est requis.',
+  'admin.questionBankManager.toast.addSuccess.title': 'Succès',
+  'admin.questionBankManager.toast.addSuccess.description': 'Question ajoutée avec succès.',
+  'admin.questionBankManager.toast.addError.title': 'Erreur d\'ajout de question',
+  'admin.questionBankManager.toast.addError.description': 'Échec de l\'ajout de la question.',
+  'admin.questionBankManager.toast.deleteSuccess.title': 'Succès',
+  'admin.questionBankManager.toast.deleteSuccess.description': 'Question {index} supprimée avec succès.',
+  'admin.questionBankManager.toast.deleteError.title': 'Erreur de suppression de question',
+  'admin.questionBankManager.toast.deleteError.description': 'Échec de la suppression de la question {index}.',
+};

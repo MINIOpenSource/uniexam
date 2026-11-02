@@ -1,0 +1,26 @@
+
+export const translations = {
+  'toast.unanswered.title': 'تلميح',
+  'toast.unanswered.description': 'لديك {count} أسئلة لم تتم الإجابة عليها. يرجى إكمالها قبل الإرسال',
+  'toast.updateError.title': 'خطأ في الحفظ',
+  'toast.updateError.generic': 'تعذر حفظ التقدم على الخادم',
+  'toast.updateError.network': 'خطأ في الشبكة أثناء حفظ التقدم. تحقق من الاتصال',
+  'toast.updateError.paperInvalid': 'جلسة الاختبار غير صالحة. لم يتم حفظ التقدم',
+  'toast.resumeError.title': 'خطأ في الاستئناف',
+  'toast.resumeError.notFound': 'لم يتم العثور على جلسة الاختبار السابقة. بدء اختبار جديد',
+  'toast.resumeError.noIdInStorage': 'لم يتم العثور على معرف اختبار غير مكتمل في تخزين المتصفح',
+  'toast.resumeError.manualIdEmpty': 'الرجاء إدخال معرف ورقة للاستئناف',
+  'toast.resumeError.noId': 'لم يتم العثور على معرف اختبار غير مكتمل',
+  'toast.resumeSuccess.title': 'تم الاستئناف',
+  'toast.resumeSuccess.description': 'تم استئناف جلسة الاختبار السابقة بنجاح',
+  'toast.urlInitiated.title': 'جلسة الاختبار جاهزة',
+  'toast.urlInitiated.description': 'اختبارك جاهز. احفظ معرّف الورقة: {paperId} للاستئناف لاحقًا من أي جهاز.',
+
+  'urlConfirm.title': 'تأكيد الإجراء',
+  'urlConfirm.resumeMessage': 'هل تريد استئناف الاختبار بمعرف الورقة: {paperId}؟',
+  'urlConfirm.difficultyMessage': 'هل تريد بدء اختبار جديد بصعوبة {difficulty}؟',
+  'urlConfirm.confirmButton': 'تأكيد',
+  'urlConfirm.cancelButton': 'إلغاء',
+  'urlConfirm.resumeTitle': 'استئناف الاختبار',
+  'urlConfirm.difficultyTitle': 'بدء اختبار جديد',
+};

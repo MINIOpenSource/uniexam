@@ -1,0 +1,22 @@
+
+export const translations = {
+  'result.success.title': '考试通过',
+  'result.success.description': '已达到合格标准',
+  'result.success.codePrefix': '通过凭证:',
+  'result.success.scoreLabel': '得分: {score}',
+  'result.failed.title': '考试未通过',
+  'result.failed.description': '未达到合格标准',
+  'result.failed.content': '请返回考生中心重新作答',
+  'result.failed.scoreLabel': '得分: {score}',
+  'result.rateLimited.title': '访问频率限制',
+  'result.rateLimited.description': '您已达到访问频率限制',
+  'result.rateLimited.content': '请稍后再试，或尝试更换网络环境',
+  'result.error.title': '发生错误',
+  'result.error.description': '处理您的请求时遇到问题',
+  'result.error.contentDefault': '请稍后重试或联系管理员',
+  'result.button.retry': '重新考试',
+  'result.paperIdLabel': '试卷ID:',
+  'result.timeTakenLabel': '答题用时:',
+  'result.timeUnits.minutes': '分',
+  'result.timeUnits.seconds': '秒',
+};

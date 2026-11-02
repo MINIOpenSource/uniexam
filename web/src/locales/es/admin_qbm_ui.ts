@@ -1,0 +1,41 @@
+
+export const translations = {
+  'admin.questionBankManager.add.title': 'Añadir Nueva Pregunta',
+  'admin.questionBankManager.add.description': 'Rellena el formulario para añadir una nueva pregunta al banco {difficulty}.',
+  'admin.questionBankManager.add.bodyLabel': 'Cuerpo de la Pregunta',
+  'admin.questionBankManager.add.bodyPlaceholder': 'Introduce el texto de la pregunta (ej., ¿Cuánto es 2+2?)',
+  'admin.questionBankManager.add.correctChoicesLabel': 'Opciones Correctas (al menos una requerida)',
+  'admin.questionBankManager.add.correctChoicePlaceholder': 'Opción Correcta {index}',
+  'admin.questionBankManager.add.addCorrectChoice': 'Añadir Opción Correcta',
+  'admin.questionBankManager.add.removeCorrectChoiceTitle': 'Eliminar opción correcta',
+  'admin.questionBankManager.add.incorrectChoicesLabel': 'Opciones Incorrectas (al menos una requerida)',
+  'admin.questionBankManager.add.incorrectChoicePlaceholder': 'Opción Incorrecta {index}',
+  'admin.questionBankManager.add.addIncorrectChoice': 'Añadir Opción Incorrecta',
+  'admin.questionBankManager.add.removeIncorrectChoiceTitle': 'Eliminar opción incorrecta',
+  'admin.questionBankManager.add.submitButton': 'Añadir al Banco de Preguntas',
+  'admin.questionBankManager.add.submittingButton': 'Añadiendo...',
+
+  'admin.questionBankManager.existing.title': 'Preguntas Existentes ({count})',
+  'admin.questionBankManager.existing.description': 'Lista de preguntas actualmente en el banco {difficulty}.',
+  'admin.questionBankManager.existing.refreshButton': 'Actualizar Lista',
+  'admin.questionBankManager.existing.loading': 'Cargando preguntas...',
+  'admin.questionBankManager.existing.empty.title': 'Aún no hay preguntas en este banco.',
+  'admin.questionBankManager.existing.empty.description': 'Usa el formulario de arriba para añadir la primera pregunta.',
+  'admin.questionBankManager.existing.noResults.title': 'Ninguna pregunta coincide con tu búsqueda.',
+  'admin.questionBankManager.existing.noResults.description': 'Intenta con otro término de búsqueda o borra la búsqueda.',
+  'admin.questionBankManager.existing.questionLabel': 'P {index}: {body}',
+  'admin.questionBankManager.existing.deleteTitle': 'Eliminar esta pregunta',
+  'admin.questionBankManager.existing.correctChoicesSublabel': 'Opciones Correctas:',
+  'admin.questionBankManager.existing.incorrectChoicesSublabel': 'Opciones Incorrectas:',
+
+  'admin.questionBankManager.difficulty.easy': 'fácil',
+  'admin.questionBankManager.difficulty.hybrid': 'híbrido',
+  'admin.questionBankManager.difficulty.hard': 'difícil',
+
+  'admin.questionBankManager.search.placeholder': 'Buscar preguntas por cuerpo u opciones...',
+
+  'admin.questionBankManager.pagination.previous': 'Anterior',
+  'admin.questionBankManager.pagination.next': 'Siguiente',
+  'admin.questionBankManager.pagination.pageIndicator': 'Página {currentPage} de {totalPages}',
+  'admin.questionBankManager.difficulty.invalid': 'inválido',
+};

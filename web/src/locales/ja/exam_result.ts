@@ -1,0 +1,22 @@
+
+export const translations = {
+  'result.success.title': 'おめでとうございます！試験合格です',
+  'result.success.description': 'ClassIsland 入学試験に合格しました',
+  'result.success.codePrefix': 'あなたの資格コードは次のとおりです:',
+  'result.success.scoreLabel': 'あなたのスコア: {score}',
+  'result.failed.title': '試験不合格',
+  'result.failed.description': '残念ながら、この試験には合格しませんでした',
+  'result.failed.content': '関連資料を確認して、もう一度試してください',
+  'result.failed.scoreLabel': 'あなたのスコア: {score}',
+  'result.rateLimited.title': 'アクセス頻度制限',
+  'result.rateLimited.description': 'アクセス頻度制限に達しました',
+  'result.rateLimited.content': '後でもう一度試すか、ネットワーク環境を変更してみてください',
+  'result.error.title': 'エラーが発生しました',
+  'result.error.description': 'リクエストの処理中に問題が発生しました',
+  'result.error.contentDefault': '後でもう一度試すか、管理者に連絡してください',
+  'result.button.retry': '再受験',
+  'result.paperIdLabel': 'ペーパーID:',
+  'result.timeTakenLabel': '所要時間:',
+  'result.timeUnits.minutes': '分',
+  'result.timeUnits.seconds': '秒',
+};

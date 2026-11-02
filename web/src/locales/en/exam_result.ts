@@ -1,0 +1,22 @@
+
+export const translations = {
+  'result.success.title': 'Congratulations! Exam Passed',
+  'result.success.description': 'You have successfully passed the ClassIsland Entrance Test',
+  'result.success.codePrefix': 'Your qualification code is:',
+  'result.success.scoreLabel': 'Your Score: {score}',
+  'result.failed.title': 'Exam Not Passed',
+  'result.failed.description': 'Unfortunately, you did not pass this exam',
+  'result.failed.content': 'Please review the relevant material and try again',
+  'result.failed.scoreLabel': 'Your Score: {score}',
+  'result.rateLimited.title': 'Access Frequency Limit',
+  'result.rateLimited.description': 'You have reached the access frequency limit',
+  'result.rateLimited.content': 'Please try again later, or try changing your network environment',
+  'result.error.title': 'An Error Occurred',
+  'result.error.description': 'There was a problem processing your request',
+  'result.error.contentDefault': 'Please try again later or contact an administrator',
+  'result.button.retry': 'Retake Exam',
+  'result.paperIdLabel': 'Paper ID:',
+  'result.timeTakenLabel': 'Time Taken:',
+  'result.timeUnits.minutes': 'm',
+  'result.timeUnits.seconds': 's',
+};

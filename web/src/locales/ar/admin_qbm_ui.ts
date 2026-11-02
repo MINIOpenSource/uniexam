@@ -1,0 +1,41 @@
+
+export const translations = {
+  'admin.questionBankManager.add.title': 'إضافة سؤال جديد',
+  'admin.questionBankManager.add.description': 'املأ النموذج لإضافة سؤال جديد إلى بنك {difficulty}.',
+  'admin.questionBankManager.add.bodyLabel': 'نص السؤال',
+  'admin.questionBankManager.add.bodyPlaceholder': 'أدخل نص السؤال (مثل، ما هو 2+2؟)',
+  'admin.questionBankManager.add.correctChoicesLabel': 'الخيارات الصحيحة (مطلوب واحد على الأقل)',
+  'admin.questionBankManager.add.correctChoicePlaceholder': 'الخيار الصحيح {index}',
+  'admin.questionBankManager.add.addCorrectChoice': 'إضافة خيار صحيح',
+  'admin.questionBankManager.add.removeCorrectChoiceTitle': 'إزالة الخيار الصحيح',
+  'admin.questionBankManager.add.incorrectChoicesLabel': 'الخيارات غير الصحيحة (مطلوب واحد على الأقل)',
+  'admin.questionBankManager.add.incorrectChoicePlaceholder': 'الخيار غير الصحيح {index}',
+  'admin.questionBankManager.add.addIncorrectChoice': 'إضافة خيار غير صحيح',
+  'admin.questionBankManager.add.removeIncorrectChoiceTitle': 'إزالة الخيار غير الصحيح',
+  'admin.questionBankManager.add.submitButton': 'إضافة إلى بنك الأسئلة',
+  'admin.questionBankManager.add.submittingButton': 'جارٍ الإضافة...',
+
+  'admin.questionBankManager.existing.title': 'الأسئلة الموجودة ({count})',
+  'admin.questionBankManager.existing.description': 'قائمة الأسئلة الموجودة حاليًا في بنك {difficulty}.',
+  'admin.questionBankManager.existing.refreshButton': 'تحديث القائمة',
+  'admin.questionBankManager.existing.loading': 'جارٍ تحميل الأسئلة...',
+  'admin.questionBankManager.existing.empty.title': 'لا توجد أسئلة في هذا البنك بعد.',
+  'admin.questionBankManager.existing.empty.description': 'استخدم النموذج أعلاه لإضافة السؤال الأول.',
+  'admin.questionBankManager.existing.noResults.title': 'لا توجد أسئلة تطابق بحثك.',
+  'admin.questionBankManager.existing.noResults.description': 'جرب مصطلح بحث مختلف أو امسح البحث.',
+  'admin.questionBankManager.existing.questionLabel': 'س {index}: {body}',
+  'admin.questionBankManager.existing.deleteTitle': 'حذف هذا السؤال',
+  'admin.questionBankManager.existing.correctChoicesSublabel': 'الخيارات الصحيحة:',
+  'admin.questionBankManager.existing.incorrectChoicesSublabel': 'الخيارات غير الصحيحة:',
+
+  'admin.questionBankManager.difficulty.easy': 'سهل',
+  'admin.questionBankManager.difficulty.hybrid': 'مختلط',
+  'admin.questionBankManager.difficulty.hard': 'صعب',
+
+  'admin.questionBankManager.search.placeholder': 'بحث في الأسئلة حسب النص أو الخيارات...',
+
+  'admin.questionBankManager.pagination.previous': 'السابق',
+  'admin.questionBankManager.pagination.next': 'التالي',
+  'admin.questionBankManager.pagination.pageIndicator': 'صفحة {currentPage} من {totalPages}',
+  'admin.questionBankManager.difficulty.invalid': 'غير صالح',
+};

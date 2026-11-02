@@ -1,0 +1,23 @@
+[
+    {
+        "id": "easy",
+        "name": "简单模式",
+        "description": "入门级题目，包含基础知识点。",
+        "default_questions": 30,
+        "total_questions_available": 326
+    },
+    {
+        "id": "hybrid",
+        "name": "混合模式",
+        "description": "标准难度，覆盖各类题型。",
+        "default_questions": 50,
+        "total_questions_available": 597
+    },
+    {
+        "id": "hard",
+        "name": "困难模式",
+        "description": "挑战性题目，深入考察。",
+        "default_questions": 20,
+        "total_questions_available": 270
+    }
+]

@@ -1,0 +1,25 @@
+
+export const translations = {
+  'admin.questionBankManager.deleteDialog.title': 'Confirmar Eliminación',
+  'admin.questionBankManager.deleteDialog.description': '¿Estás seguro de que quieres eliminar la Pregunta {index}: "{body}..."? Esta acción no se puede deshacer.',
+  'admin.questionBankManager.deleteDialog.cancel': 'Cancelar',
+  'admin.questionBankManager.deleteDialog.delete': 'Eliminar Pregunta',
+  'admin.questionBankManager.deleteDialog.deleting': 'Eliminando...',
+
+  'admin.questionBankManager.toast.refreshed.title': 'Actualizado',
+  'admin.questionBankManager.toast.refreshed.description': 'Banco de preguntas para {difficulty} actualizado.',
+  'admin.questionBankManager.toast.refreshError.title': 'Error al Actualizar',
+  'admin.questionBankManager.toast.refreshError.description': 'No se pudieron actualizar las preguntas.',
+  'admin.questionBankManager.toast.validationError.title': 'Error de Validación',
+  'admin.questionBankManager.toast.validationError.bodyMissing': 'El cuerpo de la pregunta debe rellenarse.',
+  'admin.questionBankManager.toast.validationError.correctChoiceMissing': 'Se requiere al menos una opción correcta.',
+  'admin.questionBankManager.toast.validationError.incorrectChoiceMissing': 'Se requiere al menos una opción incorrecta.',
+  'admin.questionBankManager.toast.addSuccess.title': 'Éxito',
+  'admin.questionBankManager.toast.addSuccess.description': 'Pregunta añadida correctamente.',
+  'admin.questionBankManager.toast.addError.title': 'Error al Añadir Pregunta',
+  'admin.questionBankManager.toast.addError.description': 'No se pudo añadir la pregunta.',
+  'admin.questionBankManager.toast.deleteSuccess.title': 'Éxito',
+  'admin.questionBankManager.toast.deleteSuccess.description': 'Pregunta {index} eliminada correctamente.',
+  'admin.questionBankManager.toast.deleteError.title': 'Error al Eliminar Pregunta',
+  'admin.questionBankManager.toast.deleteError.description': 'No se pudo eliminar la pregunta {index}.',
+};

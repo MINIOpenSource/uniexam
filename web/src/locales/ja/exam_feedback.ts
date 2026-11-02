@@ -1,0 +1,26 @@
+
+export const translations = {
+  'toast.unanswered.title': 'ヒント',
+  'toast.unanswered.description': '未回答の質問が{count}件あります。送信前に完了してください',
+  'toast.updateError.title': '保存エラー',
+  'toast.updateError.generic': '進行状況をサーバーに保存できませんでした',
+  'toast.updateError.network': 'ネットワークエラーにより進行状況の保存に失敗しました。接続を確認してください',
+  'toast.updateError.paperInvalid': '試験セッションが無効です。進行状況は保存されませんでした',
+  'toast.resumeError.title': '再開エラー',
+  'toast.resumeError.notFound': '以前の試験セッションが見つかりませんでした。新しい試験を開始します',
+  'toast.resumeError.noIdInStorage': 'ブラウザストレージに未完了の試験IDが見つかりません',
+  'toast.resumeError.manualIdEmpty': '再開するには試験IDを入力してください',
+  'toast.resumeError.noId': '未完了の試験IDが見つかりません',
+  'toast.resumeSuccess.title': '再開しました',
+  'toast.resumeSuccess.description': '以前の試験セッションを正常に再開しました',
+  'toast.urlInitiated.title': '試験セッション準備完了',
+  'toast.urlInitiated.description': '試験の準備ができました。試験ID: {paperId} を保存して、後でどのデバイスからでも進捗を再開してください。',
+
+  'urlConfirm.title': 'アクションの確認',
+  'urlConfirm.resumeMessage': '試験ID: {paperId} で試験を再開しますか？',
+  'urlConfirm.difficultyMessage': '{difficulty} の難易度で新しい試験を開始しますか？',
+  'urlConfirm.confirmButton': '確認',
+  'urlConfirm.cancelButton': 'キャンセル',
+  'urlConfirm.resumeTitle': '試験を再開',
+  'urlConfirm.difficultyTitle': '新しい試験を開始',
+};

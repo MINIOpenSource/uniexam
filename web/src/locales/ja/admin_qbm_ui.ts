@@ -1,0 +1,41 @@
+
+export const translations = {
+  'admin.questionBankManager.add.title': '新規問題追加',
+  'admin.questionBankManager.add.description': '{difficulty} バンクに新規問題を追加します。',
+  'admin.questionBankManager.add.bodyLabel': '問題本文',
+  'admin.questionBankManager.add.bodyPlaceholder': '問題文を入力 (例: 2+2は？)',
+  'admin.questionBankManager.add.correctChoicesLabel': '正解選択肢 (最低1つ必須)',
+  'admin.questionBankManager.add.correctChoicePlaceholder': '正解選択肢 {index}',
+  'admin.questionBankManager.add.addCorrectChoice': '正解選択肢追加',
+  'admin.questionBankManager.add.removeCorrectChoiceTitle': '正解選択肢削除',
+  'admin.questionBankManager.add.incorrectChoicesLabel': '不正解選択肢 (最低1つ必須)',
+  'admin.questionBankManager.add.incorrectChoicePlaceholder': '不正解選択肢 {index}',
+  'admin.questionBankManager.add.addIncorrectChoice': '不正解選択肢追加',
+  'admin.questionBankManager.add.removeIncorrectChoiceTitle': '不正解選択肢削除',
+  'admin.questionBankManager.add.submitButton': '問題バンクに追加',
+  'admin.questionBankManager.add.submittingButton': '追加中...',
+
+  'admin.questionBankManager.existing.title': '既存問題 ({count})',
+  'admin.questionBankManager.existing.description': '現在の {difficulty} バンクの問題リスト。',
+  'admin.questionBankManager.existing.refreshButton': 'リスト更新',
+  'admin.questionBankManager.existing.loading': '問題読み込み中...',
+  'admin.questionBankManager.existing.empty.title': 'このバンクにはまだ問題がありません。',
+  'admin.questionBankManager.existing.empty.description': '上のフォームを使用して最初の問題を追加してください。',
+  'admin.questionBankManager.existing.noResults.title': '検索に一致する問題がありません。',
+  'admin.questionBankManager.existing.noResults.description': '別の検索語を試すか、検索をクリアしてください。',
+  'admin.questionBankManager.existing.questionLabel': 'Q {index}: {body}',
+  'admin.questionBankManager.existing.deleteTitle': 'この問題を削除',
+  'admin.questionBankManager.existing.correctChoicesSublabel': '正解選択肢:',
+  'admin.questionBankManager.existing.incorrectChoicesSublabel': '不正解選択肢:',
+
+  'admin.questionBankManager.difficulty.easy': '簡単',
+  'admin.questionBankManager.difficulty.hybrid': '混合',
+  'admin.questionBankManager.difficulty.hard': '難しい',
+
+  'admin.questionBankManager.search.placeholder': '問題本文または選択肢で問題を検索...',
+
+  'admin.questionBankManager.pagination.previous': '前へ',
+  'admin.questionBankManager.pagination.next': '次へ',
+  'admin.questionBankManager.pagination.pageIndicator': 'ページ {currentPage}/{totalPages}',
+  'admin.questionBankManager.difficulty.invalid': '無効な難易度',
+};

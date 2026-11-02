@@ -1,0 +1,26 @@
+
+export const translations = {
+  'toast.unanswered.title': 'Conseil',
+  'toast.unanswered.description': 'Vous avez {count} questions sans réponse. Veuillez les compléter avant de soumettre',
+  'toast.updateError.title': 'Erreur de sauvegarde',
+  'toast.updateError.generic': 'Impossible d\'enregistrer la progression sur le serveur',
+  'toast.updateError.network': 'Erreur réseau lors de l\'enregistrement de la progression. Vérifiez la connexion',
+  'toast.updateError.paperInvalid': 'Session d\'examen invalide. Progression non enregistrée',
+  'toast.resumeError.title': 'Erreur de reprise',
+  'toast.resumeError.notFound': 'Session d\'examen précédente introuvable. Démarrage d\'un nouvel examen',
+  'toast.resumeError.noIdInStorage': 'Aucun ID d\'examen non terminé trouvé dans le stockage du navigateur',
+  'toast.resumeError.manualIdEmpty': 'Veuillez entrer un ID de copie pour reprendre',
+  'toast.resumeError.noId': 'Aucun ID d\'examen non terminé trouvé',
+  'toast.resumeSuccess.title': 'Repris',
+  'toast.resumeSuccess.description': 'Votre session d\'examen précédente a été reprise avec succès',
+  'toast.urlInitiated.title': 'Session d\'examen prête',
+  'toast.urlInitiated.description': 'Votre examen est prêt. Enregistrez l\'ID de copie : {paperId} pour reprendre plus tard depuis n\'importe quel appareil.',
+
+  'urlConfirm.title': 'Confirmer l\'action',
+  'urlConfirm.resumeMessage': 'Voulez-vous reprendre l\'examen avec l\'ID de copie : {paperId} ?',
+  'urlConfirm.difficultyMessage': 'Voulez-vous commencer un nouvel examen avec la difficulté {difficulty} ?',
+  'urlConfirm.confirmButton': 'Confirmer',
+  'urlConfirm.cancelButton': 'Annuler',
+  'urlConfirm.resumeTitle': 'Reprendre l\'examen',
+  'urlConfirm.difficultyTitle': 'Commencer un nouvel examen',
+};

@@ -1,0 +1,238 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: var(--font-google-sans-flex), var(--font-noto-sans-sc), sans-serif;
+}
+
+code,
+pre,
+kbd,
+samp {
+  font-family: var(--font-google-sans-code), monospace;
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 98%;
+    --foreground: 220 15% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 15% 12%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 15% 12%;
+    --primary: 215 80% 42%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 14% 94%;
+    --secondary-foreground: 220 15% 15%;
+    --muted: 220 14% 95%;
+    --muted-foreground: 220 10% 42%;
+    --accent: 220 14% 93%;
+    --accent-foreground: 220 15% 15%;
+    --destructive: 0 72% 48%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 13% 86%;
+    --input: 220 13% 84%;
+    --ring: 215 80% 42%;
+    --radius: 0.25rem;
+
+    --success: 142 70% 35%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 48%;
+    --warning-foreground: 220 15% 12%;
+    --info: 215 20% 94%;
+    --info-foreground: 220 15% 15%;
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 220 15% 18%;
+    --sidebar-primary: 215 80% 42%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 14% 94%;
+    --sidebar-accent-foreground: 220 15% 12%;
+    --sidebar-border: 220 13% 86%;
+    --sidebar-ring: 215 80% 42%;
+  }
+
+  .dark {
+    --background: 222 18% 9%;
+    --foreground: 210 20% 94%;
+    --card: 222 18% 12%;
+    --card-foreground: 210 20% 94%;
+    --popover: 222 18% 12%;
+    --popover-foreground: 210 20% 94%;
+    --primary: 212 85% 56%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 16% 18%;
+    --secondary-foreground: 210 20% 94%;
+    --muted: 220 16% 17%;
+    --muted-foreground: 215 14% 64%;
+    --accent: 220 16% 19%;
+    --accent-foreground: 210 20% 94%;
+    --destructive: 0 65% 46%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 220 15% 22%;
+    --input: 220 15% 22%;
+    --ring: 212 85% 56%;
+
+    --success: 142 65% 42%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 90% 50%;
+    --warning-foreground: 222 18% 9%;
+    --info: 220 16% 18%;
+    --info-foreground: 210 20% 94%;
+
+    --sidebar-background: 222 18% 11%;
+    --sidebar-foreground: 210 20% 92%;
+    --sidebar-primary: 212 85% 56%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 16% 17%;
+    --sidebar-accent-foreground: 210 20% 94%;
+    --sidebar-border: 220 15% 22%;
+    --sidebar-ring: 212 85% 56%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  .inline-code {
+    @apply bg-muted text-foreground font-code-extrabold px-1 py-0.5 rounded border border-border text-xs;
+    word-break: break-all;
+  }
+
+  .question-nav-scrollbar::-webkit-scrollbar {
+    height: 4px;
+  }
+  .question-nav-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-border rounded;
+  }
+
+  /* Obfuscated font bindings via CSS custom properties (no inline style attributes in DOM) */
+  .ue-q-scope {
+    font-family: var(--ue-obf-font), var(--font-google-sans-flex), var(--font-noto-sans-sc), sans-serif;
+    font-variant-ligatures: contextual common-ligatures;
+    font-feature-settings: "ccmp" 1, "kern" 1;
+    overflow-wrap: break-word;
+    word-break: normal;
+    /* Balanced low-contrast background & comfortable glyph luminance */
+    background-color: hsl(220 13% 93% / 0.96);
+    color: hsl(220 14% 24% / 0.9);
+  }
+  .dark .ue-q-scope {
+    background-color: hsl(222 16% 14.5% / 0.96);
+    color: hsl(214 16% 79% / 0.9);
+  }
+  .ue-q-scope .text-foreground {
+    color: hsl(220 14% 22% / 0.92);
+  }
+  .dark .ue-q-scope .text-foreground {
+    color: hsl(214 18% 82% / 0.92);
+  }
+  .ue-q-scope button[role="radio"] {
+    background-color: hsl(220 13% 90.5% / 0.78);
+    color: hsl(220 14% 25% / 0.9);
+    border-color: hsl(220 12% 81% / 0.65);
+  }
+  .dark .ue-q-scope button[role="radio"] {
+    background-color: hsl(222 16% 16.5% / 0.82);
+    color: hsl(214 16% 78% / 0.9);
+    border-color: hsl(220 14% 23% / 0.68);
+  }
+  .ue-q-scope code,
+  .ue-q-scope .inline-code {
+    font-family: var(--ue-obf-font), var(--font-google-sans-code), monospace;
+    font-variant-ligatures: contextual common-ligatures;
+    font-feature-settings: "ccmp" 1, "kern" 1;
+  }
+
+  /* Flatten scrambled DOM hierarchy while allowing CSS order to control visual option order */
+  .ue-opt-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .ue-opt-nest {
+    display: contents;
+  }
+
+  /* Anti-OCR sub-threshold surface interference pattern + spatial glyph-region dimming */
+  .ue-aocr-surface {
+    position: relative;
+    overflow: hidden;
+  }
+  .ue-aocr-surface::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    user-select: none;
+    z-index: 15;
+    opacity: 0.04;
+    background-image:
+      repeating-linear-gradient(23deg, currentColor 0, currentColor 0.45px, transparent 0.45px, transparent 7px),
+      repeating-linear-gradient(-37deg, currentColor 0, currentColor 0.4px, transparent 0.4px, transparent 9px),
+      radial-gradient(ellipse at 28% 36%, rgba(0, 0, 0, 0.24) 0%, transparent 58%),
+      radial-gradient(ellipse at 74% 64%, rgba(0, 0, 0, 0.22) 0%, transparent 55%),
+      radial-gradient(circle, currentColor 0.45px, transparent 0.6px);
+    background-size: 100% 100%, 100% 100%, 200px 108px, 230px 120px, 11px 13px;
+  }
+
+  /* 60Hz Complementary Temporal Noise + Spatial Dimming Overlay Canvas */
+  .ue-aocr-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    user-select: none;
+    z-index: 20;
+    opacity: 0.16;
+  }
+  .ue-aocr-canvas-frozen {
+    opacity: 0.92;
+  }
+
+  /* Visually hidden (0x0 clip-path) DOM Prompt Poisoning & Refusal Traps for LLM scrapers */
+  .ue-llm-trap {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+    opacity: 0.001;
+    pointer-events: none;
+    user-select: none;
+    font-family: sans-serif;
+  }
+
+  @media print {
+    .ue-shield-active .ue-q-scope {
+      visibility: hidden !important;
+      filter: blur(18px) !important;
+    }
+  }
+
+  .ue-shield-active.ue-shield-obscured .ue-q-scope {
+    filter: blur(14px);
+    opacity: 0.15;
+    pointer-events: none;
+    transition: filter 80ms ease-out, opacity 80ms ease-out;
+  }
+
+  /* When F12 / Remote Debugging is detected, DOM text nodes are physically purged
+     and replaced by CSSOM-injected pseudo-element text (`::before { content: ... }`),
+     keeping the UI 100% interactive and readable while Elements shows empty tags! */
+  .ue-cssom-slot::before {
+    content: none;
+  }
+}

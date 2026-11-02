@@ -1,0 +1,26 @@
+
+export const translations = {
+  'toast.unanswered.title': '힌트',
+  'toast.unanswered.description': '미응답 질문이 {count}개 있습니다. 제출하기 전에 완료하십시오',
+  'toast.updateError.title': '저장 오류',
+  'toast.updateError.generic': '진행 상황을 서버에 저장할 수 없습니다',
+  'toast.updateError.network': '네트워크 오류로 진행 상황 저장에 실패했습니다. 연결을 확인하십시오',
+  'toast.updateError.paperInvalid': '시험 세션이 유효하지 않습니다. 진행 상황이 저장되지 않았습니다',
+  'toast.resumeError.title': '재개 오류',
+  'toast.resumeError.notFound': '이전 시험 세션을 찾을 수 없습니다. 새 시험을 시작합니다',
+  'toast.resumeError.noIdInStorage': '브라우저 저장소에서 미완료 시험 ID를 찾을 수 없습니다',
+  'toast.resumeError.manualIdEmpty': '재개하려면 시험 ID를 입력하십시오',
+  'toast.resumeError.noId': '미완료 시험 ID를 찾을 수 없습니다',
+  'toast.resumeSuccess.title': '재개됨',
+  'toast.resumeSuccess.description': '이전 시험 세션을 성공적으로 재개했습니다',
+  'toast.urlInitiated.title': '시험 세션 준비 완료',
+  'toast.urlInitiated.description': '시험이 준비되었습니다. 시험 ID: {paperId}를 저장하여 나중에 모든 장치에서 진행 상황을 재개하십시오.',
+
+  'urlConfirm.title': '작업 확인',
+  'urlConfirm.resumeMessage': '시험 ID: {paperId}로 시험을 재개하시겠습니까?',
+  'urlConfirm.difficultyMessage': '{difficulty} 난이도로 새 시험을 시작하시겠습니까?',
+  'urlConfirm.confirmButton': '확인',
+  'urlConfirm.cancelButton': '취소',
+  'urlConfirm.resumeTitle': '시험 재개',
+  'urlConfirm.difficultyTitle': '새 시험 시작',
+};

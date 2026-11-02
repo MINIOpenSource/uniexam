@@ -1,0 +1,26 @@
+
+export const translations = {
+  'toast.unanswered.title': 'Hint',
+  'toast.unanswered.description': 'You have {count} unanswered questions. Please complete them before submitting',
+  'toast.updateError.title': 'Save Error',
+  'toast.updateError.generic': 'Could not save progress to server',
+  'toast.updateError.network': 'Network error saving progress. Check connection',
+  'toast.updateError.paperInvalid': 'Exam session invalid. Progress not saved',
+  'toast.resumeError.title': 'Resume Error',
+  'toast.resumeError.notFound': 'Previous exam session not found. Starting new exam',
+  'toast.resumeError.noIdInStorage': 'No unfinished exam ID found in browser storage',
+  'toast.resumeError.manualIdEmpty': 'Please enter a Paper ID to resume',
+  'toast.resumeError.noId': 'No unfinished exam ID found',
+  'toast.resumeSuccess.title': 'Resumed',
+  'toast.resumeSuccess.description': 'Successfully resumed your exam session',
+  'toast.urlInitiated.title': 'Exam Session Ready',
+  'toast.urlInitiated.description': 'Your exam is ready. Save Paper ID: {paperId} to resume later from any device.',
+
+  'urlConfirm.title': 'Confirm Action',
+  'urlConfirm.resumeMessage': 'Do you want to resume exam with Paper ID: {paperId}?',
+  'urlConfirm.difficultyMessage': 'Do you want to start a new exam with {difficulty} difficulty?',
+  'urlConfirm.confirmButton': 'Confirm',
+  'urlConfirm.cancelButton': 'Cancel',
+  'urlConfirm.resumeTitle': 'Resume Exam',
+  'urlConfirm.difficultyTitle': 'Start New Exam',
+};

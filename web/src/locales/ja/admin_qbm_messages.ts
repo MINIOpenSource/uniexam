@@ -1,0 +1,25 @@
+
+export const translations = {
+  'admin.questionBankManager.deleteDialog.title': '削除確認',
+  'admin.questionBankManager.deleteDialog.description': '問題 {index}: 「{body}...」を削除してもよろしいですか？この操作は元に戻せません。',
+  'admin.questionBankManager.deleteDialog.cancel': 'キャンセル',
+  'admin.questionBankManager.deleteDialog.delete': '問題削除',
+  'admin.questionBankManager.deleteDialog.deleting': '削除中...',
+
+  'admin.questionBankManager.toast.refreshed.title': '更新完了',
+  'admin.questionBankManager.toast.refreshed.description': '{difficulty} の問題バンクが更新されました。',
+  'admin.questionBankManager.toast.refreshError.title': '更新エラー',
+  'admin.questionBankManager.toast.refreshError.description': '問題の更新に失敗しました。',
+  'admin.questionBankManager.toast.validationError.title': '入力エラー',
+  'admin.questionBankManager.toast.validationError.bodyMissing': '問題本文を入力してください。',
+  'admin.questionBankManager.toast.validationError.correctChoiceMissing': '最低1つの正解選択肢が必要です。',
+  'admin.questionBankManager.toast.validationError.incorrectChoiceMissing': '最低1つの不正解選択肢が必要です。',
+  'admin.questionBankManager.toast.addSuccess.title': '成功',
+  'admin.questionBankManager.toast.addSuccess.description': '問題が正常に追加されました。',
+  'admin.questionBankManager.toast.addError.title': '問題追加エラー',
+  'admin.questionBankManager.toast.addError.description': '問題の追加に失敗しました。',
+  'admin.questionBankManager.toast.deleteSuccess.title': '成功',
+  'admin.questionBankManager.toast.deleteSuccess.description': '問題 {index} を削除しました。',
+  'admin.questionBankManager.toast.deleteError.title': '問題削除エラー',
+  'admin.questionBankManager.toast.deleteError.description': '問題 {index} の削除に失敗しました。',
+};

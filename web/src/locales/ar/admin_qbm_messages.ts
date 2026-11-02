@@ -1,0 +1,25 @@
+
+export const translations = {
+  'admin.questionBankManager.deleteDialog.title': 'تأكيد الحذف',
+  'admin.questionBankManager.deleteDialog.description': 'هل أنت متأكد أنك تريد حذف السؤال {index}: "{body}..."؟ لا يمكن التراجع عن هذا الإجراء.',
+  'admin.questionBankManager.deleteDialog.cancel': 'إلغاء',
+  'admin.questionBankManager.deleteDialog.delete': 'حذف السؤال',
+  'admin.questionBankManager.deleteDialog.deleting': 'جارٍ الحذف...',
+
+  'admin.questionBankManager.toast.refreshed.title': 'تم التحديث',
+  'admin.questionBankManager.toast.refreshed.description': 'تم تحديث بنك أسئلة {difficulty}.',
+  'admin.questionBankManager.toast.refreshError.title': 'خطأ في التحديث',
+  'admin.questionBankManager.toast.refreshError.description': 'فشل تحديث الأسئلة.',
+  'admin.questionBankManager.toast.validationError.title': 'خطأ في التحقق',
+  'admin.questionBankManager.toast.validationError.bodyMissing': 'يجب ملء نص السؤال.',
+  'admin.questionBankManager.toast.validationError.correctChoiceMissing': 'مطلوب خيار صحيح واحد على الأقل.',
+  'admin.questionBankManager.toast.validationError.incorrectChoiceMissing': 'مطلوب خيار غير صحيح واحد على الأقل.',
+  'admin.questionBankManager.toast.addSuccess.title': 'نجاح',
+  'admin.questionBankManager.toast.addSuccess.description': 'تمت إضافة السؤال بنجاح.',
+  'admin.questionBankManager.toast.addError.title': 'خطأ في إضافة السؤال',
+  'admin.questionBankManager.toast.addError.description': 'فشل إضافة السؤال.',
+  'admin.questionBankManager.toast.deleteSuccess.title': 'نجاح',
+  'admin.questionBankManager.toast.deleteSuccess.description': 'تم حذف السؤال {index} بنجاح.',
+  'admin.questionBankManager.toast.deleteError.title': 'خطأ في حذف السؤال',
+  'admin.questionBankManager.toast.deleteError.description': 'فشل حذف السؤال {index}.',
+};

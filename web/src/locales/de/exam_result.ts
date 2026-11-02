@@ -1,0 +1,22 @@
+
+export const translations = {
+  'result.success.title': 'Herzlichen Glückwunsch! Prüfung bestanden',
+  'result.success.description': 'Sie haben den ClassIsland Eingangstest erfolgreich bestanden',
+  'result.success.codePrefix': 'Ihr Qualifikationscode lautet:',
+  'result.success.scoreLabel': 'Ihre Punktzahl: {score}',
+  'result.failed.title': 'Prüfung nicht bestanden',
+  'result.failed.description': 'Leider haben Sie diese Prüfung nicht bestanden',
+  'result.failed.content': 'Bitte überprüfen Sie das relevante Material und versuchen Sie es erneut',
+  'result.failed.scoreLabel': 'Ihre Punktzahl: {score}',
+  'result.rateLimited.title': 'Zugriffshäufigkeitslimit',
+  'result.rateLimited.description': 'Sie haben das Zugriffshäufigkeitslimit erreicht',
+  'result.rateLimited.content': 'Bitte versuchen Sie es später erneut oder ändern Sie Ihre Netzwerkumgebung',
+  'result.error.title': 'Ein Fehler ist aufgetreten',
+  'result.error.description': 'Bei der Verarbeitung Ihrer Anfrage ist ein Problem aufgetreten',
+  'result.error.contentDefault': 'Bitte versuchen Sie es später erneut oder kontaktieren Sie einen Administrator',
+  'result.button.retry': 'Prüfung wiederholen',
+  'result.paperIdLabel': 'Papier-ID:',
+  'result.timeTakenLabel': 'Benötigte Zeit:',
+  'result.timeUnits.minutes': 'Min',
+  'result.timeUnits.seconds': 'Sek',
+};

@@ -1,0 +1,41 @@
+
+export const translations = {
+  'admin.questionBankManager.add.title': 'Ajouter une nouvelle question',
+  'admin.questionBankManager.add.description': 'Remplissez le formulaire pour ajouter une nouvelle question à la banque {difficulty}.',
+  'admin.questionBankManager.add.bodyLabel': 'Corps de la question',
+  'admin.questionBankManager.add.bodyPlaceholder': 'Entrez le texte de la question (par ex., Que vaut 2+2 ?)',
+  'admin.questionBankManager.add.correctChoicesLabel': 'Choix corrects (au moins un requis)',
+  'admin.questionBankManager.add.correctChoicePlaceholder': 'Choix correct {index}',
+  'admin.questionBankManager.add.addCorrectChoice': 'Ajouter un choix correct',
+  'admin.questionBankManager.add.removeCorrectChoiceTitle': 'Supprimer le choix correct',
+  'admin.questionBankManager.add.incorrectChoicesLabel': 'Choix incorrects (au moins un requis)',
+  'admin.questionBankManager.add.incorrectChoicePlaceholder': 'Choix incorrect {index}',
+  'admin.questionBankManager.add.addIncorrectChoice': 'Ajouter un choix incorrect',
+  'admin.questionBankManager.add.removeIncorrectChoiceTitle': 'Supprimer le choix incorrect',
+  'admin.questionBankManager.add.submitButton': 'Ajouter à la banque de questions',
+  'admin.questionBankManager.add.submittingButton': 'Ajout...',
+
+  'admin.questionBankManager.existing.title': 'Questions existantes ({count})',
+  'admin.questionBankManager.existing.description': 'Liste des questions actuellement dans la banque {difficulty}.',
+  'admin.questionBankManager.existing.refreshButton': 'Actualiser la liste',
+  'admin.questionBankManager.existing.loading': 'Chargement des questions...',
+  'admin.questionBankManager.existing.empty.title': 'Aucune question dans cette banque pour le moment.',
+  'admin.questionBankManager.existing.empty.description': 'Utilisez le formulaire ci-dessus pour ajouter la première question.',
+  'admin.questionBankManager.existing.noResults.title': 'Aucune question ne correspond à votre recherche.',
+  'admin.questionBankManager.existing.noResults.description': 'Essayez un terme de recherche différent ou effacez la recherche.',
+  'admin.questionBankManager.existing.questionLabel': 'Q {index}: {body}',
+  'admin.questionBankManager.existing.deleteTitle': 'Supprimer cette question',
+  'admin.questionBankManager.existing.correctChoicesSublabel': 'Choix corrects :',
+  'admin.questionBankManager.existing.incorrectChoicesSublabel': 'Choix incorrects :',
+
+  'admin.questionBankManager.difficulty.easy': 'facile',
+  'admin.questionBankManager.difficulty.hybrid': 'hybride',
+  'admin.questionBankManager.difficulty.hard': 'difficile',
+
+  'admin.questionBankManager.search.placeholder': 'Rechercher des questions par corps ou choix...',
+
+  'admin.questionBankManager.pagination.previous': 'Précédent',
+  'admin.questionBankManager.pagination.next': 'Suivant',
+  'admin.questionBankManager.pagination.pageIndicator': 'Page {currentPage} sur {totalPages}',
+  'admin.questionBankManager.difficulty.invalid': 'invalide',
+};

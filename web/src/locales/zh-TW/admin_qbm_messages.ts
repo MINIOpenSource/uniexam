@@ -1,0 +1,25 @@
+
+export const translations = {
+  'admin.questionBankManager.deleteDialog.title': '確認刪除',
+  'admin.questionBankManager.deleteDialog.description': '您確定要刪除題目 {index}：「{body}...」嗎？此操作無法復原。',
+  'admin.questionBankManager.deleteDialog.cancel': '取消',
+  'admin.questionBankManager.deleteDialog.delete': '刪除題目',
+  'admin.questionBankManager.deleteDialog.deleting': '刪除中...',
+
+  'admin.questionBankManager.toast.refreshed.title': '已重新整理',
+  'admin.questionBankManager.toast.refreshed.description': '{difficulty} 的題庫已更新。',
+  'admin.questionBankManager.toast.refreshError.title': '重新整理錯誤',
+  'admin.questionBankManager.toast.refreshError.description': '重新整理題目失敗。',
+  'admin.questionBankManager.toast.validationError.title': '驗證錯誤',
+  'admin.questionBankManager.toast.validationError.bodyMissing': '必須填寫題幹。',
+  'admin.questionBankManager.toast.validationError.correctChoiceMissing': '至少需要一個正確選項。',
+  'admin.questionBankManager.toast.validationError.incorrectChoiceMissing': '至少需要一個錯誤選項。',
+  'admin.questionBankManager.toast.addSuccess.title': '成功',
+  'admin.questionBankManager.toast.addSuccess.description': '題目新增成功。',
+  'admin.questionBankManager.toast.addError.title': '新增題目錯誤',
+  'admin.questionBankManager.toast.addError.description': '新增題目失敗。',
+  'admin.questionBankManager.toast.deleteSuccess.title': '成功',
+  'admin.questionBankManager.toast.deleteSuccess.description': '題目 {index} 刪除成功。',
+  'admin.questionBankManager.toast.deleteError.title': '刪除題目錯誤',
+  'admin.questionBankManager.toast.deleteError.description': '刪除題目 {index} 失敗。',
+};

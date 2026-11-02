@@ -1,0 +1,26 @@
+
+export const translations = {
+  'toast.unanswered.title': '提示',
+  'toast.unanswered.description': '您有 {count} 題未作答。請在提交前完成',
+  'toast.updateError.title': '儲存錯誤',
+  'toast.updateError.generic': '無法將進度儲存至伺服器',
+  'toast.updateError.network': '儲存進度時發生網路錯誤。請檢查連線',
+  'toast.updateError.paperInvalid': '考試工作階段無效。進度未儲存',
+  'toast.resumeError.title': '繼續作答錯誤',
+  'toast.resumeError.notFound': '找不到先前的考試工作階段。開始新考試',
+  'toast.resumeError.noIdInStorage': '瀏覽器儲存空間中找不到未完成的考試ID',
+  'toast.resumeError.manualIdEmpty': '請輸入試卷ID以繼續作答',
+  'toast.resumeError.noId': '找不到未完成的考試ID',
+  'toast.resumeSuccess.title': '已繼續',
+  'toast.resumeSuccess.description': '已成功繼續您先前的考試工作階段',
+  'toast.urlInitiated.title': '考試工作階段準備就緒',
+  'toast.urlInitiated.description': '您的考試已準備就緒。請儲存試卷ID：{paperId} 以便稍後從任何裝置繼續作答。',
+
+  'urlConfirm.title': '確認操作',
+  'urlConfirm.resumeMessage': '您要繼續作答試卷ID為 {paperId} 的考試嗎？',
+  'urlConfirm.difficultyMessage': '您要開始一個難度為 {difficulty} 的新考試嗎？',
+  'urlConfirm.confirmButton': '確認',
+  'urlConfirm.cancelButton': '取消',
+  'urlConfirm.resumeTitle': '繼續未完成的考試',
+  'urlConfirm.difficultyTitle': '開始新考試',
+};

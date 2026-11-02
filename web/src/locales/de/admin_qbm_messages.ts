@@ -1,0 +1,25 @@
+
+export const translations = {
+  'admin.questionBankManager.deleteDialog.title': 'Löschen bestätigen',
+  'admin.questionBankManager.deleteDialog.description': 'Möchten Sie Frage {index}: "{body}..." wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.',
+  'admin.questionBankManager.deleteDialog.cancel': 'Abbrechen',
+  'admin.questionBankManager.deleteDialog.delete': 'Frage löschen',
+  'admin.questionBankManager.deleteDialog.deleting': 'Wird gelöscht...',
+
+  'admin.questionBankManager.toast.refreshed.title': 'Aktualisiert',
+  'admin.questionBankManager.toast.refreshed.description': 'Fragenkatalog für {difficulty} aktualisiert.',
+  'admin.questionBankManager.toast.refreshError.title': 'Fehler beim Aktualisieren',
+  'admin.questionBankManager.toast.refreshError.description': 'Fehler beim Aktualisieren der Fragen.',
+  'admin.questionBankManager.toast.validationError.title': 'Validierungsfehler',
+  'admin.questionBankManager.toast.validationError.bodyMissing': 'Fragetext muss ausgefüllt werden.',
+  'admin.questionBankManager.toast.validationError.correctChoiceMissing': 'Mindestens eine richtige Antwort ist erforderlich.',
+  'admin.questionBankManager.toast.validationError.incorrectChoiceMissing': 'Mindestens eine falsche Antwort ist erforderlich.',
+  'admin.questionBankManager.toast.addSuccess.title': 'Erfolg',
+  'admin.questionBankManager.toast.addSuccess.description': 'Frage erfolgreich hinzugefügt.',
+  'admin.questionBankManager.toast.addError.title': 'Fehler beim Hinzufügen der Frage',
+  'admin.questionBankManager.toast.addError.description': 'Fehler beim Hinzufügen der Frage.',
+  'admin.questionBankManager.toast.deleteSuccess.title': 'Erfolg',
+  'admin.questionBankManager.toast.deleteSuccess.description': 'Frage {index} erfolgreich gelöscht.',
+  'admin.questionBankManager.toast.deleteError.title': 'Fehler beim Löschen der Frage',
+  'admin.questionBankManager.toast.deleteError.description': 'Fehler beim Löschen der Frage {index}.',
+};

@@ -1,0 +1,26 @@
+
+export const translations = {
+  'toast.unanswered.title': 'Hinweis',
+  'toast.unanswered.description': 'Sie haben {count} unbeantwortete Fragen. Bitte vervollständigen Sie diese vor dem Absenden',
+  'toast.updateError.title': 'Speicherfehler',
+  'toast.updateError.generic': 'Fortschritt konnte nicht auf dem Server gespeichert werden',
+  'toast.updateError.network': 'Netzwerkfehler beim Speichern des Fortschritts. Verbindung prüfen',
+  'toast.updateError.paperInvalid': 'Prüfungssitzung ungültig. Fortschritt nicht gespeichert',
+  'toast.resumeError.title': 'Fortsetzungsfehler',
+  'toast.resumeError.notFound': 'Vorherige Prüfungssitzung nicht gefunden. Neue Prüfung wird gestartet',
+  'toast.resumeError.noIdInStorage': 'Keine ID für unvollendete Prüfung im Browserspeicher gefunden',
+  'toast.resumeError.manualIdEmpty': 'Bitte geben Sie eine Prüfungs-ID ein, um fortzufahren',
+  'toast.resumeError.noId': 'Keine ID für unvollendete Prüfung gefunden',
+  'toast.resumeSuccess.title': 'Fortgesetzt',
+  'toast.resumeSuccess.description': 'Ihre vorherige Prüfungssitzung wurde erfolgreich fortgesetzt',
+  'toast.urlInitiated.title': 'Prüfungssitzung bereit',
+  'toast.urlInitiated.description': 'Ihre Prüfung ist bereit. Speichern Sie die Prüfungs-ID: {paperId}, um später von jedem Gerät aus fortzufahren.',
+
+  'urlConfirm.title': 'Aktion bestätigen',
+  'urlConfirm.resumeMessage': 'Möchten Sie die Prüfung mit der Papier-ID fortsetzen: {paperId}?',
+  'urlConfirm.difficultyMessage': 'Möchten Sie eine neue Prüfung mit dem Schwierigkeitsgrad {difficulty} starten?',
+  'urlConfirm.confirmButton': 'Bestätigen',
+  'urlConfirm.cancelButton': 'Abbrechen',
+  'urlConfirm.resumeTitle': 'Prüfung fortsetzen',
+  'urlConfirm.difficultyTitle': 'Neue Prüfung starten',
+};

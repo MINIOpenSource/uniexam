@@ -1,0 +1,41 @@
+
+export const translations = {
+  'admin.questionBankManager.add.title': '添加新题目',
+  'admin.questionBankManager.add.description': '填写表单向 {difficulty} 题库中添加新题目。',
+  'admin.questionBankManager.add.bodyLabel': '题干',
+  'admin.questionBankManager.add.bodyPlaceholder': '输入题目内容（例如：2+2等于几？）',
+  'admin.questionBankManager.add.correctChoicesLabel': '正确选项（至少一个）',
+  'admin.questionBankManager.add.correctChoicePlaceholder': '正确选项 {index}',
+  'admin.questionBankManager.add.addCorrectChoice': '添加正确选项',
+  'admin.questionBankManager.add.removeCorrectChoiceTitle': '移除正确选项',
+  'admin.questionBankManager.add.incorrectChoicesLabel': '错误选项（至少一个）',
+  'admin.questionBankManager.add.incorrectChoicePlaceholder': '错误选项 {index}',
+  'admin.questionBankManager.add.addIncorrectChoice': '添加错误选项',
+  'admin.questionBankManager.add.removeIncorrectChoiceTitle': '移除错误选项',
+  'admin.questionBankManager.add.submitButton': '添加到题库',
+  'admin.questionBankManager.add.submittingButton': '添加中...',
+
+  'admin.questionBankManager.existing.title': '现有题目 ({count})',
+  'admin.questionBankManager.existing.description': '当前 {difficulty} 题库中的题目列表。',
+  'admin.questionBankManager.existing.refreshButton': '刷新列表',
+  'admin.questionBankManager.existing.loading': '正在加载题目...',
+  'admin.questionBankManager.existing.empty.title': '此题库中还没有题目。',
+  'admin.questionBankManager.existing.empty.description': '使用上面的表单添加第一个题目。',
+  'admin.questionBankManager.existing.noResults.title': '没有找到匹配的题目。',
+  'admin.questionBankManager.existing.noResults.description': '请尝试其他搜索词或清空搜索条件。',
+  'admin.questionBankManager.existing.questionLabel': '问题 {index}: {body}',
+  'admin.questionBankManager.existing.deleteTitle': '删除此题目',
+  'admin.questionBankManager.existing.correctChoicesSublabel': '正确选项：',
+  'admin.questionBankManager.existing.incorrectChoicesSublabel': '错误选项：',
+
+  'admin.questionBankManager.difficulty.easy': '简单',
+  'admin.questionBankManager.difficulty.hybrid': '混合',
+  'admin.questionBankManager.difficulty.hard': '困难',
+
+  'admin.questionBankManager.search.placeholder': '按题干或选项搜索题目...',
+
+  'admin.questionBankManager.pagination.previous': '上一页',
+  'admin.questionBankManager.pagination.next': '下一页',
+  'admin.questionBankManager.pagination.pageIndicator': '第 {currentPage} 页 / 共 {totalPages} 页',
+  'admin.questionBankManager.difficulty.invalid': '无效难度',
+};

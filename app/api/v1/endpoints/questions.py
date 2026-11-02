@@ -9,6 +9,7 @@ from app.services.auth import get_current_active_admin, get_current_user
 
 router = APIRouter()
 
+
 # Question Banks
 @router.post("/banks", response_model=QuestionBankResponse)
 async def create_question_bank(
@@ -16,11 +17,15 @@ async def create_question_bank(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_admin)
 ):
+    existing = await db.execute(select(QuestionBank).where(QuestionBank.name == bank_in.name))
+    if existing.scalars().first():
+        raise HTTPException(status_code=400, detail="Question Bank name already exists")
     bank = QuestionBank(**bank_in.model_dump())
     db.add(bank)
     await db.commit()
     await db.refresh(bank)
     return bank
+
 
 @router.get("/banks", response_model=List[QuestionBankResponse])
 async def list_question_banks(
@@ -31,6 +36,7 @@ async def list_question_banks(
     result = await db.execute(select(QuestionBank).offset(skip).limit(limit))
     return result.scalars().all()
 
+
 # Questions
 @router.post("/", response_model=QuestionResponse)
 async def create_question(
@@ -38,7 +44,6 @@ async def create_question(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_admin)
 ):
-    # Verify bank exists
     result = await db.execute(select(QuestionBank).where(QuestionBank.id == question_in.bank_id))
     if not result.scalars().first():
         raise HTTPException(status_code=404, detail="Question Bank not found")
@@ -49,12 +54,13 @@ async def create_question(
     await db.refresh(question)
     return question
 
+
 @router.get("/", response_model=List[QuestionResponse])
 async def list_questions(
     bank_id: str = None,
     skip: int = 0, limit: int = 100,
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_current_active_admin)
 ):
     query = select(Question)
     if bank_id:

@@ -1,0 +1,41 @@
+
+export const translations = {
+  'admin.questionBankManager.add.title': '新增題目',
+  'admin.questionBankManager.add.description': '填寫表單以新增題目至 {difficulty} 題庫。',
+  'admin.questionBankManager.add.bodyLabel': '題幹',
+  'admin.questionBankManager.add.bodyPlaceholder': '輸入題目內容（例如：2+2等於多少？）',
+  'admin.questionBankManager.add.correctChoicesLabel': '正確選項（至少一個）',
+  'admin.questionBankManager.add.correctChoicePlaceholder': '正確選項 {index}',
+  'admin.questionBankManager.add.addCorrectChoice': '新增正確選項',
+  'admin.questionBankManager.add.removeCorrectChoiceTitle': '移除正確選項',
+  'admin.questionBankManager.add.incorrectChoicesLabel': '錯誤選項（至少一个）',
+  'admin.questionBankManager.add.incorrectChoicePlaceholder': '錯誤選項 {index}',
+  'admin.questionBankManager.add.addIncorrectChoice': '新增錯誤選項',
+  'admin.questionBankManager.add.removeIncorrectChoiceTitle': '移除錯誤選項',
+  'admin.questionBankManager.add.submitButton': '新增至題庫',
+  'admin.questionBankManager.add.submittingButton': '新增中...',
+
+  'admin.questionBankManager.existing.title': '現有題目 ({count})',
+  'admin.questionBankManager.existing.description': '目前 {difficulty} 題庫中的題目列表。',
+  'admin.questionBankManager.existing.refreshButton': '重新整理列表',
+  'admin.questionBankManager.existing.loading': '正在載入題目...',
+  'admin.questionBankManager.existing.empty.title': '此題庫中尚無題目。',
+  'admin.questionBankManager.existing.empty.description': '使用上方表單新增第一個題目。',
+  'admin.questionBankManager.existing.noResults.title': '沒有符合您搜尋的題目。',
+  'admin.questionBankManager.existing.noResults.description': '請嘗試其他搜尋詞或清除搜尋。',
+  'admin.questionBankManager.existing.questionLabel': '問題 {index}：{body}',
+  'admin.questionBankManager.existing.deleteTitle': '刪除此題目',
+  'admin.questionBankManager.existing.correctChoicesSublabel': '正確選項：',
+  'admin.questionBankManager.existing.incorrectChoicesSublabel': '錯誤選項：',
+
+  'admin.questionBankManager.difficulty.easy': '簡單',
+  'admin.questionBankManager.difficulty.hybrid': '混合',
+  'admin.questionBankManager.difficulty.hard': '困難',
+
+  'admin.questionBankManager.search.placeholder': '依題幹或选项搜尋題目...',
+
+  'admin.questionBankManager.pagination.previous': '上一頁',
+  'admin.questionBankManager.pagination.next': '下一頁',
+  'admin.questionBankManager.pagination.pageIndicator': '第 {currentPage} 頁 / 共 {totalPages} 頁',
+  'admin.questionBankManager.difficulty.invalid': '無效難度',
+};

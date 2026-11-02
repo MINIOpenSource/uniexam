@@ -12,20 +12,20 @@ from app.api.v1.endpoints.papers import _map_paper_to_response
 
 router = APIRouter()
 
+
 @router.get("/pending", response_model=List[PaperResponse])
 async def list_pending_grading(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_admin)
 ):
-    # Find papers that are submitted but not fully graded?
-    # For simplicity, let's say "SUBMITTED" state implies pending manual review if needed.
-    # Or we can check if any question has manual grading needed.
-
     stmt = select(Paper).options(selectinload(Paper.paper_questions).selectinload(PaperQuestion.question)).where(Paper.status == PaperStatus.SUBMITTED)
     result = await db.execute(stmt)
     papers = result.scalars().all()
 
-    return [_map_paper_to_response(p) for p in papers]
+    responses = [await _map_paper_to_response(p, db) for p in papers]
+    await db.commit()
+    return responses
+
 
 @router.post("/{paper_id}/questions/{pq_id}/grade", response_model=PaperResponse)
 async def manual_grade_question(
@@ -51,18 +51,19 @@ async def manual_grade_question(
     if not target_pq:
         raise HTTPException(status_code=404, detail="Question not found in this paper")
 
-    # Update score
+    if grading.score < 0 or grading.score > target_pq.max_score:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Score must be between 0 and {target_pq.max_score}"
+        )
+
     target_pq.score_awarded = grading.score
     target_pq.manual_comment = grading.comment
-    target_pq.is_correct = (grading.score == target_pq.max_score) # Simple logic
+    target_pq.is_correct = (grading.score == target_pq.max_score)
 
-    # Recalculate total
     new_total = sum((pq.score_awarded or 0.0) for pq in paper.paper_questions)
     paper.score = new_total
 
-    # Check if all graded (optional logic)
-    # paper.status = PaperStatus.GRADED
-
+    resp = await _map_paper_to_response(paper, db)
     await db.commit()
-    # Do not refresh to preserve loaded relationships
-    return _map_paper_to_response(paper)
+    return resp

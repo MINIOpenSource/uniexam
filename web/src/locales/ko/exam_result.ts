@@ -1,0 +1,22 @@
+
+export const translations = {
+  'result.success.title': '축하합니다! 시험 통과',
+  'result.success.description': 'ClassIsland 입학 시험에 성공적으로 통과했습니다',
+  'result.success.codePrefix': '귀하의 자격 코드는 다음과 같습니다:',
+  'result.success.scoreLabel': '귀하의 점수: {score}',
+  'result.failed.title': '시험 불합격',
+  'result.failed.description': '안타깝게도 이 시험에 통과하지 못했습니다',
+  'result.failed.content': '관련 자료를 검토하고 다시 시도하십시오',
+  'result.failed.scoreLabel': '귀하의 점수: {score}',
+  'result.rateLimited.title': '액세스 빈도 제한',
+  'result.rateLimited.description': '액세스 빈도 제한에 도달했습니다',
+  'result.rateLimited.content': '나중에 다시 시도하거나 네트워크 환경을 변경해 보십시오',
+  'result.error.title': '오류 발생',
+  'result.error.description': '요청 처리 중 문제가 발생했습니다',
+  'result.error.contentDefault': '나중에 다시 시도하거나 관리자에게 문의하십시오',
+  'result.button.retry': '재시험',
+  'result.paperIdLabel': '시험지 ID:',
+  'result.timeTakenLabel': '소요 시간:',
+  'result.timeUnits.minutes': '분',
+  'result.timeUnits.seconds': '초',
+};

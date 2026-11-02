@@ -1,0 +1,22 @@
+
+export const translations = {
+  'result.success.title': 'تهانينا! تم اجتياز الاختبار',
+  'result.success.description': 'لقد نجحت في اجتياز اختبار دخول ClassIsland',
+  'result.success.codePrefix': 'رمز التأهيل الخاص بك هو:',
+  'result.success.scoreLabel': 'درجتك: {score}',
+  'result.failed.title': 'لم يتم اجتياز الاختبار',
+  'result.failed.description': 'للأسف، لم تنجح في هذا الاختبار',
+  'result.failed.content': 'يرجى مراجعة المواد ذات الصلة والمحاولة مرة أخرى',
+  'result.failed.scoreLabel': 'درجتك: {score}',
+  'result.rateLimited.title': 'حد تكرار الوصول',
+  'result.rateLimited.description': 'لقد وصلت إلى حد تكرار الوصول',
+  'result.rateLimited.content': 'يرجى المحاولة مرة أخرى لاحقًا، أو حاول تغيير بيئة الشبكة الخاصة بك',
+  'result.error.title': 'حدث خطأ',
+  'result.error.description': 'حدثت مشكلة أثناء معالجة طلبك',
+  'result.error.contentDefault': 'يرجى المحاولة مرة أخرى لاحقًا أو الاتصال بمسؤول',
+  'result.button.retry': 'إعادة الاختبار',
+  'result.paperIdLabel': 'معرف الورقة:',
+  'result.timeTakenLabel': 'الوقت المستغرق:',
+  'result.timeUnits.minutes': 'د',
+  'result.timeUnits.seconds': 'ث',
+};

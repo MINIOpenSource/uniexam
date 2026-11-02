@@ -1,0 +1,41 @@
+
+export const translations = {
+  'admin.questionBankManager.add.title': '새 문제 추가',
+  'admin.questionBankManager.add.description': '{difficulty} 은행에 새 문제를 추가하려면 양식을 작성하십시오.',
+  'admin.questionBankManager.add.bodyLabel': '문제 본문',
+  'admin.questionBankManager.add.bodyPlaceholder': '문제 텍스트 입력 (예: 2+2는?)',
+  'admin.questionBankManager.add.correctChoicesLabel': '정답 선택지 (최소 1개 필수)',
+  'admin.questionBankManager.add.correctChoicePlaceholder': '정답 선택지 {index}',
+  'admin.questionBankManager.add.addCorrectChoice': '정답 선택지 추가',
+  'admin.questionBankManager.add.removeCorrectChoiceTitle': '정답 선택지 제거',
+  'admin.questionBankManager.add.incorrectChoicesLabel': '오답 선택지 (최소 1개 필수)',
+  'admin.questionBankManager.add.incorrectChoicePlaceholder': '오답 선택지 {index}',
+  'admin.questionBankManager.add.addIncorrectChoice': '오답 선택지 추가',
+  'admin.questionBankManager.add.removeIncorrectChoiceTitle': '오답 선택지 제거',
+  'admin.questionBankManager.add.submitButton': '문제 은행에 추가',
+  'admin.questionBankManager.add.submittingButton': '추가 중...',
+
+  'admin.questionBankManager.existing.title': '기존 문제 ({count})',
+  'admin.questionBankManager.existing.description': '현재 {difficulty} 은행의 문제 목록입니다.',
+  'admin.questionBankManager.existing.refreshButton': '목록 새로 고침',
+  'admin.questionBankManager.existing.loading': '문제 로드 중...',
+  'admin.questionBankManager.existing.empty.title': '이 은행에는 아직 문제가 없습니다.',
+  'admin.questionBankManager.existing.empty.description': '위 양식을 사용하여 첫 번째 문제를 추가하십시오.',
+  'admin.questionBankManager.existing.noResults.title': '검색과 일치하는 문제가 없습니다.',
+  'admin.questionBankManager.existing.noResults.description': '다른 검색어를 시도하거나 검색을 지우십시오.',
+  'admin.questionBankManager.existing.questionLabel': 'Q {index}: {body}',
+  'admin.questionBankManager.existing.deleteTitle': '이 문제 삭제',
+  'admin.questionBankManager.existing.correctChoicesSublabel': '정답 선택지:',
+  'admin.questionBankManager.existing.incorrectChoicesSublabel': '오답 선택지:',
+
+  'admin.questionBankManager.difficulty.easy': '쉬움',
+  'admin.questionBankManager.difficulty.hybrid': '혼합',
+  'admin.questionBankManager.difficulty.hard': '어려움',
+
+  'admin.questionBankManager.search.placeholder': '문제 본문 또는 선택지로 문제 검색...',
+
+  'admin.questionBankManager.pagination.previous': '이전',
+  'admin.questionBankManager.pagination.next': '다음',
+  'admin.questionBankManager.pagination.pageIndicator': '페이지 {currentPage}/{totalPages}',
+  'admin.questionBankManager.difficulty.invalid': '잘못된 난이도',
+};

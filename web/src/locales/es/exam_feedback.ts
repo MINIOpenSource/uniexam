@@ -1,0 +1,26 @@
+
+export const translations = {
+  'toast.unanswered.title': 'Aviso',
+  'toast.unanswered.description': 'Tienes {count} preguntas sin responder. Complétalas antes de enviar',
+  'toast.updateError.title': 'Error al guardar',
+  'toast.updateError.generic': 'No se pudo guardar el progreso en el servidor',
+  'toast.updateError.network': 'Error de red al guardar el progreso. Comprueba la conexión',
+  'toast.updateError.paperInvalid': 'Sesión de examen inválida. Progreso no guardado',
+  'toast.resumeError.title': 'Error al reanudar',
+  'toast.resumeError.notFound': 'No se encontró la sesión de examen anterior. Iniciando nuevo examen',
+  'toast.resumeError.noIdInStorage': 'No se encontró ID de examen no terminado en el almacenamiento del navegador',
+  'toast.resumeError.manualIdEmpty': 'Por favor, ingresa un ID de examen para reanudar',
+  'toast.resumeError.noId': 'No se encontró ID de examen no terminado',
+  'toast.resumeSuccess.title': 'Reanudado',
+  'toast.resumeSuccess.description': 'Tu sesión de examen anterior se ha reanudado correctamente',
+  'toast.urlInitiated.title': 'Sesión de examen lista',
+  'toast.urlInitiated.description': 'Tu examen está listo. Guarda el ID del examen: {paperId} para reanudar más tarde desde cualquier dispositivo.',
+
+  'urlConfirm.title': 'Confirmar acción',
+  'urlConfirm.resumeMessage': '¿Desea reanudar el examen con ID de papel: {paperId}?',
+  'urlConfirm.difficultyMessage': '¿Desea iniciar un nuevo examen con dificultad {difficulty}?',
+  'urlConfirm.confirmButton': 'Confirmar',
+  'urlConfirm.cancelButton': 'Cancelar',
+  'urlConfirm.resumeTitle': 'Reanudar examen',
+  'urlConfirm.difficultyTitle': 'Iniciar nuevo examen',
+};

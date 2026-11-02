@@ -1,0 +1,26 @@
+
+export const translations = {
+  'toast.unanswered.title': '提示',
+  'toast.unanswered.description': '您还有 {count} 道题未作答，请完成后再提交',
+  'toast.updateError.title': '保存错误',
+  'toast.updateError.generic': '无法将进度保存到服务器',
+  'toast.updateError.network': '网络错误导致进度保存失败，请检查连接',
+  'toast.updateError.paperInvalid': '考试会话无效，进度未保存',
+  'toast.resumeError.title': '恢复错误',
+  'toast.resumeError.notFound': '未找到先前的考试会话，开始新考试',
+  'toast.resumeError.noIdInStorage': '浏览器存储中未找到未完成的考试ID',
+  'toast.resumeError.manualIdEmpty': '请输入试卷ID以恢复',
+  'toast.resumeError.noId': '未找到未完成的考试ID',
+  'toast.resumeSuccess.title': '已恢复',
+  'toast.resumeSuccess.description': '成功恢复您之前的考试会话',
+  'toast.urlInitiated.title': '考试会话已就绪',
+  'toast.urlInitiated.description': '您的考试已加载。请保存试卷ID: {paperId} 以便后续从任何设备恢复进度。',
+
+  'urlConfirm.title': '确认操作',
+  'urlConfirm.resumeMessage': '您是否要继续作答试卷ID为 {paperId} 的考试？',
+  'urlConfirm.difficultyMessage': '您是否要开始一个难度为 {difficulty} 的新考试？',
+  'urlConfirm.confirmButton': '确认',
+  'urlConfirm.cancelButton': '取消',
+  'urlConfirm.resumeTitle': '继续未完成的考试',
+  'urlConfirm.difficultyTitle': '开始新考试',
+};

@@ -1,0 +1,41 @@
+
+export const translations = {
+  'admin.questionBankManager.add.title': 'Neue Frage hinzufügen',
+  'admin.questionBankManager.add.description': 'Füllen Sie das Formular aus, um eine neue Frage zum {difficulty}-Katalog hinzuzufügen.',
+  'admin.questionBankManager.add.bodyLabel': 'Fragetext',
+  'admin.questionBankManager.add.bodyPlaceholder': 'Fragetext eingeben (z.B. Was ist 2+2?)',
+  'admin.questionBankManager.add.correctChoicesLabel': 'Richtige Antworten (mindestens eine erforderlich)',
+  'admin.questionBankManager.add.correctChoicePlaceholder': 'Richtige Antwort {index}',
+  'admin.questionBankManager.add.addCorrectChoice': 'Richtige Antwort hinzufügen',
+  'admin.questionBankManager.add.removeCorrectChoiceTitle': 'Richtige Antwort entfernen',
+  'admin.questionBankManager.add.incorrectChoicesLabel': 'Falsche Antworten (mindestens eine erforderlich)',
+  'admin.questionBankManager.add.incorrectChoicePlaceholder': 'Falsche Antwort {index}',
+  'admin.questionBankManager.add.addIncorrectChoice': 'Falsche Antwort hinzufügen',
+  'admin.questionBankManager.add.removeIncorrectChoiceTitle': 'Falsche Antwort entfernen',
+  'admin.questionBankManager.add.submitButton': 'Zum Fragenkatalog hinzufügen',
+  'admin.questionBankManager.add.submittingButton': 'Wird hinzugefügt...',
+
+  'admin.questionBankManager.existing.title': 'Vorhandene Fragen ({count})',
+  'admin.questionBankManager.existing.description': 'Liste der Fragen, die sich derzeit im {difficulty}-Katalog befinden.',
+  'admin.questionBankManager.existing.refreshButton': 'Liste aktualisieren',
+  'admin.questionBankManager.existing.loading': 'Fragen werden geladen...',
+  'admin.questionBankManager.existing.empty.title': 'Dieser Katalog enthält noch keine Fragen.',
+  'admin.questionBankManager.existing.empty.description': 'Verwenden Sie das obige Formular, um die erste Frage hinzuzufügen.',
+  'admin.questionBankManager.existing.noResults.title': 'Keine Fragen entsprechen Ihrer Suche.',
+  'admin.questionBankManager.existing.noResults.description': 'Versuchen Sie einen anderen Suchbegriff oder löschen Sie die Suche.',
+  'admin.questionBankManager.existing.questionLabel': 'F {index}: {body}',
+  'admin.questionBankManager.existing.deleteTitle': 'Diese Frage löschen',
+  'admin.questionBankManager.existing.correctChoicesSublabel': 'Richtige Antworten:',
+  'admin.questionBankManager.existing.incorrectChoicesSublabel': 'Falsche Antworten:',
+
+  'admin.questionBankManager.difficulty.easy': 'einfach',
+  'admin.questionBankManager.difficulty.hybrid': 'hybrid',
+  'admin.questionBankManager.difficulty.hard': 'schwer',
+
+  'admin.questionBankManager.search.placeholder': 'Fragen nach Text oder Auswahlmöglichkeiten suchen...',
+
+  'admin.questionBankManager.pagination.previous': 'Zurück',
+  'admin.questionBankManager.pagination.next': 'Weiter',
+  'admin.questionBankManager.pagination.pageIndicator': 'Seite {currentPage} von {totalPages}',
+  'admin.questionBankManager.difficulty.invalid': 'ungültig',
+};

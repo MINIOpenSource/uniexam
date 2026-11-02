@@ -1,0 +1,41 @@
+
+export const translations = {
+  'admin.questionBankManager.add.title': 'Add New Question',
+  'admin.questionBankManager.add.description': 'Fill the form to add a new question to the {difficulty} bank.',
+  'admin.questionBankManager.add.bodyLabel': 'Question Body',
+  'admin.questionBankManager.add.bodyPlaceholder': 'Enter the question text (e.g., What is 2+2?)',
+  'admin.questionBankManager.add.correctChoicesLabel': 'Correct Choices (at least one required)',
+  'admin.questionBankManager.add.correctChoicePlaceholder': 'Correct Choice {index}',
+  'admin.questionBankManager.add.addCorrectChoice': 'Add Correct Choice',
+  'admin.questionBankManager.add.removeCorrectChoiceTitle': 'Remove correct choice',
+  'admin.questionBankManager.add.incorrectChoicesLabel': 'Incorrect Choices (at least one required)',
+  'admin.questionBankManager.add.incorrectChoicePlaceholder': 'Incorrect Choice {index}',
+  'admin.questionBankManager.add.addIncorrectChoice': 'Add Incorrect Choice',
+  'admin.questionBankManager.add.removeIncorrectChoiceTitle': 'Remove incorrect choice',
+  'admin.questionBankManager.add.submitButton': 'Add Question to Bank',
+  'admin.questionBankManager.add.submittingButton': 'Adding...',
+
+  'admin.questionBankManager.existing.title': 'Existing Questions ({count})',
+  'admin.questionBankManager.existing.description': 'List of questions currently in the {difficulty} bank.',
+  'admin.questionBankManager.existing.refreshButton': 'Refresh List',
+  'admin.questionBankManager.existing.loading': 'Loading questions...',
+  'admin.questionBankManager.existing.empty.title': 'No questions in this bank yet.',
+  'admin.questionBankManager.existing.empty.description': 'Use the form above to add the first question.',
+  'admin.questionBankManager.existing.noResults.title': 'No questions match your search.',
+  'admin.questionBankManager.existing.noResults.description': 'Try a different search term or clear the search.',
+  'admin.questionBankManager.existing.questionLabel': 'Q {index}: {body}',
+  'admin.questionBankManager.existing.deleteTitle': 'Delete this question',
+  'admin.questionBankManager.existing.correctChoicesSublabel': 'Correct Choices:',
+  'admin.questionBankManager.existing.incorrectChoicesSublabel': 'Incorrect Choices:',
+
+  'admin.questionBankManager.difficulty.easy': 'easy',
+  'admin.questionBankManager.difficulty.hybrid': 'hybrid',
+  'admin.questionBankManager.difficulty.hard': 'hard',
+
+  'admin.questionBankManager.search.placeholder': 'Search questions by body or choices...',
+
+  'admin.questionBankManager.pagination.previous': 'Previous',
+  'admin.questionBankManager.pagination.next': 'Next',
+  'admin.questionBankManager.pagination.pageIndicator': 'Page {currentPage} of {totalPages}',
+  'admin.questionBankManager.difficulty.invalid': 'invalid',
+};

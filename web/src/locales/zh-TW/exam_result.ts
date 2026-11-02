@@ -1,0 +1,22 @@
+
+export const translations = {
+  'result.success.title': '恭喜！考試通過',
+  'result.success.description': '您已成功通過 ClassIsland 入學測驗',
+  'result.success.codePrefix': '您的資格代碼是：',
+  'result.success.scoreLabel': '您的分數：{score}',
+  'result.failed.title': '考試未通過',
+  'result.failed.description': '很遺憾，您未通過本次考試',
+  'result.failed.content': '請複習相關教材後再試一次',
+  'result.failed.scoreLabel': '您的分數：{score}',
+  'result.rateLimited.title': '存取頻率限制',
+  'result.rateLimited.description': '您已達到存取頻率限制',
+  'result.rateLimited.content': '請稍後再試，或嘗試更換您的網路環境',
+  'result.error.title': '發生錯誤',
+  'result.error.description': '處理您的請求時發生問題',
+  'result.error.contentDefault': '請稍後再試或聯絡管理員',
+  'result.button.retry': '重新測驗',
+  'result.paperIdLabel': '試卷ID：',
+  'result.timeTakenLabel': '花費時間：',
+  'result.timeUnits.minutes': '分',
+  'result.timeUnits.seconds': '秒',
+};

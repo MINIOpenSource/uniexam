@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 from enum import Enum
-from typing import Optional, List, Any
+from typing import Optional, List
 from sqlalchemy import String, Boolean, Float, DateTime, ForeignKey, Text, JSON, Integer
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
@@ -91,6 +91,7 @@ class Paper(Base):
 
     user: Mapped["User"] = relationship(back_populates="papers")
     paper_questions: Mapped[List["PaperQuestion"]] = relationship(back_populates="paper", cascade="all, delete-orphan")
+    issued_hashes: Mapped[List["PaperHash"]] = relationship(back_populates="paper", cascade="all, delete-orphan")
 
 
 class PaperQuestion(Base):
@@ -100,9 +101,6 @@ class PaperQuestion(Base):
     paper_id: Mapped[str] = mapped_column(ForeignKey("papers.id"))
     question_id: Mapped[str] = mapped_column(ForeignKey("questions.id"))
 
-    # Snapshot of the question content at exam time (optional but good for integrity)
-    # For now, we link to original question.
-
     user_answer: Mapped[Optional[dict]] = mapped_column(JSON) # User's answer
     is_correct: Mapped[Optional[bool]] = mapped_column(Boolean)
     score_awarded: Mapped[Optional[float]] = mapped_column(Float, default=0.0)
@@ -111,6 +109,17 @@ class PaperQuestion(Base):
 
     paper: Mapped["Paper"] = relationship(back_populates="paper_questions")
     question: Mapped["Question"] = relationship(back_populates="paper_questions")
+
+
+class PaperHash(Base):
+    __tablename__ = "paper_hashes"
+
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
+    paper_id: Mapped[str] = mapped_column(ForeignKey("papers.id", ondelete="CASCADE"), index=True)
+    paper_hash: Mapped[str] = mapped_column(String, index=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+    paper: Mapped["Paper"] = relationship(back_populates="issued_hashes")
 
 
 class AuditLog(Base):

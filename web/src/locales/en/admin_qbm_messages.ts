@@ -1,0 +1,25 @@
+
+export const translations = {
+  'admin.questionBankManager.deleteDialog.title': 'Confirm Deletion',
+  'admin.questionBankManager.deleteDialog.description': 'Are you sure you want to delete Question {index}: "{body}..."? This action cannot be undone.',
+  'admin.questionBankManager.deleteDialog.cancel': 'Cancel',
+  'admin.questionBankManager.deleteDialog.delete': 'Delete Question',
+  'admin.questionBankManager.deleteDialog.deleting': 'Deleting...',
+
+  'admin.questionBankManager.toast.refreshed.title': 'Refreshed',
+  'admin.questionBankManager.toast.refreshed.description': 'Question bank for {difficulty} updated.',
+  'admin.questionBankManager.toast.refreshError.title': 'Error Refreshing',
+  'admin.questionBankManager.toast.refreshError.description': 'Failed to refresh questions.',
+  'admin.questionBankManager.toast.validationError.title': 'Validation Error',
+  'admin.questionBankManager.toast.validationError.bodyMissing': 'Question body must be filled.',
+  'admin.questionBankManager.toast.validationError.correctChoiceMissing': 'At least one correct choice is required.',
+  'admin.questionBankManager.toast.validationError.incorrectChoiceMissing': 'At least one incorrect choice is required.',
+  'admin.questionBankManager.toast.addSuccess.title': 'Success',
+  'admin.questionBankManager.toast.addSuccess.description': 'Question added successfully.',
+  'admin.questionBankManager.toast.addError.title': 'Error Adding Question',
+  'admin.questionBankManager.toast.addError.description': 'Failed to add question.',
+  'admin.questionBankManager.toast.deleteSuccess.title': 'Success',
+  'admin.questionBankManager.toast.deleteSuccess.description': 'Question {index} deleted successfully.',
+  'admin.questionBankManager.toast.deleteError.title': 'Error Deleting Question',
+  'admin.questionBankManager.toast.deleteError.description': 'Failed to delete question {index}.',
+};
