@@ -11,9 +11,10 @@ import Link from 'next/link';
 interface UserCenterExamCardProps {
   exam: HistoryItem;
   onViewDetails: (paperId: string) => void;
+  onContinueExam?: (paperId: string) => void;
 }
 
-export function UserCenterExamCard({ exam, onViewDetails }: UserCenterExamCardProps) {
+export function UserCenterExamCard({ exam, onViewDetails, onContinueExam }: UserCenterExamCardProps) {
   const { t } = useTranslation();
 
   const effectivePassStatus = exam.pass_status === null ? "IN_PROGRESS" : exam.pass_status;
@@ -75,11 +76,22 @@ export function UserCenterExamCard({ exam, onViewDetails }: UserCenterExamCardPr
 
       <div className="mt-3 flex justify-end border-t pt-2.5">
         {isContinuable ? (
-          <Link href={`/?id=${exam.paper_id}&i=1`} passHref legacyBehavior>
-            <Button asChild variant="default" size="sm" className="h-7 px-3 text-xs">
-              <a>{t('userCenter.history.continueExamButton')}</a>
+          onContinueExam ? (
+            <Button
+              variant="default"
+              size="sm"
+              className="h-7 px-3 text-xs"
+              onClick={() => onContinueExam(exam.paper_id)}
+            >
+              {t('userCenter.history.continueExamButton')}
             </Button>
-          </Link>
+          ) : (
+            <Link href={`/?id=${exam.paper_id}&i=1`} passHref legacyBehavior>
+              <Button asChild variant="default" size="sm" className="h-7 px-3 text-xs">
+                <a>{t('userCenter.history.continueExamButton')}</a>
+              </Button>
+            </Link>
+          )
         ) : (
           <Button variant="outline" size="sm" className="h-7 px-3 text-xs" onClick={() => onViewDetails(exam.paper_id)}>
             {t('userCenter.history.viewDetailsButton')}

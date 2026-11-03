@@ -121,12 +121,22 @@ export function SecurityShieldProvider({ children }: { children: React.ReactNode
   const [panelOpen, setPanelOpen] = useState(false);
   const [events, setEvents] = useState<ThreatDetectionEvent[]>([]);
   const [activeReasons, setActiveReasons] = useState<string[]>([]);
-  const [domPurgedByDebugger, setDomPurgedByDebugger] = useState(false);
+  const [domPurgedByDebugger, setDomPurgedByDebugger] = useState<boolean>(() => {
+    if (typeof window !== "undefined") {
+      const w = window as unknown as { __ue_early_dom_purged?: boolean };
+      return Boolean(w.__ue_early_dom_purged);
+    }
+    return false;
+  });
   const [freezeNoisePreview, setFreezeNoisePreview] = useState(false);
 
   const clearDomPurge = useCallback(() => {
     setDomPurgedByDebugger(false);
     setActiveReasons([]);
+    if (typeof window !== "undefined") {
+      const w = window as unknown as { __ue_early_dom_purged?: boolean };
+      w.__ue_early_dom_purged = false;
+    }
     if (typeof document !== "undefined") {
       document.documentElement.classList.remove("ue-shield-obscured");
     }
@@ -390,7 +400,35 @@ export function SecurityShieldProvider({ children }: { children: React.ReactNode
     // 6. Silent Anti-Remote-Debugging / WebDriver / Docked & Undocked (Pop-Out) DevTools Probe
     // Zero `debugger` statements are used so DevTools never pauses or alerts the user!
     let probeInterval: number | null = null;
+    let resizeProbeHandler: (() => void) | null = null;
+    const handleEarlySecurityEvent = (ev: Event) => {
+      if (!config.antiRemoteDebug) return;
+      const customEv = ev as CustomEvent<string>;
+      setDomPurgedByDebugger(true);
+      recordAnomaly(
+        "antiRemoteDebug",
+        "前置同步反调试探针",
+        customEv.detail || "document-start 捕获到远程调试/自动化特征 (已预先启用 CSSOM 零文本渲染)",
+        0
+      );
+    };
+    window.addEventListener("ue-early-security-anomaly", handleEarlySecurityEvent);
+
     if (config.antiRemoteDebug) {
+      const wEarly = window as unknown as {
+        __ue_early_dom_purged?: boolean;
+        __ue_early_anomalies?: string[];
+      };
+      if (wEarly.__ue_early_dom_purged) {
+        setDomPurgedByDebugger(true);
+        const reasons = wEarly.__ue_early_anomalies || [
+          "document-start 检测到预开启的调试/自动化环境 (已预先启用 CSSOM 零文本渲染)",
+        ];
+        for (const r of reasons) {
+          recordAnomaly("antiRemoteDebug", "前置同步反调试探针", r, 0);
+        }
+      }
+
       // Console serializer property-getter trap: triggers even when DevTools is undocked into
       // a floating window whenever the Console serializer inspects logged objects
       const probeEl = document.createElement("div");
@@ -408,7 +446,7 @@ export function SecurityShieldProvider({ children }: { children: React.ReactNode
         configurable: true,
       });
 
-      probeInterval = window.setInterval(() => {
+      const runRemoteDebugCheck = () => {
         if (navigator.webdriver) {
           setDomPurgedByDebugger(true);
           recordAnomaly(
@@ -452,7 +490,13 @@ export function SecurityShieldProvider({ children }: { children: React.ReactNode
           console.debug(probeEl);
           console.clear();
         } catch {}
-      }, 1000);
+      };
+
+      // Execute synchronously immediately (0ms TOCTOU gap) AND on every resize/interval
+      runRemoteDebugCheck();
+      resizeProbeHandler = runRemoteDebugCheck;
+      window.addEventListener("resize", resizeProbeHandler);
+      probeInterval = window.setInterval(runRemoteDebugCheck, 1000);
     }
 
     // Also trigger silent DOM purge immediately on window blur when page stays visible
@@ -488,6 +532,8 @@ export function SecurityShieldProvider({ children }: { children: React.ReactNode
       window.removeEventListener("blur", handleBlur);
       window.removeEventListener("blur", handleUndockedDevToolsBlur);
       window.removeEventListener("focus", handleFocus);
+      window.removeEventListener("ue-early-security-anomaly", handleEarlySecurityEvent);
+      if (resizeProbeHandler) window.removeEventListener("resize", resizeProbeHandler);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
       if (probeInterval !== null) window.clearInterval(probeInterval);
       if (observer !== null) observer.disconnect();

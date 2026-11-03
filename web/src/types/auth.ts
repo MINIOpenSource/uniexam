@@ -105,14 +105,8 @@ export type QuestionTypeEnum =
 
 export interface HistoryPaperQuestionClientView {
   body: string;
-  question_type: QuestionTypeEnum | string;
   choices?: { [key: string]: string } | null;
-  obfuscated_font?: string;
   submitted_answer?: string | string[] | null;
-  student_subjective_answer?: string | null;
-  standard_answer_text?: string | null;
-  manual_score?: number | null;
-  teacher_comment?: string | null;
 }
 
 export type PaperPassStatusEnum = "PASSED" | "FAILED" | "PENDING_REVIEW" | string;
@@ -124,8 +118,6 @@ export interface HistoryPaperDetailResponse {
   paper?: {
     body: string;
     choices: { [key: string]: string };
-    question_type: QuestionTypeEnum | string;
-    obfuscated_font?: string;
   }[];
   paper_hash?: string;
   paper_questions: HistoryPaperQuestionClientView[];
@@ -135,7 +127,4 @@ export interface HistoryPaperDetailResponse {
   pass_status?: PaperPassStatusEnum | string | null;
   passcode?: string | null;
   submission_time_utc?: string | null;
-  subjective_questions_count?: number | null;
-  graded_subjective_questions_count?: number | null;
-  pending_manual_grading_count?: number | null;
 }

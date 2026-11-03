@@ -13,15 +13,11 @@ class PaperGenerateRequest(BaseModel):
 
 class PaperQuestionResponse(BaseModel):
     id: str  # internal paper_question id
-    question_type: QuestionType
     content: Dict[str, Any]  # Question content (body, UUID-keyed shuffled options)
-    score_awarded: Optional[float]
-    max_score: float
-    user_answer: Optional[Dict[str, Any]]
-
-    # For results view
-    is_correct: Optional[bool]
-    manual_comment: Optional[str]
+    score_awarded: Optional[float] = None
+    max_score: float = 1.0
+    user_answer: Optional[Dict[str, Any]] = None
+    is_correct: Optional[bool] = None
 
     model_config = ConfigDict(from_attributes=True)
 

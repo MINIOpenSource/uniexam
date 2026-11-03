@@ -334,8 +334,11 @@ async def websocket_endpoint(
                     if paper and paper.user_id == user_id:
                         selected_texts = _extract_selected_texts_from_paper(paper)
                         selected_canon_ids = _extract_selected_canon_ids_from_paper(paper)
-                        selected_uuids = paper_issuance_service.resolve_canon_ids_for_hash(
-                            paper_hash, selected_canon_ids
+                        selected_uuids = await paper_issuance_service.resolve_canon_ids_for_hash(
+                            paper_hash,
+                            selected_canon_ids,
+                            db=session,
+                            paper_id=paper.id,
                         )
                         finished_count = sum(1 for t in selected_texts if t is not None)
                         total_q = len(paper.paper_questions)
@@ -736,8 +739,11 @@ async def websocket_endpoint(
                     paper = (await session.execute(stmt)).scalars().first()
                     if paper and paper.user_id == user_id:
                         selected_canon_ids = _extract_selected_canon_ids_from_paper(paper)
-                        selected_uuids = paper_issuance_service.resolve_canon_ids_for_hash(
-                            paper_hash, selected_canon_ids
+                        selected_uuids = await paper_issuance_service.resolve_canon_ids_for_hash(
+                            paper_hash,
+                            selected_canon_ids,
+                            db=session,
+                            paper_id=paper.id,
                         )
                         if selected_uuids is not None:
                             await websocket.send_json(

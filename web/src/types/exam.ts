@@ -9,8 +9,6 @@ export interface QuestionChoice {
 export interface ExamQuestion {
   body: string;
   choices: QuestionChoice; // Options mapped to per-issuance UUIDs and shuffled order
-  question_type?: QuestionTypeEnum | string;
-  obfuscated_font?: string; // Per-question base64 TTF font data URI
 }
 
 export type Question = ExamQuestion;

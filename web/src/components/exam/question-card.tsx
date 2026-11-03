@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import type { QuestionNavigationDirection } from './exam-form';
 import React from 'react';
 import { Loader2 } from 'lucide-react';
-import { AntiOcrSurface, AntiOcrText, useExternalObfuscatedFont } from './anti-ocr-text';
+import { AntiOcrSurface, AntiOcrText, useExternalObfuscatedFont, type WsFontPaperContext } from './anti-ocr-text';
 
 interface QuestionCardProps {
   question: Question;
@@ -13,6 +13,7 @@ interface QuestionCardProps {
   selectedAnswer: string | null;
   onAnswerChange: (questionIndex: number, choiceId: string) => void;
   entryDirection?: QuestionNavigationDirection;
+  wsFontContext?: WsFontPaperContext | null;
 }
 
 function hashSeed(str: string): number {
@@ -29,15 +30,17 @@ export const QuestionCard = React.memo(function QuestionCard({
   questionIndex,
   selectedAnswer,
   onAnswerChange,
+  wsFontContext,
 }: QuestionCardProps) {
   const entries = React.useMemo(() => Object.entries(question.choices), [question.choices]);
   const scopeId = `ue-qs-${questionIndex}`;
 
   const obfFontFamily = React.useMemo(() => {
-    if (!question.obfuscated_font) return undefined;
-    const tail = question.obfuscated_font.slice(-16).replace(/[^a-zA-Z0-9]/g, '');
+    if (!wsFontContext) return undefined;
+    const rawKey = wsFontContext.paperHash || wsFontContext.paperId || 'ws';
+    const tail = rawKey.slice(-16).replace(/[^a-zA-Z0-9]/g, '');
     return `UEObfQ_${questionIndex}_${tail}`;
-  }, [question.obfuscated_font, questionIndex]);
+  }, [wsFontContext, questionIndex]);
 
   // Build a deterministic scrambled DOM order + nested hierarchy while declaring true visual order in CSSOM
   const { domPermutedItems, orderCssRules } = React.useMemo(() => {
@@ -66,7 +69,14 @@ export const QuestionCard = React.memo(function QuestionCard({
     };
   }, [entries, questionIndex, scopeId]);
 
-  const isFontReady = useExternalObfuscatedFont(question.obfuscated_font, obfFontFamily, scopeId, orderCssRules);
+  const isFontReady = useExternalObfuscatedFont(
+    undefined,
+    obfFontFamily,
+    scopeId,
+    orderCssRules,
+    wsFontContext,
+    questionIndex
+  );
 
   const preventCopyAction = React.useCallback((e: React.SyntheticEvent) => {
     e.preventDefault();

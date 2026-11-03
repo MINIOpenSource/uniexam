@@ -59,6 +59,7 @@ export default function RootLayout({
       )}
     >
       <head>
+        <script src="/security-init.js" />
         <script src="/theme-init.js" />
       </head>
       <body className="font-sans antialiased">

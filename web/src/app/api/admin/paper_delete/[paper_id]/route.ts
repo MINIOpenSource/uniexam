@@ -4,7 +4,7 @@ import { extractBearerTokenFromRequest, buildBackendAuthHeaders } from '@/lib/pr
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
 
 interface Context {
-  params: { paper_id: string };
+  params: Promise<{ paper_id: string }>;
 }
 
 export async function DELETE(request: NextRequest, context: Context) {

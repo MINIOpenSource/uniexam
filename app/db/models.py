@@ -117,6 +117,7 @@ class PaperHash(Base):
     id: Mapped[str] = mapped_column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
     paper_id: Mapped[str] = mapped_column(ForeignKey("papers.id", ondelete="CASCADE"), index=True)
     paper_hash: Mapped[str] = mapped_column(String, index=True)
+    option_map: Mapped[Optional[list]] = mapped_column(JSON, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     paper: Mapped["Paper"] = relationship(back_populates="issued_hashes")

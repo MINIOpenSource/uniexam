@@ -4,7 +4,7 @@ import { extractBearerTokenFromRequest, buildBackendAuthHeaders } from '@/lib/pr
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
 
 interface Context {
-  params: { difficulty_id: string };
+  params: Promise<{ difficulty_id: string }>;
 }
 
 export async function GET(request: NextRequest, context: Context) {

@@ -31,10 +31,78 @@ _sys_rng = random.SystemRandom()
 _FONT_BINARY_CACHE_MAX = 2048
 _font_binary_cache: "OrderedDict[str, bytes]" = OrderedDict()
 
-# Bounded LRU cache of lazy font compilation recipes:
+#Bounded LRU cache of lazy font compilation recipes:
 # font_id -> (body, choices, decoy_body, decoy_choices)
 _FONT_RECIPE_CACHE_MAX = 4096
 _font_recipe_cache: "OrderedDict[str, Tuple[str, Dict[str, str], str, Dict[str, str]]]" = OrderedDict()
+
+_CJK_SAFE_PUNCT_CPS = {
+    0xFF0C,  # ，
+    0x3002,  # 。
+    0x3001,  # 、
+    0xFF1F,  # ？
+    0xFF01,  # ！
+    0xFF1A,  # ：
+    0xFF1B,  # ；
+    0x201C,  # “
+    0x201D,  # ”
+    0x2018,  # ‘
+    0x2019,  # ’
+    0xFF08,  # （
+    0xFF09,  # ）
+    0x3010,  # 【
+    0x3011,  # 】
+    0x300A,  # 《
+    0x300B,  # 》
+}
+
+
+def _is_cjk_ideograph(cp: int) -> bool:
+    return (0x4E00 <= cp <= 0x9FFF) or (0x3400 <= cp <= 0x4DBF)
+
+
+def _is_latn_letter(cp: int) -> bool:
+    return (0x0041 <= cp <= 0x005A) or (0x0061 <= cp <= 0x007A) or (0x00C0 <= cp <= 0x024F)
+
+
+def _is_clean_natural_decoy_sentence(s: str) -> bool:
+    """
+    Returns True if `s` is a 100% genuine, natural question or option sentence whose
+    script boundaries are 100% deterministic in Blink's `ScriptRunIterator`:
+    - Contains no backticks or ASCII symbols (`0-9`, `.`, `/`, `-`, `(`, `)`) that have
+      ambiguous `USCRIPT_COMMON` inheritance next to Latin runs.
+    - Contains only CJK ideographs (`hani`), Latin letters (`latn`, e.g. `ClassIsland`, `Word`),
+      spaces, and fullwidth Chinese punctuation (`，。、？！：；“”（）【】《》`).
+    - Any Chinese punctuation is strictly bordered by CJK ideographs (or end-of-sentence after
+      a CJK ideograph), NEVER directly touching a Latin letter, so Blink's `ScriptRunIterator`
+      resolves 100% of Chinese punctuation into the surrounding `hani` run!
+    """
+    if not s or "`" in s:
+        return False
+    s_no_sp = "".join(ch for ch in s if ch not in (" ", "\t", "\n", "\r"))
+    if not s_no_sp:
+        return False
+    n = len(s_no_sp)
+    has_cjk = False
+    for i, ch in enumerate(s_no_sp):
+        cp = ord(ch)
+        if _is_cjk_ideograph(cp):
+            has_cjk = True
+            continue
+        if _is_latn_letter(cp):
+            continue
+        if cp in _CJK_SAFE_PUNCT_CPS:
+            prev_latn = i > 0 and _is_latn_letter(ord(s_no_sp[i - 1]))
+            next_latn = i < n - 1 and _is_latn_letter(ord(s_no_sp[i + 1]))
+            if prev_latn or next_latn:
+                return False
+            # Also avoid starting a sentence with a `Common` punctuation mark right at index 0
+            # if the first real script character after it is `latn`
+            if i == 0:
+                return False
+        else:
+            return False
+    return has_cjk
 
 
 def store_obfuscated_font_bytes(ttf_bytes: bytes, font_id: Optional[str] = None) -> str:
@@ -86,6 +154,11 @@ class _FontAndDecoyResources:
         self.code_font: Optional[TTFont] = None
         self.code_cmap: Dict[int, str] = {}
         self.decoy_pool: List[Dict[str, Any]] = []
+        self.clean_decoy_pool: List[Dict[str, Any]] = []
+        self.clean_decoy_options: List[str] = []
+        self.bank_clean_decoy_pool: Dict[str, List[Dict[str, Any]]] = {}
+        self.bank_clean_decoy_options: Dict[str, List[str]] = {}
+        self.body_to_bank: Dict[str, str] = {}
         self.flattened_poly_cache: Dict[Tuple[int, str, float], Tuple[List[List[Tuple[int, int]]], int]] = {}
         self.ascii_preview_cache: Dict[int, Tuple[Glyph, Tuple[int, int]]] = {}
         self.unified_mask_pool: Dict[int, List[List[List[List[Tuple[int, int]]]]]] = {}
@@ -115,7 +188,12 @@ class _FontAndDecoyResources:
             self.code_cmap = self.code_font.getBestCmap() or {}
 
         lib_dir = root_dir / "data" / "library"
+        seen_clean_bodies: set = set()
+        seen_clean_opts: set = set()
         for fname in ("easy.json", "hybrid.json", "hard.json"):
+            bank_id = fname.replace(".json", "")
+            bank_pool: List[Dict[str, Any]] = self.bank_clean_decoy_pool.setdefault(bank_id, [])
+            bank_opts: List[str] = self.bank_clean_decoy_options.setdefault(bank_id, [])
             fpath = lib_dir / fname
             if fpath.exists():
                 try:
@@ -125,10 +203,31 @@ class _FontAndDecoyResources:
                         c_pool = item.get("correct_choices") or []
                         inc_pool = item.get("incorrect_choices") or []
                         if b and len(c_pool) >= 1 and len(inc_pool) >= 3:
+                            self.body_to_bank[b] = bank_id
+                            opts = [c_pool[0]] + inc_pool[:3]
                             self.decoy_pool.append({
                                 "body": b,
-                                "options": [c_pool[0]] + inc_pool[:3],
+                                "options": opts,
+                                "bank_id": bank_id,
                             })
+                            if _is_clean_natural_decoy_sentence(b):
+                                clean_opts_for_q = [o for o in opts if _is_clean_natural_decoy_sentence(o)]
+                                if len(clean_opts_for_q) == 4 and b not in seen_clean_bodies:
+                                    seen_clean_bodies.add(b)
+                                    entry = {
+                                        "body": b,
+                                        "options": clean_opts_for_q,
+                                        "bank_id": bank_id,
+                                    }
+                                    self.clean_decoy_pool.append(entry)
+                                    bank_pool.append(entry)
+                            for o in opts:
+                                if _is_clean_natural_decoy_sentence(o):
+                                    if o not in seen_clean_opts:
+                                        seen_clean_opts.add(o)
+                                        self.clean_decoy_options.append(o)
+                                    if o not in bank_opts:
+                                        bank_opts.append(o)
                 except Exception:
                     pass
 
@@ -208,6 +307,51 @@ def _glyph_to_flattened_polygons(
             polys.append(poly)
 
     return polys
+
+
+def _apply_local_elastic_and_thickness_warp(
+    polygons: List[List[Tuple[int, int]]],
+    warp_params: Tuple[float, float, float, float, float, float],
+    thickness_delta: float,
+) -> List[List[Tuple[int, int]]]:
+    """
+    Applies a two-stage anti-skeletonization / anti-SDF topological perturbation to a sliced
+    glyph fragment:
+    1. Non-linear local stroke thickness perturbation (`PyclipperOffset` by `thickness_delta`
+       in `[-4.5, +4.5]` UPM, i.e. ~`+-8..12%` of a ~50 UPM stroke width), so outer stroke edges
+       and medial-axis distances no longer match Noto Sans SC's canonical stroke widths.
+    2. Continuous 2D harmonic elastic warp (`dx(x,y), dy(x,y)`) shared across all fragments of
+       the same character instance so fragments still interlock seamlessly at `(0, 0)` while
+       their stroke curvature, intersection angles, and medial-axis skeleton hash are uniquely
+       bent per character instance!
+    """
+    if not polygons:
+        return []
+
+    work_polys = polygons
+    if abs(thickness_delta) >= 0.8:
+        try:
+            pco = pyclipper.PyclipperOffset()
+            pco.AddPaths(work_polys, pyclipper.JT_MITER, pyclipper.ET_CLOSEDPOLYGON)
+            offset_sol = pco.Execute(thickness_delta)
+            if offset_sol:
+                work_polys = offset_sol
+        except Exception:
+            pass
+
+    ax, ay, fx, fy, px, py = warp_params
+    warped_polys: List[List[Tuple[int, int]]] = []
+    for poly in work_polys:
+        if len(poly) < 3:
+            continue
+        w_poly: List[Tuple[int, int]] = []
+        for x, y in poly:
+            wx = x + ax * math.sin(y * fx + px) + 0.5 * ax * math.cos(x * fy + py)
+            wy = y + ay * math.cos(x * fx + py) + 0.5 * ay * math.sin(y * fy + px)
+            w_poly.append((int(round(wx)), int(round(wy))))
+        warped_polys.append(w_poly)
+
+    return warped_polys
 
 
 def _compile_polygons_to_ttf_glyph(
@@ -418,6 +562,18 @@ def _slice_glyph_into_k_stroke_fragments(
     frag_glyphs: List[Glyph] = []
     frag_shifts: List[int] = []
 
+    # Shared continuous 2D harmonic elastic warp across all fragments of this character instance
+    # so fragments interlock seamlessly at (0, 0) while the character's global medial-axis
+    # skeleton, stroke angles, and endpoint topology are uniquely warped per instance!
+    warp_params = (
+        _sys_rng.uniform(2.5, 5.2) * _sys_rng.choice([-1.0, 1.0]),  # ax (UPM)
+        _sys_rng.uniform(2.5, 5.2) * _sys_rng.choice([-1.0, 1.0]),  # ay (UPM)
+        _sys_rng.uniform(0.0085, 0.0155),                           # fx (rad/UPM)
+        _sys_rng.uniform(0.0085, 0.0155),                           # fy (rad/UPM)
+        _sys_rng.uniform(0.0, math.pi * 2.0),                       # px
+        _sys_rng.uniform(0.0, math.pi * 2.0),                       # py
+    )
+
     for s_idx in range(k_slices):
         pc = pyclipper.Pyclipper()
         try:
@@ -431,8 +587,14 @@ def _slice_glyph_into_k_stroke_fragments(
         except Exception:
             sol = polys if s_idx == 0 else []
 
+        # Per-fragment non-linear stroke thickness dilation/erosion (+-1.5 .. 4.5 UPM, ~+-10% of stroke width)
+        # combined with the shared 2D harmonic elastic warp so SDF / Medial-Axis Skeletonization hashes
+        # and cut-boundary vertex mating are mathematically defeated!
+        thickness_delta = _sys_rng.uniform(1.5, 4.5) * _sys_rng.choice([-1.0, 1.0])
+        warped_sol = _apply_local_elastic_and_thickness_warp(sol, warp_params, thickness_delta)
+
         shift_x = _sys_rng.randint(90, 250) if s_idx > 0 else 0
-        g_frag = _compile_polygons_to_ttf_glyph(sol, shift_x, noto_glyf)
+        g_frag = _compile_polygons_to_ttf_glyph(warped_sol, shift_x, noto_glyf)
         frag_glyphs.append(g_frag)
         frag_shifts.append(shift_x)
 
@@ -441,80 +603,33 @@ def _slice_glyph_into_k_stroke_fragments(
 
 def _classify_harfbuzz_script(ch: str) -> str:
     """
-    Exact Unicode/HarfBuzz script classifier:
+    Exact Unicode/HarfBuzz script classifier for clean natural decoy text:
     - Halfwidth ASCII letters -> 'latn'
-    - CJK Ideographs (`0x4E00..0x9FFF`, `0x3400..0x4DBF`) -> 'hani'
-    - Everything else (digits `0-9`, quotes `“”`, parentheses `（）`, commas `，`, question marks `？`,
-      hyphens `-`, dots `.`) -> 'common'!
-      In HarfBuzz, 'common' characters inherit the script of adjacent characters, so keeping
-      only pure 'latn' vs pure 'hani' as script-split triggers prevents false run-splitting on
-      punctuation like `“` or `，`!
+    - CJK Ideographs (`0x4E00..0x9FFF`, `0x3400..0x4DBF`) and fullwidth Chinese punctuation
+      (`，。、？！：；“”‘’（）【】《》`, which in `_is_clean_natural_decoy_sentence` are strictly bordered
+      by CJK ideographs and therefore 100% resolved to `USCRIPT_HAN` / `hani` by Blink's
+      `ScriptRunIterator`) -> 'hani'
+    - Whitespace / other -> 'common'
     """
     cp = ord(ch)
     if (0x0041 <= cp <= 0x005A) or (0x0061 <= cp <= 0x007A) or (0x00C0 <= cp <= 0x024F):
         return "latn"
-    if (0x4E00 <= cp <= 0x9FFF) or (0x3400 <= cp <= 0x4DBF):
+    if (0x4E00 <= cp <= 0x9FFF) or (0x3400 <= cp <= 0x4DBF) or (cp in _CJK_SAFE_PUNCT_CPS):
         return "hani"
     return "common"
 
 
 def _split_into_harfbuzz_runs(text: str) -> List[Tuple[str, bool]]:
     """
-    Splits a natural decoy string into a list of `(run_str, has_trailing_space)` tuples
+    Splits a genuine, natural decoy sentence into a list of `(run_str, has_trailing_space)` tuples
     where each `run_str` is 100% guaranteed to be shaped by HarfBuzz as a SINGLE contiguous
-    script run (`latn` or `hani`) AND preserves natural English words (`ClassIsland`, `.NET`)
-    without corrupting their letters!
-    - Why did letters previously cause subsequent characters to shatter?
-      Because `Common` characters (like `.`, `-`, `:`, `/`, `0-9`, `“`, `”`, `（`, `）`) have
-      Unicode `Script=Common`. When a `Common` character sits inside or adjacent to a `latn` run
-      (e.g. `.NET`, `v2.0`, `https://`), or between `latn` and `hani` (e.g. `ClassIsland的“`),
-      HarfBuzz's script itemizer or paired-punctuation resolver can split or re-assign the
-      `Common` character to a different run than our Python classifier predicted!
-    - By keeping each run 100% pure (`latn` = ONLY `A-Za-z`, `hani` = ONLY CJK ideographs `0x4E00..0x9FFF`)
-      and replacing any `Common` punctuation/digits in the decoy text with natural CJK characters
-      (while preserving spaces between words if needed, or joining cleanly), HarfBuzz's script
-      boundaries are 100% deterministic (`A-Za-z` = `latn`, CJK = `hani`) with ZERO `Common`
-      boundary ambiguity and ZERO corrupted English words!
+    script run (`latn` or `hani`) while preserving 100% of the authentic Chinese characters,
+    English words (`ClassIsland`, `Word`, `Excel`), and fullwidth Chinese punctuation
+    (`，。、？！：；“”（）【】《》`) without replacing any character with archaic/meaningless symbols!
     """
     raw = text.strip()
     if not raw:
         return [("系统默认配置", False)]
-
-    _CJK_PUNCT_MAP = {
-        "，": "且",
-        "。": "也",
-        "、": "与",
-        "“": "之",
-        "”": "乎",
-        "‘": "其",
-        "’": "者",
-        "（": "于",
-        "）": "以",
-        "(": "于",
-        ")": "以",
-        "？": "哉",
-        "?": "哉",
-        "！": "矣",
-        "!": "矣",
-        "：": "乃",
-        ":": "乃",
-        "；": "则",
-        ";": "则",
-        "—": "至",
-        "-": "至",
-        ".": "点",
-        "/": "斜",
-        "0": "零",
-        "1": "一",
-        "2": "二",
-        "3": "三",
-        "4": "四",
-        "5": "五",
-        "6": "六",
-        "7": "七",
-        "8": "八",
-        "9": "九",
-    }
 
     pure_chars: List[str] = []
     for ch in raw:
@@ -523,10 +638,6 @@ def _split_into_harfbuzz_runs(text: str) -> List[Tuple[str, bool]]:
         sc = _classify_harfbuzz_script(ch)
         if sc in ("latn", "hani"):
             pure_chars.append(ch)
-        elif ch in _CJK_PUNCT_MAP:
-            pure_chars.append(_CJK_PUNCT_MAP[ch])
-        else:
-            pure_chars.append("的")
 
     if not pure_chars:
         return [("系统默认配置", False)]
@@ -548,92 +659,127 @@ def _split_into_harfbuzz_runs(text: str) -> List[Tuple[str, bool]]:
     return out_runs
 
 
-_DISAMBIG_POOL = (
-    "的一是在不了有和人这中大为上个国我以要他时来用们生到作地于出就分对成会可主发年动"
-    "同工也能下过子说产种面而方后多定行学法所民得经十三之进着等部度家电力里如水化高自"
-    "二理起小物现实加量都两体制机当使点从业本去把性好应开它合还因由其些然前外天政四日"
-    "那社义事平形相全表间样与关各重新线内数正心反你明看原又么利比或但质气第向道命此变"
-    "条只没结解问意建月公无系军很情者最立代想已通并提直题党程展五果料象员革位入常文总"
-    "次品式活设及管特件长求老头基资边流路级少图山统接知较将组见计别她手角期根论运农指"
-    "几九区强放决西被干做必战先回则任取据处队南给色光门即保治北造百规热领七海口东导器"
-    "压志世金增争济阶油思术极交受联什认六共权收证改清己美再采转更单风切打白教速花带安"
-    "场身车例真务具万每目至达走积示议声报斗完类八离华名确才科张信马节话米整空元况今集"
-    "温传土许步群广石记需段研界拉林律叫且究支识病象蓝春假非久风독"
+_OPENTYPE_SCRIPT_TAGS = (
+    "DFLT",
+    "Zinh",
+    "Zyyy",
+    "Zzzz",
+    "bopo",
+    "cyrl",
+    "grek",
+    "hang",
+    "hani",
+    "kana",
+    "latn",
+    "zinh",
+    "zyyy",
+    "zzzz",
 )
-_LATN_DISAMBIG_POOL = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-_OPENTYPE_SCRIPT_TAGS = ("DFLT", "bopo", "cyrl", "grek", "hang", "hani", "kana", "latn", "zyyy")
 
 
-def _extract_disambig_runs(
-    raw_decoy_clause: str,
-    used_segment_heads: set,
-    used_cjk_chars: Optional[set] = None,
-) -> List[str]:
-    runs_with_space = _split_into_harfbuzz_runs(raw_decoy_clause)
-    if not runs_with_space:
-        return []
-    if used_cjk_chars is None:
-        used_cjk_chars = set()
-
-    cjk_pool_idx = 0
-    pool_len = len(_DISAMBIG_POOL)
-
-    out_runs: List[str] = []
-    for run_str, _ in runs_with_space:
-        d_chars = list(run_str)
-        M = len(d_chars)
-        if M == 0:
-            continue
-
-        is_latn = _classify_harfbuzz_script(d_chars[0]) == "latn"
-        if is_latn:
-            head_len = min(5, M)
-
-            def _is_valid_head(chars_list: List[str]) -> bool:
-                sig = (M if M < 5 else 5, tuple(chars_list[:head_len]))
-                if sig in used_segment_heads:
-                    return False
-                if M == 1 and any(s[1][0] == chars_list[0] for s in used_segment_heads):
-                    return False
-                if any(s[0] == 1 and s[1][0] == chars_list[0] for s in used_segment_heads):
-                    return False
-                if chars_list[0] in chars_list[1:head_len]:
-                    return False
-                return True
-
-            attempt = 0
-            while not _is_valid_head(d_chars) and attempt < 52:
-                if attempt == 0 and d_chars[0].swapcase() != d_chars[0]:
-                    d_chars[0] = d_chars[0].swapcase()
-                else:
-                    d_chars[0] = _LATN_DISAMBIG_POOL[attempt % len(_LATN_DISAMBIG_POOL)]
-                attempt += 1
-            used_segment_heads.add((M if M < 5 else 5, tuple(d_chars[:head_len])))
+def _effective_decoy_weight(raw_decoy: str) -> int:
+    runs = _split_into_harfbuzz_runs(raw_decoy)
+    w = 0
+    for r_str, _ in runs:
+        if r_str and _classify_harfbuzz_script(r_str[0]) == "latn":
+            w += max(1, min(3, (len(r_str) + 2) // 3))
         else:
-            # Deduplicate every CJK character across the question so each CJK character `d_chars[j]`
-            # can use a context-free rule (`prefix = []`, `suffix = []`), making line-wrapping
-            # 100% invariant to Blink `ShapingLineBreaker` re-shaping at any character boundary!
-            for j in range(M):
-                ch = d_chars[j]
-                if ch in used_cjk_chars:
-                    for _ in range(pool_len):
-                        cand = _DISAMBIG_POOL[cjk_pool_idx % pool_len]
-                        cjk_pool_idx += 1
-                        if cand not in used_cjk_chars and _classify_harfbuzz_script(cand) == "hani":
-                            ch = cand
-                            break
-                    else:
-                        # Fallback to any unused CJK ideograph in `0x4E00..0x9FA5` present in `noto_cmap`
-                        for cp_iter in range(0x4E00, 0x9FA5):
-                            cand = chr(cp_iter)
-                            if cand not in used_cjk_chars and cp_iter in _resources.noto_cmap:
-                                ch = cand
-                                break
-                    d_chars[j] = ch
-                used_cjk_chars.add(ch)
+            w += len(r_str)
+    return w
 
-        out_runs.append("".join(d_chars))
-    return out_runs
+
+def _collect_all_run_Start_substrings(runs: List[str]) -> List[str]:
+    return [r for r in runs if r]
+
+
+def _find_shortest_unique_lookaheads(all_hani_runs: List[str]) -> Optional[Dict[Tuple[int, int], int]]:
+    """
+    Given a list of all CJK (`hani`) run strings in a question, checks if every position `(r_idx, j)`
+    can be assigned a shortest lookahead length `L in 1..6` (or `L = 0` when `r_str[j]` occurs only
+    ONCE in the entire question!) such that the substring `r_str[j : j + 1 + L]` is 100% unique across
+    all occurrences of `r_str[j]` in the question AND is not a prefix of another occurrence's chosen
+    substring!
+    Why `L = 0` when `r_str[j]` occurs only once in the question?
+    Because ~85% of Chinese characters in a question appear only ONCE! Giving those characters `L = 0`
+    (`Backtrack = [], LookAhead = []`) means they have ZERO lookahead dependency and match 100%
+    independently at ANY line-wrap position (even at the very end of a line)!
+    And for the ~15% of characters that repeat (like `的`, `是`, `“`, `”`), `L >= 1` (`r_str[j : j+1+L]`)
+    uniquely disambiguates them at any line start!
+    """
+    # Count all substrings of lengths 1..7 starting at every position (r_idx, j)
+    sub_counts: Dict[str, int] = {}
+    for r_str in all_hani_runs:
+        M = len(r_str)
+        for j in range(M):
+            for length in range(1, min(8, M - j + 1)):
+                sub = r_str[j : j + length]
+                sub_counts[sub] = sub_counts.get(sub, 0) + 1
+
+    lookahead_map: Dict[Tuple[int, int], int] = {}
+    for r_idx, r_str in enumerate(all_hani_runs):
+        M = len(r_str)
+        for j in range(M):
+            ch = r_str[j]
+            if sub_counts.get(ch, 0) == 1:
+                # Character appears only ONCE across all CJK runs in the question -> L = 0!
+                lookahead_map[(r_idx, j)] = 0
+                continue
+            rem = M - j
+            if rem == 1 and M > 1:
+                # Repeated character at the very last index of a multi-char run:
+                # Chained via Tier 1 (`Backtrack = [m_{M-2}]`) on its line; mark -1 so we don't emit
+                # an unconditional `L = 0` Tier 2 rule that would shadow earlier occurrences!
+                lookahead_map[(r_idx, j)] = -1
+                continue
+            found_l: Optional[int] = None
+            for length in range(2, min(8, rem + 1)):
+                sub = r_str[j : j + length]
+                if sub_counts.get(sub, 0) == 1:
+                    found_l = length - 1
+                    break
+            if found_l is None:
+                return None
+            lookahead_map[(r_idx, j)] = found_l
+    return lookahead_map
+
+
+def _has_no_ambiguous_run_collisions(candidate_clauses: List[str]) -> bool:
+    """
+    Verifies that across all HarfBuzz runs in `candidate_clauses`:
+    1. Every `latn` run has a unique 5-char head `(min(5, M), r[:5])`, and no single-character
+       `latn` run shares its starting letter with a longer `latn` run.
+    2. Every `hani` run position `(r_idx, j)` has a shortest unique lookahead (`L in 0..6`)
+       via `_find_shortest_unique_lookaheads`, AND for every `j == 0` of a multi-char `hani` run,
+       its required lookahead is `L_0 <= 2` (so any line of >= 3 CJK characters can start cleanly).
+    """
+    latn_heads: set = set()
+    all_hani_runs: List[str] = []
+    for clause in candidate_clauses:
+        for r_str, _ in _split_into_harfbuzz_runs(clause):
+            if not r_str:
+                continue
+            M = len(r_str)
+            if _classify_harfbuzz_script(r_str[0]) == "latn":
+                sig = (min(5, M), r_str[:5])
+                if sig in latn_heads:
+                    return False
+                if M == 1 and any(s[1][0] == r_str[0] for s in latn_heads):
+                    return False
+                if any(s[0] == 1 and s[1][0] == r_str[0] for s in latn_heads):
+                    return False
+                if r_str[0] in r_str[1:min(5, M)]:
+                    return False
+                latn_heads.add(sig)
+            else:
+                all_hani_runs.append(r_str)
+
+    la_map = _find_shortest_unique_lookaheads(all_hani_runs)
+    if la_map is None:
+        return False
+    for r_idx, r_str in enumerate(all_hani_runs):
+        if len(r_str) >= 3 and la_map.get((r_idx, 0), 99) > 2:
+            return False
+    return True
 
 
 def _prepare_decoy_texts_for_question(
@@ -641,83 +787,133 @@ def _prepare_decoy_texts_for_question(
     choices: Dict[str, str],
 ) -> Tuple[str, Dict[str, str]]:
     """
-    Phase 1 (Ultra-Fast < 0.3ms): Picks a decoy question from `_resources.decoy_pool`
-    whose CJK character count closely matches `body` (so no single decoy character ever
-    expands into a huge unbreakable multi-character cluster that breaks CSS line wrapping!)
-    and applies deterministic HarfBuzz run & CJK character deduplication across `body` and `choices`.
+    Phase 1 (Ultra-Fast < 0.3ms): Selects 100% genuine, unmodified, natural exam questions and
+    options from `_resources.clean_decoy_pool` / `_resources.clean_decoy_options` (preferring the
+    exact same question bank / domain as `body` to eliminate NLP perplexity / subject-domain shifts!)
+    so that inspecting the DOM in F12 DevTools shows a completely authentic, domain-matched question
+    and options (with real Chinese punctuation `，。？！“”（）` and zero gibberish character substitutions!).
     """
     _resources.ensure_loaded()
     choice_keys = list(choices.keys())
 
-    candidates = [d for d in _resources.decoy_pool if d["body"] != body]
-    if not candidates:
-        candidates = _resources.decoy_pool or [{"body": body, "options": list(choices.values())}]
+    matched_bank_id = _resources.body_to_bank.get(body.strip())
+    same_bank_pool = (
+        _resources.bank_clean_decoy_pool.get(matched_bank_id, [])
+        if matched_bank_id
+        else []
+    )
+    same_bank_opts = (
+        _resources.bank_clean_decoy_options.get(matched_bank_id, [])
+        if matched_bank_id
+        else []
+    )
 
-    target_cjk_min = max(12, int(len(body) * 0.85))
-    good_candidates = [
-        d for d in candidates
-        if sum(1 for ch in d["body"] if _classify_harfbuzz_script(ch) != "latn") >= target_cjk_min
+    pool = same_bank_pool or _resources.clean_decoy_pool or _resources.decoy_pool
+    all_clean_pool = _resources.clean_decoy_pool or _resources.decoy_pool
+    opt_pool = same_bank_opts or _resources.clean_decoy_options or [
+        o for d in pool for o in d["options"]
     ]
-    if not good_candidates:
-        good_candidates = sorted(
-            candidates,
-            key=lambda d: sum(1 for ch in d["body"] if _classify_harfbuzz_script(ch) != "latn"),
-            reverse=True,
-        )[:25]
-    decoy_q = _sys_rng.choice(good_candidates or candidates)
+    all_clean_opts = _resources.clean_decoy_options or opt_pool
 
-    used_segment_heads: set = set()
-    used_cjk_chars: set = set()
-
-    def _effective_clause_weight(raw_decoy: str) -> int:
-        runs = _split_into_harfbuzz_runs(raw_decoy)
-        w = 0
-        for r_str, _ in runs:
-            if r_str and _classify_harfbuzz_script(r_str[0]) == "latn":
-                w += max(1, min(3, (len(r_str) + 2) // 3))
-            else:
-                w += len(r_str)
-        return w
-
-    def disambiguate_clause(real_clause: str, raw_decoy_clause: str) -> str:
-        real_tokens = [
-            (" " if ch in (" ", "\t", "\n", "\r") else ch)
-            for ch in real_clause
+    candidates = [d for d in pool if d["body"] != body]
+    if not candidates:
+        candidates = [d for d in all_clean_pool if d["body"] != body] or pool or [
+            {"body": body, "options": list(choices.values())}
         ]
-        if not real_tokens:
+
+    def pick_natural_clause(real_clause: str, preferred_sentence: str, is_body: bool, used_clauses: List[str]) -> str:
+        real_len = len(real_clause)
+        if real_len == 0:
             return ""
-        expanded_decoy = raw_decoy_clause
-        guard = 0
-        while _effective_clause_weight(expanded_decoy) < len(real_tokens) and guard < 6:
-            extra = _sys_rng.choice(_resources.decoy_pool)["body"].replace("`", "")
-            expanded_decoy = f"{expanded_decoy}，{extra}"
-            guard += 1
-        return "".join(_extract_disambig_runs(expanded_decoy, used_segment_heads, used_cjk_chars))
+        target_min_w = max(4, int(real_len * 0.72)) if is_body else max(2, int(real_len * 0.65))
 
-    def prepare_full_text(real_text: str, decoy_sentence: str) -> str:
-        clean_decoy = decoy_sentence.replace("`", "")
-        if "`" not in real_text:
-            return disambiguate_clause(real_text, clean_decoy)
+        # First check if `preferred_sentence` itself is clean, sufficiently long, and collision-free
+        pref_clean = preferred_sentence.replace("`", "").replace(" ", "")
+        if (
+            _is_clean_natural_decoy_sentence(pref_clean)
+            and _effective_decoy_weight(pref_clean) >= target_min_w
+            and _has_no_ambiguous_run_collisions(used_clauses + [pref_clean])
+        ):
+            return pref_clean
 
-        r_parts = real_text.split("`")
-        out_parts: List[str] = []
-        for idx, r_part in enumerate(r_parts):
-            if not r_part:
-                out_parts.append("")
+        # Search same-domain clean pool first, then global clean pool if needed for length
+        if is_body:
+            domain_sentences = [d["body"].replace(" ", "") for d in candidates]
+            global_sentences = [d["body"].replace(" ", "") for d in all_clean_pool if d["body"] != body]
+        else:
+            domain_sentences = [o.replace(" ", "") for o in opt_pool] + [
+                d["body"].replace(" ", "") for d in candidates
+            ]
+            global_sentences = [o.replace(" ", "") for o in all_clean_opts] + [
+                d["body"].replace(" ", "") for d in all_clean_pool if d["body"] != body
+            ]
+
+        for source_sentences in (domain_sentences, global_sentences):
+            matching = [
+                s for s in source_sentences
+                if _effective_decoy_weight(s) >= target_min_w
+                and _has_no_ambiguous_run_collisions(used_clauses + [s])
+            ]
+            if matching:
+                close_matches = [
+                    s for s in matching
+                    if _effective_decoy_weight(s) <= max(real_len + 18, int(real_len * 1.75))
+                ]
+                return _sys_rng.choice(close_matches or matching[:30])
+
+        source_sentences = global_sentences or domain_sentences
+
+        # If `real_clause` is unusually long (> 101 chars), combine two complete, natural
+        # sentences from the question bank separated by `，` so it still reads as genuine exam text!
+        long_pool = sorted(
+            source_sentences,
+            key=lambda s: _effective_decoy_weight(s),
+            reverse=True,
+        )[:40]
+        for _ in range(25):
+            s1 = _sys_rng.choice(long_pool)
+            s2 = _sys_rng.choice(long_pool)
+            if s1 == s2:
                 continue
-            sub_decoy = (
-                clean_decoy
-                if idx == 0
-                else _sys_rng.choice(_resources.decoy_pool)["options"][idx % 4].replace("`", "")
-            )
-            out_parts.append(disambiguate_clause(r_part, sub_decoy))
-        return "`".join(out_parts)
+            combined = s1.rstrip("？。！") + "，" + s2
+            if (
+                _effective_decoy_weight(combined) >= target_min_w
+                and _has_no_ambiguous_run_collisions(used_clauses + [combined])
+            ):
+                return combined
 
-    decoy_body = prepare_full_text(body, decoy_q["body"])
+        fallback = _sys_rng.choice(long_pool) if long_pool else pref_clean
+        return fallback
+
+    target_body_w = max(10, int(len(body) * 0.75))
+    good_q_candidates = [
+        d for d in candidates
+        if _effective_decoy_weight(d["body"]) >= target_body_w
+    ]
+    if not good_q_candidates:
+        good_q_candidates = sorted(
+            candidates,
+            key=lambda d: _effective_decoy_weight(d["body"]),
+            reverse=True,
+        )[:30]
+    decoy_q = _sys_rng.choice(good_q_candidates or candidates)
+
+    used_clauses: List[str] = []
+
+    def prepare_full_text(real_text: str, preferred_decoy: str, is_body: bool) -> str:
+        # Always pick a SINGLE genuine, natural question or option sentence for the entire
+        # `real_text` (even if `real_text` contains backticks `...`), so F12 DevTools shows
+        # one coherent, natural exam question/option rather than multiple backtick-spliced options!
+        clean_real_for_len = real_text.replace("`", "")
+        chosen = pick_natural_clause(clean_real_for_len, preferred_decoy, is_body, used_clauses)
+        used_clauses.append(chosen)
+        return chosen
+
+    decoy_body = prepare_full_text(body, decoy_q["body"], True)
     decoy_choices: Dict[str, str] = {}
     for idx, k in enumerate(choice_keys):
         d_opt = decoy_q["options"][idx % len(decoy_q["options"])]
-        decoy_choices[k] = prepare_full_text(choices[k], d_opt)
+        decoy_choices[k] = prepare_full_text(choices[k], d_opt, False)
 
     return decoy_body, decoy_choices
 
@@ -731,13 +927,37 @@ def obfuscate_question_texts(
     - Phase 1 (during `/get_exam` or `/history/paper`, `< 0.3ms` per question):
       Immediately prepares the uncut decoy question & option texts (`decoy_body`, `decoy_choices`)
       and registers a lazy compilation recipe under `font_id`.
-    - Phase 2 (on-demand when `/api/exam/font/{font_id}` is requested by the browser):
-      `get_obfuscated_font_bytes(font_id)` compiles and caches the binary TTF on the fly!
+    - Phase 2 (on-demand via WebSocket `request_question_font` after verifying `paper_hash` +
+      submitted paper, or HTTP fallback): compiles the binary TTF dynamically from the real
+      DB question and the client's verified decoy question!
     """
     decoy_body, decoy_choices = _prepare_decoy_texts_for_question(body, choices)
     font_id = store_obfuscated_font_recipe(body, choices, decoy_body, decoy_choices)
     font_external_url = f"/api/exam/font/{font_id}"
     return decoy_body, decoy_choices, font_external_url
+
+
+def compile_question_font_for_decoy(
+    real_body: str,
+    real_choices: Dict[str, str],
+    decoy_body: str,
+    decoy_choices: Dict[str, str],
+    cache_key: Optional[str] = None,
+) -> bytes:
+    """
+    Dynamically compiles (and caches under `cache_key` if provided) the binary TrueType font
+    mapping the client's verified `decoy_body` and `decoy_choices` to the DB's `real_body`
+    and `real_choices`.
+    """
+    if cache_key:
+        cached = _font_binary_cache.get(cache_key)
+        if cached is not None:
+            _font_binary_cache.move_to_end(cache_key)
+            return cached
+    ttf_bytes = _compile_obfuscated_ttf_bytes(real_body, real_choices, decoy_body, decoy_choices)
+    if cache_key:
+        store_obfuscated_font_bytes(ttf_bytes, font_id=cache_key)
+    return ttf_bytes
 
 
 def _compile_obfuscated_ttf_bytes(
@@ -820,6 +1040,19 @@ def _compile_obfuscated_ttf_bytes(
     occ_counter = 0
     mid_counter = 0
     used_segment_heads: set = set()
+
+    # Pre-compute the shortest globally-unique lookahead length `L in 1..6` for every
+    # CJK (`hani`) run position `(hani_run_idx, j)` across `decoy_body` and `decoy_choices`!
+    all_question_hani_runs: List[str] = []
+    for raw_text in [decoy_body] + [decoy_choices.get(k, "") for k in choice_keys]:
+        for sub_part in raw_text.split("`"):
+            if not sub_part:
+                continue
+            for r_str, _ in _split_into_harfbuzz_runs(sub_part):
+                if r_str and _classify_harfbuzz_script(r_str[0]) != "latn":
+                    all_question_hani_runs.append(r_str)
+    hani_lookahead_map = _find_shortest_unique_lookaheads(all_question_hani_runs) or {}
+    cur_hani_run_idx = 0
 
     def build_sliced_fragment_stream(real_clause: str, in_code: bool, min_fragments: int = 2) -> List[str]:
         """
@@ -930,18 +1163,24 @@ def _compile_obfuscated_ttf_bytes(
         return stream
 
     def map_complete_decoy_clause(real_clause: str, raw_decoy_clause: str, in_code: bool) -> str:
-        nonlocal mid_counter, occ_counter
+        nonlocal mid_counter, occ_counter, cur_hani_run_idx
         runs_with_space = _split_into_harfbuzz_runs(raw_decoy_clause)
         if not runs_with_space:
             return ""
 
         total_decoy_chars = sum(len(r_str) for r_str, _ in runs_with_space)
-        # Keep whitespace inside `real_tokens` so spaces in English phrases (`Apache License 2.0`)
-        # are preserved 100% intact!
-        real_tokens = [
-            (" " if ch in (" ", "\t", "\n", "\r") else ch)
-            for ch in real_clause
-        ]
+        # Parse `real_clause` into `(char, is_code)` tokens so inline code (`...`) inside `real_clause`
+        # still renders in `GoogleSansCode` monospace while `raw_decoy_clause` in DOM remains a SINGLE
+        # natural, backtick-free exam question/option!
+        real_tokens: List[Tuple[str, bool]] = []
+        if "`" not in real_clause:
+            for ch in real_clause:
+                real_tokens.append((" " if ch in (" ", "\t", "\n", "\r") else ch, in_code))
+        else:
+            for p_idx, part in enumerate(real_clause.split("`")):
+                part_in_code = (p_idx % 2 == 1) or in_code
+                for ch in part:
+                    real_tokens.append((" " if ch in (" ", "\t", "\n", "\r") else ch, part_in_code))
         R_total = len(real_tokens)
         if R_total == 0:
             return ""
@@ -1008,7 +1247,7 @@ def _compile_obfuscated_ttf_bytes(
             # as an atomic unit, and assign at most 1..2 whole real characters per CJK decoy character
             # so line-breaks ONLY occur between whole real characters, NEVER inside a sliced glyph!
             char_frag_groups: List[List[str]] = []
-            for r_ch in run_real_chars:
+            for r_ch, r_in_code in run_real_chars:
                 if r_ch in (" ", "\t", "\n", "\r"):
                     char_frag_groups.append(["space"])
                     continue
@@ -1016,7 +1255,7 @@ def _compile_obfuscated_ttf_bytes(
                 src_font: TTFont = noto_font
                 src_gname: Optional[str] = None
                 scale = 1.0
-                if in_code and code_font is not None and r_cp in code_cmap:
+                if r_in_code and code_font is not None and r_cp in code_cmap:
                     src_font = code_font
                     src_gname = code_cmap[r_cp]
                     scale = 0.5
@@ -1097,15 +1336,29 @@ def _compile_obfuscated_ttf_bytes(
 
                 multiple_subst_map[mid_g] = sub_frags if sub_frags else ["z_zero"]
 
-            # Build 100% unambiguous Substitution rules:
-            # - For Latin (`latn`) runs:
-            #   * j == 0: `prefix = []`, `suffix = d_base_gnames[1:min(5, M)]`
-            #   * j >= 1: `prefix = [mid_gnames[j - 1]]`, `suffix = []`
-            # - For CJK (`hani`) runs (where every CJK character across the question is unique):
-            #   * Every j in 0..M-1 uses `prefix = []`, `suffix = []` so `HB_GLYPH_FLAG_UNSAFE_TO_BREAK == 0`
-            #     at every CJK boundary! When Blink's `ShapingLineBreaker` wraps a line at ANY CJK
-            #     character `k` and re-shapes Line 1 (`0..k-1`) and Line 2 (`k..M-1`), every CJK
-            #     character on BOTH lines matches its GSUB rule 100% independently!
+            # Build Two-Tier 100% Unambiguous + Line-Wrap-Resilient GSUB Rules:
+            # - Why did we previously either have to deduplicate every CJK character into gibberish
+            #   OR suffer shattered characters on line wraps?
+            #   Because a single rule per character had to choose between `Backtrack = [m_{j-1}]`
+            #   (which fails on the first character `d_k` of a wrapped line 2 because `m_{k-1}` is
+            #   on line 1) OR `Backtrack = [], LookAhead = []` (which required every CJK character
+            #   in the question to be globally unique, turning natural sentences into gibberish!).
+            # - With Two-Tier `ChainContextSubst` rules sorted so `len(Backtrack) > 0` comes FIRST
+            #   in `ChainSubRuleSet` and `len(Backtrack) == 0` comes SECOND:
+            #   1. Tier 1 (Mid-Line Chained Rule, `j >= 1`):
+            #      `prefix = [mid_gnames[j - 1]]`, `inp = d_base_gnames[j]`, `suffix = []` -> `mid_gnames[j]`.
+            #      Because `mid_gnames[j - 1]` (`m_{...}`) is 100% globally unique to position `j - 1`
+            #      of this exact run, every character that follows ANY already-substituted character on
+            #      the same line matches Tier 1 immediately with ZERO `LookAhead` dependency!
+            #   2. Tier 2 (Run-Start & Line-Wrap-Start Rule, `j >= 0`):
+            #      `prefix = []`, `inp = d_base_gnames[j]`, `suffix = d_base_gnames[j + 1 : min(M, j + 5)]` -> `mid_gnames[j]`.
+            #      When a run starts at `j == 0`, OR when Blink's `ShapingLineBreaker` wraps a line
+            #      right before index `k` (`k >= 1`) and re-shapes Line 2 (`d_k, d_{k+1}, ...`):
+            #      - At the first glyph `d_k` of Line 2, there is no `m_{k-1}` before it, so Tier 1
+            #        does not match; HarfBuzz falls through to Tier 2, matches `d_k` via its natural
+            #        lookahead `d_{k+1}, ...`, and substitutes `d_k -> m_k`!
+            #      - Then at the second glyph `d_{k+1}` of Line 2, `buffer[0]` is now `m_k`, so Tier 1
+            #        (`Backtrack = [m_k]`) matches immediately and chains the entire rest of Line 2!
             if is_latn:
                 for j in range(M):
                     if j == 0:
@@ -1116,8 +1369,20 @@ def _compile_obfuscated_ttf_bytes(
                         suffix = []
                     contextual_tuples.append((prefix, d_base_gnames[j], suffix, mid_gnames[j]))
             else:
+                my_hani_idx = cur_hani_run_idx
+                cur_hani_run_idx += 1
                 for j in range(M):
-                    contextual_tuples.append(([], d_base_gnames[j], [], mid_gnames[j]))
+                    if j >= 1:
+                        # Tier 1: Chained rule from `m_{j-1}` (no lookahead needed!)
+                        contextual_tuples.append(([mid_gnames[j - 1]], d_base_gnames[j], [], mid_gnames[j]))
+                    # Tier 2: Line-start / run-start rule using the shortest unique lookahead `L`
+                    req_l = hani_lookahead_map.get((my_hani_idx, j), min(4, M - 1 - j))
+                    if req_l < 0:
+                        # Repeated character at `j == M - 1` of a multi-char run: handled by Tier 1
+                        continue
+                    look_end = min(M, j + 1 + req_l)
+                    suffix = [d_base_gnames[k_look] for k_look in range(j + 1, look_end)]
+                    contextual_tuples.append(([], d_base_gnames[j], suffix, mid_gnames[j]))
 
             out_runs.append("".join(d_chars))
 
@@ -1161,7 +1426,7 @@ def _compile_obfuscated_ttf_bytes(
             contextual_tuples.append(([chaff_gnames[0]], chaff_gnames[1], [], mg))
 
     def encode_prepared_text(real_text: str, prepared_decoy: str) -> None:
-        if "`" not in real_text:
+        if "`" not in prepared_decoy:
             map_complete_decoy_clause(real_text, prepared_decoy, False)
             return
 
@@ -1229,6 +1494,10 @@ def _compile_obfuscated_ttf_bytes(
         # Group contextual rules by input glyph `inp_g` and build explicit Format 1
         # (`ChainContextSubst` Format 1 = simple glyph-ID ChainRuleSets) so fontTools NEVER
         # merges rules into Format 2 class-based subtables that could cross-pollinate!
+        # CRITICAL ORDERING:
+        # 1. Tier 1 (`len(Backtrack) > 0`) MUST come before Tier 2 (`len(Backtrack) == 0`).
+        # 2. Within Tier 2 (`len(Backtrack) == 0`), LONGER lookaheads (`len(LookAhead)`) MUST come
+        #    before shorter lookaheads so a longer specific rule is never shadowed by a prefix rule!
         contextual_tuples.sort(key=lambda item: (len(item[0]) > 0, len(item[0]) + len(item[2])), reverse=True)
 
         rules_by_inp: Dict[str, List[Tuple[List[str], List[str], int]]] = {}

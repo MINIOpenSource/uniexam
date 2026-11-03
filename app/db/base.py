@@ -28,6 +28,10 @@ async def get_db():
         yield session
 
 async def init_db():
-    """Initializes the database, creating all tables."""
+    """Initializes the database, creating all tables and applying lightweight schema migrations."""
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+        try:
+            await conn.exec_driver_sql("ALTER TABLE paper_hashes ADD COLUMN option_map JSON")
+        except Exception:
+            pass

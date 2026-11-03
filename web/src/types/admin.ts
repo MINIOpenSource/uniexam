@@ -28,30 +28,19 @@ export interface PaperAdminView {
   score_percentage?: number | null;
   pass_status?: PaperPassStatusEnum | string | null;
   passcode?: string | null;
-  subjective_questions_count?: number | null;
-  graded_subjective_questions_count?: number | null;
-  pending_manual_grading_count?: number | null;
 }
 
 export type AdminPaper = PaperAdminView;
 
 export interface PaperAdminQuestionDetailView {
+  internal_question_id?: string;
   id?: string | number;
   body: string;
-  question_type: QuestionTypeEnum | string;
   choices?: { [key: string]: string } | null;
   correct_choices_map?: { [key: string]: string } | null;
   incorrect_choices_map?: { [key: string]: string } | null;
-  answer?: string | string[] | null;
-  correct_choice?: string | null;
   submitted_answer?: string | string[] | null;
-  user_choice?: string | null;
-  student_subjective_answer?: string | null;
   is_correct?: boolean | null;
-  manual_score?: number | null;
-  teacher_comment?: string | null;
-  standard_answer_text?: string | null;
-  is_graded?: boolean;
 }
 
 export type PaperQuestionInternalDetail = PaperAdminQuestionDetailView;

@@ -15,7 +15,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import { useTranslation } from '@/hooks/useTranslation';
 import { CopyButton } from '@/components/ui/copy-button';
-import { AntiOcrSurface, AntiOcrText, prefetchObfuscatedFont, useExternalObfuscatedFont } from '@/components/exam/anti-ocr-text';
+import { AntiOcrSurface, AntiOcrText, prefetchObfuscatedFont, useExternalObfuscatedFont, type WsFontPaperContext } from '@/components/exam/anti-ocr-text';
 
 interface UserHistoryPaperDetailsDialogProps {
   isOpen: boolean;
@@ -73,11 +73,32 @@ export function UserHistoryPaperDetailsDialog({
   const currentQuestionForDialog: HistoryPaperQuestionClientView | undefined = selectedPaperDetails?.paper_questions?.[currentQuestionIndex];
   const scopeId = `ue-hs-${currentQuestionIndex}`;
 
+  const wsFontContext = React.useMemo<WsFontPaperContext | null>(() => {
+    if (!selectedPaperDetails?.paper_id) return null;
+    const rawPaper =
+      selectedPaperDetails.paper ||
+      (selectedPaperDetails.paper_questions || []).map((q) => ({
+        body: q.body,
+        choices: q.choices || {},
+      }));
+    return {
+      paperId: selectedPaperDetails.paper_id,
+      paper: rawPaper,
+      paperHash: selectedPaperDetails.paper_hash,
+    };
+  }, [
+    selectedPaperDetails?.paper_id,
+    selectedPaperDetails?.paper,
+    selectedPaperDetails?.paper_questions,
+    selectedPaperDetails?.paper_hash,
+  ]);
+
   const obfFontFamily = React.useMemo(() => {
-    if (!currentQuestionForDialog?.obfuscated_font) return undefined;
-    const tail = currentQuestionForDialog.obfuscated_font.slice(-16).replace(/[^a-zA-Z0-9]/g, '');
+    if (!wsFontContext) return undefined;
+    const rawKey = wsFontContext.paperHash || wsFontContext.paperId || 'ws';
+    const tail = rawKey.slice(-16).replace(/[^a-zA-Z0-9]/g, '');
     return `UEObfHist_${currentQuestionIndex}_${tail}`;
-  }, [currentQuestionForDialog?.obfuscated_font, currentQuestionIndex]);
+  }, [wsFontContext, currentQuestionIndex]);
 
   const { domPermutedHistoryChoices, historyOrderCss } = React.useMemo(() => {
     const rawEntries = currentQuestionForDialog?.choices ? Object.entries(currentQuestionForDialog.choices) : [];
@@ -108,25 +129,30 @@ export function UserHistoryPaperDetailsDialog({
     };
   }, [currentQuestionForDialog?.choices, currentQuestionIndex, scopeId]);
 
-  const isFontReady = useExternalObfuscatedFont(currentQuestionForDialog?.obfuscated_font, obfFontFamily, scopeId, historyOrderCss);
+  const isFontReady = useExternalObfuscatedFont(
+    undefined,
+    obfFontFamily,
+    scopeId,
+    historyOrderCss,
+    wsFontContext,
+    currentQuestionIndex
+  );
 
   useEffect(() => {
-    if (!isOpen || !selectedPaperDetails?.paper_questions) return;
+    if (!isOpen || !selectedPaperDetails?.paper_questions || !wsFontContext) return;
     const list = selectedPaperDetails.paper_questions;
     const neighbors = [currentQuestionIndex + 1, currentQuestionIndex + 2, currentQuestionIndex - 1];
     const timer = setTimeout(() => {
       for (const idx of neighbors) {
-        if (idx >= 0 && idx < list.length) {
-          const q = list[idx];
-          if (q?.obfuscated_font) {
-            const tail = q.obfuscated_font.slice(-16).replace(/[^a-zA-Z0-9]/g, '');
-            prefetchObfuscatedFont(q.obfuscated_font, `UEObfHist_${idx}_${tail}`);
-          }
+        if (idx >= 0 && idx < list.length && wsFontContext.paperId) {
+          const rawKey = wsFontContext.paperHash || wsFontContext.paperId || 'ws';
+          const tail = rawKey.slice(-16).replace(/[^a-zA-Z0-9]/g, '');
+          prefetchObfuscatedFont(undefined, `UEObfHist_${idx}_${tail}`, wsFontContext, idx);
         }
       }
     }, 60);
     return () => clearTimeout(timer);
-  }, [isOpen, currentQuestionIndex, selectedPaperDetails?.paper_questions]);
+  }, [isOpen, currentQuestionIndex, selectedPaperDetails?.paper_questions, wsFontContext]);
 
   const preventCopyAction = React.useCallback((e: React.SyntheticEvent) => {
     e.preventDefault();

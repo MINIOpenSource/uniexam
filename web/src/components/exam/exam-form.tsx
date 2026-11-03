@@ -3,7 +3,7 @@
 import * as React from 'react';
 import type { Paper } from '@/types/exam';
 import { QuestionCard } from './question-card';
-import { prefetchObfuscatedFont } from './anti-ocr-text';
+import { prefetchObfuscatedFont, type WsFontPaperContext } from './anti-ocr-text';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -83,6 +83,15 @@ export function ExamForm({
     }
   }, [totalQuestions]);
 
+  const wsFontContext = React.useMemo<WsFontPaperContext>(
+    () => ({
+      paperId: paperData.paper_id,
+      paper: paperData.paper,
+      paperHash: paperData.paper_hash,
+    }),
+    [paperData.paper_id, paperData.paper, paperData.paper_hash]
+  );
+
   React.useEffect(() => {
     const prevIdx = prevQuestionIndexRef.current;
     if (prevIdx !== currentQuestionIndex) {
@@ -92,21 +101,19 @@ export function ExamForm({
       prevQuestionIndexRef.current = currentQuestionIndex;
     }
 
-    // Background prefetch of adjacent questions (+1, +2, -1) so Next/Previous switches are instant
+    // Background prefetch of adjacent questions (+1, +2, -1) over WebSocket so Next/Previous switches are instant
     const neighbors = [currentQuestionIndex + 1, currentQuestionIndex + 2, currentQuestionIndex - 1];
     const timer = setTimeout(() => {
       for (const idx of neighbors) {
-        if (idx >= 0 && idx < totalQuestions) {
-          const q = paperData.paper[idx];
-          if (q?.obfuscated_font) {
-            const tail = q.obfuscated_font.slice(-16).replace(/[^a-zA-Z0-9]/g, '');
-            prefetchObfuscatedFont(q.obfuscated_font, `UEObfQ_${idx}_${tail}`);
-          }
+        if (idx >= 0 && idx < totalQuestions && wsFontContext.paperId) {
+          const rawKey = wsFontContext.paperHash || wsFontContext.paperId || 'ws';
+          const tail = rawKey.slice(-16).replace(/[^a-zA-Z0-9]/g, '');
+          prefetchObfuscatedFont(undefined, `UEObfQ_${idx}_${tail}`, wsFontContext, idx);
         }
       }
     }, 60);
     return () => clearTimeout(timer);
-  }, [currentQuestionIndex, totalQuestions, paperData.paper]);
+  }, [currentQuestionIndex, totalQuestions, wsFontContext]);
 
   const handleLocalAnswerChange = React.useCallback(
     (qIndex: number, choiceId: string) => {
@@ -205,6 +212,7 @@ export function ExamForm({
           questionIndex={currentQuestionIndex}
           selectedAnswer={answers[currentQuestionIndex]}
           onAnswerChange={handleLocalAnswerChange}
+          wsFontContext={wsFontContext}
         />
       </div>
 

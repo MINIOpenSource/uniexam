@@ -12,15 +12,16 @@ import { useAuth } from '@/context/AuthContext';
 import type { DifficultyLevel } from '@/types/auth';
 
 type DifficultyPageProps = {
-  params: {
+  params: Promise<{
     difficulty: string;
-  };
+  }>;
 };
 
 export default function DifficultyBankPage({ params }: DifficultyPageProps) {
   const { t } = useTranslation();
   const { user, isLoading: authIsLoading } = useAuth();
-  const difficulty = params.difficulty as DifficultyLevel;
+  const resolvedParams = React.use(params);
+  const difficulty = resolvedParams.difficulty as DifficultyLevel;
 
   const [questions, setQuestions] = useState<AdminBankQuestion[]>([]);
   const [error, setError] = useState<string | null>(null);

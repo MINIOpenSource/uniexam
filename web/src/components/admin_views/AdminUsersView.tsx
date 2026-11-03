@@ -160,7 +160,7 @@ export function AdminUsersView({
       const updated = await updateAdminUser(user.token, editingUser.uid, {
         nickname: editNickname.trim() || null,
         email: editEmail.trim() || null,
-        qq: editQq.trim() ? Number(editQq.trim()) : null,
+        qq: editQq.trim() ? String(editQq.trim()) : null,
         tags: editTags,
       });
       setUsers((prev) =>

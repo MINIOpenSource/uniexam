@@ -1,3 +1,4 @@
+import asyncio
 import secrets
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
@@ -25,7 +26,7 @@ from app.db.models import (
 )
 from app.db.seed import DIFFICULTY_MAP, OPTION_LABELS
 from app.services.auth import AuthService
-from app.services.font_obfuscator import get_obfuscated_font_bytes
+from app.services.font_obfuscator import compile_question_font_for_decoy
 from app.services.grading import grading_service
 from app.services.paper_hash import paper_issuance_service
 from app.services.ws_manager import ws_manager
@@ -319,16 +320,70 @@ async def legacy_users_directory(db: AsyncSession = Depends(get_db)):
 
 # --- Exam Flow Endpoints ---
 
-@router.get("/exam/font/{font_id}")
-@router.get("/api/exam/font/{font_id}")
-async def legacy_get_obfuscated_font(font_id: str):
-    ttf_bytes = get_obfuscated_font_bytes(font_id)
-    if not ttf_bytes:
-        raise HTTPException(status_code=404, detail="Font resource expired or not found")
+class QuestionFontRequestPayload(BaseModel):
+    paper_id: str
+    paper: List[Dict[str, Any]]
+    paper_hash: Optional[str] = None
+    question_index: int
+
+
+@router.post("/exam/font")
+@router.post("/api/exam/font")
+async def legacy_post_question_font(
+    payload: QuestionFontRequestPayload,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(_get_user_from_query_or_bearer),
+):
+    stmt = (
+        select(Paper)
+        .options(selectinload(Paper.paper_questions).selectinload(PaperQuestion.question))
+        .where(Paper.id == payload.paper_id)
+    )
+    paper = (await db.execute(stmt)).scalars().first()
+    if not paper:
+        raise HTTPException(status_code=404, detail="Paper not found")
+    if paper.user_id != current_user.id and current_user.role not in (UserRole.ADMIN, UserRole.MANAGER):
+        raise HTTPException(status_code=403, detail="Not your paper")
+
+    try:
+        (
+            real_body,
+            real_choices,
+            decoy_body,
+            decoy_choices,
+            verified_hash,
+        ) = await paper_issuance_service.verify_and_resolve_question_for_font(
+            paper=paper,
+            submitted_paper=payload.paper,
+            question_index=payload.question_index,
+            submitted_hash=payload.paper_hash,
+            db=db,
+        )
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+
+    cache_key = f"{verified_hash}:{payload.question_index}"
+    ttf_bytes = await asyncio.to_thread(
+        compile_question_font_for_decoy,
+        real_body,
+        real_choices,
+        decoy_body,
+        decoy_choices,
+        cache_key,
+    )
     return Response(
         content=ttf_bytes,
         media_type="font/ttf",
-        headers={"Cache-Control": "private, max-age=3600"},
+        headers={"Cache-Control": "private, no-store"},
+    )
+
+
+@router.get("/exam/font/{font_id}")
+@router.get("/api/exam/font/{font_id}")
+async def legacy_get_obfuscated_font(font_id: str):
+    raise HTTPException(
+        status_code=403,
+        detail="FONT_REQUIRES_POST_PAPER_HASH_VERIFICATION",
     )
 
 
@@ -571,7 +626,6 @@ async def legacy_finish_exam(
         "passcode": passcode,
         "score": int(round(pct)),
         "score_percentage": pct,
-        "pending_manual_grading_count": 0,
     }
 
     await ws_manager.broadcast_to_user(
@@ -652,14 +706,8 @@ async def legacy_history_paper_detail(
         cq = client_questions[idx]
         questions_view.append({
             "body": cq["body"],
-            "question_type": cq["question_type"],
             "choices": cq["choices"],
-            "obfuscated_font": cq.get("obfuscated_font"),
             "submitted_answer": submitted_card[idx],
-            "student_subjective_answer": None,
-            "standard_answer_text": None,
-            "manual_score": pq.score_awarded,
-            "teacher_comment": pq.manual_comment,
         })
 
     total = paper.total_score or len(paper.paper_questions) or 1.0
@@ -679,9 +727,6 @@ async def legacy_history_paper_detail(
         "pass_status": _compute_pass_status(paper),
         "passcode": meta.get("passcode"),
         "submission_time_utc": paper.submitted_at.isoformat() if paper.submitted_at else None,
-        "subjective_questions_count": 0,
-        "graded_subjective_questions_count": 0,
-        "pending_manual_grading_count": 0,
     }
 
 
@@ -815,9 +860,6 @@ async def legacy_admin_list_papers(
             "passcode": meta.get("passcode"),
             "last_update_time_utc": meta.get("last_update_time_utc") or (p.submitted_at.isoformat() if p.submitted_at else p.created_at.isoformat()),
             "last_update_ip": meta.get("last_update_ip", "127.0.0.1"),
-            "subjective_questions_count": 0,
-            "graded_subjective_questions_count": 0,
-            "pending_manual_grading_count": 0,
         })
     return result
 
@@ -861,13 +903,8 @@ async def legacy_admin_paper_detail(
         detailed_questions.append({
             "internal_question_id": pq.id,
             "body": q.content.get("body", ""),
-            "question_type": q.type.value if hasattr(q.type, "value") else str(q.type),
             "correct_choices_map": correct_map,
             "incorrect_choices_map": incorrect_map,
-            "standard_answer_text": q.answer.get("reference"),
-            "student_subjective_answer": None,
-            "manual_score": pq.score_awarded,
-            "teacher_comment": pq.manual_comment,
         })
 
     total = p.total_score or len(p.paper_questions) or 1.0
@@ -890,9 +927,6 @@ async def legacy_admin_paper_detail(
         "passcode": meta.get("passcode"),
         "last_update_time_utc": meta.get("last_update_time_utc") or (p.submitted_at.isoformat() if p.submitted_at else p.created_at.isoformat()),
         "last_update_ip": meta.get("last_update_ip", "127.0.0.1"),
-        "subjective_questions_count": 0,
-        "graded_subjective_questions_count": 0,
-        "pending_manual_grading_count": 0,
     }
 
 

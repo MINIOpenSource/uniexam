@@ -121,15 +121,16 @@ function getOrCreateDeviceIdentity(): { deviceId: string; deviceName: string } {
   if (typeof window === 'undefined') {
     return { deviceId: 'ssr-device', deviceName: 'SSR Client' };
   }
-  const storageKey = 'uniexam_ws_device_id';
-  let devId = sessionStorage.getItem(storageKey);
-  if (!devId) {
-    devId =
+  // Ensure every browser tab gets a unique runtime instance ID even if the tab was duplicated
+  // via "Duplicate Tab" (which clones `sessionStorage` from the source tab).
+  const w = window as unknown as { __ue_tab_ws_device_id?: string };
+  if (!w.__ue_tab_ws_device_id) {
+    w.__ue_tab_ws_device_id =
       typeof crypto !== 'undefined' && crypto.randomUUID
         ? crypto.randomUUID()
         : `dev-${Math.random().toString(36).slice(2, 10)}-${Date.now()}`;
-    sessionStorage.setItem(storageKey, devId);
   }
+  const devId = w.__ue_tab_ws_device_id;
   const shortId = devId.slice(0, 4).toUpperCase();
   return {
     deviceId: devId,

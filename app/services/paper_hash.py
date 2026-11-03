@@ -79,8 +79,12 @@ def compute_paper_hash(paper_id: str, questions: List[Any]) -> str:
 
 
 class PaperIssuanceService:
-    def resolve_canon_ids_for_hash(
-        self, paper_hash: Optional[str], selected_canon_ids: List[Optional[str]]
+    async def resolve_canon_ids_for_hash(
+        self,
+        paper_hash: Optional[str],
+        selected_canon_ids: List[Optional[str]],
+        db: Optional[AsyncSession] = None,
+        paper_id: Optional[str] = None,
     ) -> Optional[List[Optional[str]]]:
         """
         Given a specific client issuance's paper_hash and a list of canonical option IDs
@@ -89,36 +93,62 @@ class PaperIssuanceService:
         if not paper_hash:
             return None
         hash_map = _issued_uuid_maps.get(paper_hash)
-        if not hash_map:
-            return None
-        resolved_uuids: List[Optional[str]] = []
-        for idx, canon_id in enumerate(selected_canon_ids):
-            if not canon_id or idx >= len(hash_map):
-                resolved_uuids.append(None)
-                continue
-            q_map = hash_map[idx]
-            matched_uuid = next(
-                (u for u, (c_key, _) in q_map.items() if c_key == canon_id),
-                None,
-            )
-            resolved_uuids.append(matched_uuid)
-        return resolved_uuids
+        if hash_map:
+            resolved_uuids: List[Optional[str]] = []
+            for idx, canon_id in enumerate(selected_canon_ids):
+                if not canon_id or idx >= len(hash_map):
+                    resolved_uuids.append(None)
+                    continue
+                q_map = hash_map[idx]
+                matched_uuid = next(
+                    (u for u, (c_key, _) in q_map.items() if c_key == canon_id),
+                    None,
+                )
+                resolved_uuids.append(matched_uuid)
+            return resolved_uuids
+
+        # Fallback to DB-persisted PaperHash.option_map across restarts / multi-worker deployments
+        if db is not None and paper_id:
+            db_opt_map = await self._fetch_db_option_map(paper_id, paper_hash, db)
+            if db_opt_map:
+                resolved_from_db: List[Optional[str]] = []
+                for idx, canon_id in enumerate(selected_canon_ids):
+                    if not canon_id or idx >= len(db_opt_map):
+                        resolved_from_db.append(None)
+                        continue
+                    q_db_map = db_opt_map[idx]
+                    matched_uuid = (
+                        next((u for u, c_key in q_db_map.items() if str(c_key) == str(canon_id)), None)
+                        if isinstance(q_db_map, dict)
+                        else None
+                    )
+                    resolved_from_db.append(matched_uuid)
+                return resolved_from_db
+
+        return None
 
     async def register_hash(
-        self, paper_id: str, paper_hash: str, db: Optional[AsyncSession] = None
+        self,
+        paper_id: str,
+        paper_hash: str,
+        db: Optional[AsyncSession] = None,
+        option_map: Optional[List[Dict[str, str]]] = None,
     ) -> None:
         bucket = _issued_paper_hashes.setdefault(paper_id, set())
         if paper_hash not in bucket:
             bucket.add(paper_hash)
             if db is not None:
-                db.add(PaperHash(paper_id=paper_id, paper_hash=paper_hash))
+                db.add(
+                    PaperHash(
+                        paper_id=paper_id,
+                        paper_hash=paper_hash,
+                        option_map=option_map,
+                    )
+                )
 
     async def is_valid_hash(
         self, paper_id: str, paper_hash: str, db: Optional[AsyncSession] = None
     ) -> bool:
-        bucket = _issued_paper_hashes.get(paper_id)
-        if bucket and paper_hash in bucket:
-            return True
         if db is not None:
             try:
                 res = await db.execute(
@@ -131,9 +161,99 @@ class PaperIssuanceService:
                 if row:
                     _issued_paper_hashes.setdefault(paper_id, set()).add(paper_hash)
                     return True
+                return False
             except Exception:
                 pass
+        bucket = _issued_paper_hashes.get(paper_id)
+        if bucket and paper_hash in bucket:
+            return True
         return False
+
+    async def verify_and_resolve_question_for_font(
+        self,
+        paper: Paper,
+        submitted_paper: Optional[List[Any]],
+        question_index: int,
+        submitted_hash: Optional[str] = None,
+        db: Optional[AsyncSession] = None,
+    ) -> Tuple[str, Dict[str, str], str, Dict[str, str], str]:
+        """
+        1. Computes the deterministic SHA-256 hash of `(paper.id, submitted_paper)` and verifies
+           it matches `submitted_hash` (if provided).
+        2. Verifies in the database (`PaperHash`) that this `(paper.id, computed_hash)` was
+           genuinely issued by the server and exists in the DB.
+        3. Extracts the requested `question_index`'s decoy body and decoy choices from
+           `submitted_paper[question_index]`, resolves the canonical option ordering for this
+           exact issuance (`_issued_uuid_maps` or `PaperHash.option_map`), and returns:
+           `(real_body, real_choices_by_uuid, decoy_body, decoy_choices_by_uuid, computed_hash)`
+        """
+        if not submitted_paper or not isinstance(submitted_paper, list):
+            raise ValueError("ISSUED_PAPER_REQUIRED")
+
+        if len(submitted_paper) != len(paper.paper_questions):
+            raise ValueError("PAPER_LENGTH_MISMATCH")
+
+        if question_index < 0 or question_index >= len(paper.paper_questions):
+            raise ValueError("INVALID_QUESTION_INDEX")
+
+        computed_hash = compute_paper_hash(paper.id, submitted_paper)
+        if submitted_hash and submitted_hash != computed_hash:
+            raise ValueError("PAPER_HASH_MISMATCH")
+
+        ph_row: Optional[PaperHash] = None
+        if db is not None:
+            res = await db.execute(
+                select(PaperHash).where(
+                    PaperHash.paper_id == paper.id,
+                    PaperHash.paper_hash == computed_hash,
+                )
+            )
+            ph_row = res.scalars().first()
+            if not ph_row:
+                raise ValueError("PAPER_HASH_NOT_IN_DATABASE")
+            _issued_paper_hashes.setdefault(paper.id, set()).add(computed_hash)
+        else:
+            is_valid = await self.is_valid_hash(paper.id, computed_hash, db=None)
+            if not is_valid:
+                raise ValueError("INVALID_PAPER_HASH")
+
+        pq = paper.paper_questions[question_index]
+        q_content = pq.question.content or {}
+        real_body = str(q_content.get("body") or "")
+        orig_options: Dict[str, str] = {
+            str(k): str(v) for k, v in (q_content.get("options") or {}).items()
+        }
+
+        submitted_q = submitted_paper[question_index]
+        decoy_body = _extract_body(submitted_q)
+        decoy_choices = _extract_choices_dict(submitted_q)
+        if not decoy_body or not decoy_choices:
+            raise ValueError("EMPTY_DECOY_QUESTION")
+
+        # Resolve each `opt_uuid` in `decoy_choices` (preserving exact client key order)
+        # to its true canonical option text from `pq.question`.
+        # CRITICAL SECURITY INVARIANT: Never fall back to physical index `pos_idx`!
+        real_choices: Dict[str, str] = {}
+        mem_map = _issued_uuid_maps.get(computed_hash)
+        db_opt_map = (
+            ph_row.option_map[question_index]
+            if (ph_row and isinstance(ph_row.option_map, list) and question_index < len(ph_row.option_map))
+            else None
+        )
+
+        for opt_uuid in decoy_choices.keys():
+            if mem_map and question_index < len(mem_map) and opt_uuid in mem_map[question_index]:
+                _, c_txt = mem_map[question_index][opt_uuid]
+                real_choices[opt_uuid] = c_txt
+            elif isinstance(db_opt_map, dict) and opt_uuid in db_opt_map:
+                c_key = str(db_opt_map[opt_uuid])
+                if c_key not in orig_options:
+                    raise ValueError("OPTION_MAP_CORRUPTED")
+                real_choices[opt_uuid] = orig_options[c_key]
+            else:
+                raise ValueError("OPTION_MAP_NOT_FOUND_OR_TAMPERED")
+
+        return real_body, real_choices, decoy_body, decoy_choices, computed_hash
 
     def clear_paper_hashes(self, paper_id: str) -> None:
         _issued_paper_hashes.pop(paper_id, None)
@@ -209,7 +329,6 @@ class PaperIssuanceService:
 
         for pq in paper.paper_questions:
             q = pq.question
-            q_type = q.type.value if hasattr(q.type, "value") else str(q.type)
             plain_choices, canon_to_uuid, text_to_uuid, ordered_canon = (
                 self._build_shuffled_uuid_choices(paper.id, pq)
             )
@@ -219,7 +338,7 @@ class PaperIssuanceService:
             submitted_card.append(mapped_uuid if mapped_uuid else "-1")
 
             plain_body = (q.content or {}).get("body", "")
-            obf_body, obf_choices, font_data_uri = obfuscate_question_texts(
+            obf_body, obf_choices, _ = obfuscate_question_texts(
                 plain_body, plain_choices
             )
 
@@ -228,8 +347,6 @@ class PaperIssuanceService:
             client_questions.append({
                 "body": obf_body,
                 "choices": obf_choices,
-                "question_type": q_type,
-                "obfuscated_font": font_data_uri,
                 "_canon_order": ordered_canon,
             })
 
@@ -238,6 +355,7 @@ class PaperIssuanceService:
         # or deterministic HMAC, client never sees canonical order at all!
         paper_questions_clean: List[Dict[str, Any]] = []
         uuid_map_for_hash: List[Dict[str, Tuple[str, str]]] = []
+        serializable_opt_map: List[Dict[str, str]] = []
 
         for idx, cq in enumerate(client_questions):
             pq = paper.paper_questions[idx]
@@ -245,16 +363,19 @@ class PaperIssuanceService:
             ordered_canon = cq.pop("_canon_order")
             opt_uuids = list(cq["choices"].keys())
             q_uuid_map: Dict[str, Tuple[str, str]] = {}
+            q_db_map: Dict[str, str] = {}
             for u_idx, opt_uuid in enumerate(opt_uuids):
                 c_key = ordered_canon[u_idx]
                 c_txt = str(orig_options.get(c_key, ""))
                 q_uuid_map[opt_uuid] = (c_key, c_txt)
+                q_db_map[opt_uuid] = c_key
             uuid_map_for_hash.append(q_uuid_map)
+            serializable_opt_map.append(q_db_map)
             paper_questions_clean.append(cq)
 
         paper_hash = compute_paper_hash(paper.id, paper_questions_clean)
         _issued_uuid_maps[paper_hash] = uuid_map_for_hash
-        await self.register_hash(paper.id, paper_hash, db=db)
+        await self.register_hash(paper.id, paper_hash, db=db, option_map=serializable_opt_map)
         return paper_questions_clean, submitted_card, paper_hash
 
     async def issue_v1_paper_questions(
@@ -266,6 +387,7 @@ class PaperIssuanceService:
         """
         pqs: List[Dict[str, Any]] = []
         uuid_map_for_hash: List[Dict[str, Tuple[str, str]]] = []
+        serializable_opt_map: List[Dict[str, str]] = []
 
         for pq in paper.paper_questions:
             q = pq.question
@@ -282,36 +404,36 @@ class PaperIssuanceService:
                 else pq.user_answer
             )
             plain_body = (q.content or {}).get("body", "")
-            obf_body, obf_choices, font_data_uri = obfuscate_question_texts(
+            obf_body, obf_choices, _ = obfuscate_question_texts(
                 plain_body, plain_choices
             )
 
             opt_uuids = list(obf_choices.keys())
             q_uuid_map: Dict[str, Tuple[str, str]] = {}
+            q_db_map: Dict[str, str] = {}
             for u_idx, opt_uuid in enumerate(opt_uuids):
                 c_key = ordered_canon[u_idx]
                 c_txt = str(orig_options.get(c_key, ""))
                 q_uuid_map[opt_uuid] = (c_key, c_txt)
+                q_db_map[opt_uuid] = c_key
             uuid_map_for_hash.append(q_uuid_map)
+            serializable_opt_map.append(q_db_map)
 
             pqs.append({
                 "id": pq.id,
-                "question_type": q.type,
                 "content": {
                     "body": obf_body,
                     "options": obf_choices,
-                    "obfuscated_font": font_data_uri,
                 },
                 "score_awarded": pq.score_awarded,
                 "max_score": pq.max_score,
                 "user_answer": client_user_ans,
                 "is_correct": pq.is_correct,
-                "manual_comment": pq.manual_comment,
             })
 
         paper_hash = compute_paper_hash(paper.id, pqs)
         _issued_uuid_maps[paper_hash] = uuid_map_for_hash
-        await self.register_hash(paper.id, paper_hash, db=db)
+        await self.register_hash(paper.id, paper_hash, db=db, option_map=serializable_opt_map)
         return pqs, paper_hash
 
     def _resolve_option_choice(
@@ -321,10 +443,13 @@ class PaperIssuanceService:
         pq: PaperQuestion,
         ans_uuid: str,
         choices_map: Dict[str, str],
+        db_option_map: Optional[List[Dict[str, str]]] = None,
     ) -> Tuple[str, str]:
         """
         Resolves an option UUID from a verified submission to (canonical_key, canonical_plain_text).
-        Supports both obfuscated issuances (via _issued_uuid_maps) and direct plaintext fallback.
+        CRITICAL SECURITY INVARIANT: Strictly resolves from `_issued_uuid_maps` or DB `PaperHash.option_map`
+        (or exact canonical plaintext match for legacy unit tests). NEVER falls back to physical position
+        `pos = opt_keys.index(ans_uuid)`!
         """
         hash_map = _issued_uuid_maps.get(computed_hash)
         if hash_map and q_idx < len(hash_map):
@@ -332,20 +457,41 @@ class PaperIssuanceService:
             if ans_uuid in q_map:
                 return q_map[ans_uuid]
 
-        # Fallback if server restarted or plaintext was submitted in tests
-        selected_text = choices_map[ans_uuid]
         orig_options: Dict[str, str] = (pq.question.content or {}).get("options", {})
+        if db_option_map and q_idx < len(db_option_map):
+            q_db_map = db_option_map[q_idx]
+            if isinstance(q_db_map, dict) and ans_uuid in q_db_map:
+                c_key = str(q_db_map[ans_uuid])
+                if c_key not in orig_options:
+                    raise ValueError(f"OPTION_MAP_CORRUPTED_AT_{q_idx}")
+                return c_key, str(orig_options[c_key])
+
+        # Exact plaintext match ONLY (for non-obfuscated unit test fixtures)
+        selected_text = choices_map[ans_uuid]
         for k, v in orig_options.items():
             if str(v) == selected_text:
                 return str(k), str(v)
-        # Fallback by character length or index if obfuscated after restart
-        opt_keys = list(choices_map.keys())
-        pos = opt_keys.index(ans_uuid) if ans_uuid in opt_keys else 0
-        orig_items = list(orig_options.items())
-        if orig_items:
-            k, v = orig_items[pos % len(orig_items)]
-            return str(k), str(v)
-        return selected_text, selected_text
+
+        raise ValueError(f"OPTION_MAP_NOT_FOUND_AT_{q_idx}")
+
+    async def _fetch_db_option_map(
+        self, paper_id: str, computed_hash: str, db: Optional[AsyncSession]
+    ) -> Optional[List[Dict[str, str]]]:
+        if db is None:
+            return None
+        try:
+            res = await db.execute(
+                select(PaperHash).where(
+                    PaperHash.paper_id == paper_id,
+                    PaperHash.paper_hash == computed_hash,
+                )
+            )
+            row = res.scalars().first()
+            if row and isinstance(row.option_map, list):
+                return row.option_map
+        except Exception:
+            pass
+        return None
 
     async def verify_and_resolve_legacy_submission(
         self,
@@ -375,6 +521,7 @@ class PaperIssuanceService:
         if not is_valid:
             raise ValueError("INVALID_PAPER_HASH")
 
+        db_option_map = await self._fetch_db_option_map(paper.id, computed_hash, db)
         resolved_answers: List[Optional[Dict[str, Any]]] = []
         selected_texts: List[Optional[str]] = []
 
@@ -385,7 +532,7 @@ class PaperIssuanceService:
                 if ans_uuid not in choices_map:
                     raise ValueError(f"INVALID_OPTION_UUID_AT_{idx}")
                 canon_key, canon_text = self._resolve_option_choice(
-                    computed_hash, idx, pq, ans_uuid, choices_map
+                    computed_hash, idx, pq, ans_uuid, choices_map, db_option_map=db_option_map
                 )
                 resolved_answers.append({
                     "selected_option_id": canon_key,
@@ -424,6 +571,7 @@ class PaperIssuanceService:
         if len(submitted_questions) != len(paper.paper_questions):
             raise ValueError("PAPER_LENGTH_MISMATCH")
 
+        db_option_map = await self._fetch_db_option_map(paper.id, computed_hash, db)
         resolved_map: Dict[str, Dict[str, Any]] = {}
         for idx, pq in enumerate(paper.paper_questions):
             ans_dict = answers_map.get(pq.id)
@@ -435,7 +583,7 @@ class PaperIssuanceService:
                 if sel_uuid not in choices_map:
                     raise ValueError(f"INVALID_OPTION_UUID_FOR_{pq.id}")
                 canon_key, canon_text = self._resolve_option_choice(
-                    computed_hash, idx, pq, sel_uuid, choices_map
+                    computed_hash, idx, pq, sel_uuid, choices_map, db_option_map=db_option_map
                 )
                 resolved_map[pq.id] = {
                     "selected_option_id": canon_key,

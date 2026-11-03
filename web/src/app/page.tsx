@@ -138,6 +138,7 @@ function ExamPageContent() {
   const wasUrlInitiatedRef = React.useRef(false);
   const shownUrlInitiatedToastRef = React.useRef(false);
   const initialUrlParamsProcessedRef = React.useRef(false);
+  const lastProcessedUrlQueryRef = React.useRef<string | null>(null);
   const isMountedRef = React.useRef(false);
   const [adminSidebarOpen, setAdminSidebarOpen] = React.useState(!isMobile);
 
@@ -307,8 +308,6 @@ function ExamPageContent() {
             : historyData.paper_questions.map(q_hist => ({
                 body: q_hist.body,
                 choices: q_hist.choices || {},
-                question_type: q_hist.question_type,
-                obfuscated_font: q_hist.obfuscated_font,
               }));
 
         paperForForm = {
@@ -333,10 +332,18 @@ function ExamPageContent() {
       }
 
       if (isMountedRef.current) {
+        const cleanAnswers = initialAnswers.map(ans => (ans === "-1" ? null : ans));
+        let targetQIndex = initialQIndex;
+        if (isResumingViaHistoryOrInput && initialQIndex === 0) {
+          const firstUnansweredIdx = cleanAnswers.findIndex(ans => ans === null);
+          if (firstUnansweredIdx >= 0) {
+            targetQIndex = firstUnansweredIdx;
+          }
+        }
         setPaperData(paperForForm);
-        setAnswers(initialAnswers.map(ans => (ans === "-1" ? null : ans)));
-        setCurrentQuestionIndex(initialQIndex);
-        joinPaper(paperForForm.paper_id, initialQIndex, paperForForm.paper_hash);
+        setAnswers(cleanAnswers);
+        setCurrentQuestionIndex(targetQIndex);
+        joinPaper(paperForForm.paper_id, targetQIndex, paperForForm.paper_hash);
 
         const isThisFetchForInstantStart = pendingInstantStartInfo &&
           ((pendingInstantStartInfo.type === 'difficulty' && difficulty && pendingInstantStartInfo.difficulty === difficulty) ||
@@ -370,7 +377,12 @@ function ExamPageContent() {
       return;
     }
 
-    if (initialUrlParamsProcessedRef.current) {
+    const urlDifficultyParam = searchParams.get('d');
+    const urlPaperIdParam = searchParams.get('id');
+    const urlInstantStartParam = searchParams.get('i') === '1';
+    const currentUrlQueryKey = `${urlPaperIdParam || ''}|${urlDifficultyParam || ''}|${urlInstantStartParam ? '1' : '0'}`;
+
+    if (initialUrlParamsProcessedRef.current && lastProcessedUrlQueryRef.current === currentUrlQueryKey) {
       if (pageMode !== 'exam_active_direct' && !confirmActionInfo && !unansweredSubmissionSummary && !resultData && !paperData) {
         if (pageMode !== 'user_center' && pageMode !== 'admin_panel') setPageMode('user_center');
         if (examState !== 'selecting_difficulty' && examState !== 'authenticating') setExamState('selecting_difficulty');
@@ -378,9 +390,6 @@ function ExamPageContent() {
       return;
     }
 
-    const urlDifficultyParam = searchParams.get('d');
-    const urlPaperIdParam = searchParams.get('id');
-    const urlInstantStartParam = searchParams.get('i') === '1';
     let actionTaken = false;
 
     if (urlPaperIdParam) {
@@ -422,12 +431,15 @@ function ExamPageContent() {
     }
 
     if (!actionTaken) {
-      setPageMode('user_center');
-      if (!confirmActionInfo && !unansweredSubmissionSummary && !resultData && !paperData && examState !== 'admin_panel') {
-        setExamState('selecting_difficulty');
+      if (!initialUrlParamsProcessedRef.current) {
+        setPageMode('user_center');
+        if (!confirmActionInfo && !unansweredSubmissionSummary && !resultData && !paperData && examState !== 'admin_panel') {
+          setExamState('selecting_difficulty');
+        }
       }
     }
     initialUrlParamsProcessedRef.current = true;
+    lastProcessedUrlQueryRef.current = currentUrlQueryKey;
   }, [searchParams, authIsLoading, resetExamStateForNewAttempt, t, fetchExam, pageMode, confirmActionInfo, unansweredSubmissionSummary, resultData, paperData, examState]);
 
   React.useEffect(() => {
@@ -492,7 +504,6 @@ function ExamPageContent() {
     const strippedPaper = currentPaperObj.paper.map(q => ({
       body: q.body,
       choices: q.choices,
-      question_type: q.question_type,
     }));
     const submissionPayload: Submission = {
       paper_id: currentPaperObj.paper_id,
@@ -588,7 +599,6 @@ function ExamPageContent() {
     const strippedPaper = paperData.paper.map(q => ({
       body: q.body,
       choices: q.choices,
-      question_type: q.question_type,
     }));
     const currentSubmission: Submission = {
       paper_id: paperData.paper_id,
@@ -683,6 +693,16 @@ function ExamPageContent() {
       requestAdminLiveState();
     }
   }, [pageMode, wsStatus, requestAdminLiveState]);
+
+  const handleContinueExam = React.useCallback((paperId: string) => {
+    if (!isMountedRef.current || !paperId) return;
+    wasUrlInitiatedRef.current = false;
+    shownUrlInitiatedToastRef.current = false;
+    resetExamStateForNewAttempt();
+    setPageMode('exam_active_direct');
+    setPendingInstantStartInfo({ type: 'resume', paperId });
+    fetchExam(null, paperId);
+  }, [resetExamStateForNewAttempt, fetchExam]);
 
   const handleViewHistoryDetails = async (paperId: string) => {
     if (!user?.token && process.env.NEXT_PUBLIC_DISABLE_AUTH !== 'true') {
@@ -978,7 +998,12 @@ function ExamPageContent() {
             {!isLoadingHistory && !historyError && filteredExamHistory.length > 0 && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 w-full">
                 {filteredExamHistory.map(exam => (
-                  <UserCenterExamCard key={exam.paper_id} exam={exam} onViewDetails={() => handleViewHistoryDetails(exam.paper_id)} />
+                  <UserCenterExamCard
+                    key={exam.paper_id}
+                    exam={exam}
+                    onViewDetails={() => handleViewHistoryDetails(exam.paper_id)}
+                    onContinueExam={handleContinueExam}
+                  />
                 ))}
               </div>
             )}
@@ -1177,5 +1202,9 @@ function ExamPageContent() {
 }
 
 export default function HomePage() {
-  return <ExamPageContent />;
+  return (
+    <React.Suspense fallback={<div className="flex-grow flex items-center justify-center"><Loader2 className="h-6 w-6 animate-spin text-muted-foreground" /></div>}>
+      <ExamPageContent />
+    </React.Suspense>
+  );
 }

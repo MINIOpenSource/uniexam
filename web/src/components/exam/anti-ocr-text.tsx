@@ -9,23 +9,109 @@ const fontLoadPromiseCache = new Map<string, Promise<FontFace>>();
 const adoptedScopeSheets = new Map<string, CSSStyleSheet>();
 const adoptedTextPurgeSheets = new Map<string, CSSStyleSheet>();
 
-/**
- * Registers an external obfuscated font URL via the browser's CSS Font Loading API
- * (`new FontFace(family, "url(...)")` -> `document.fonts.add(face)`) and binds `--ue-obf-font`
- * plus per-option visual CSS `order` rules via a Constructable Stylesheet (`document.adoptedStyleSheets`)
- * so zero `<style>` tags, zero `style="..."` attributes, and zero `data:` strings appear in DOM Elements.
- * Returns `isFontReady` (`boolean`), which is `false` until the obfuscated font has finished loading,
- * preventing the browser from ever flashing the raw decoy question/options before the font is active!
- */
-export function prefetchObfuscatedFont(
+export interface WsFontPaperContext {
+  paperId: string;
+  paper: {
+    body: string;
+    choices: { [key: string]: string };
+  }[];
+  paperHash?: string;
+}
+
+function buildFontCacheKey(
   fontUrl: string | undefined,
-  familyName: string | undefined
-): void {
-  if (typeof window === "undefined" || !fontUrl || !familyName || !("FontFace" in window)) {
-    return;
+  familyName: string | undefined,
+  paperContext?: WsFontPaperContext | null,
+  questionIndex?: number
+): string {
+  if (!familyName) return "";
+  if (paperContext && paperContext.paperId && typeof questionIndex === "number") {
+    return `${familyName}::http::${paperContext.paperId}::${paperContext.paperHash || ""}::${questionIndex}`;
   }
-  const cacheKey = `${familyName}::${fontUrl}`;
-  if (loadedFontCache.has(cacheKey)) return;
+  if (!fontUrl) return "";
+  return `${familyName}::${fontUrl}`;
+}
+
+function resolveCurrentAuthToken(): string | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const stored = window.localStorage.getItem("examAuthToken_v3");
+    if (stored) return stored;
+  } catch {}
+  if (process.env.NEXT_PUBLIC_DISABLE_AUTH === "true") {
+    return "test_token_for_disabled_auth";
+  }
+  return null;
+}
+
+async function fetchQuestionFontOverHttp(
+  paperContext: WsFontPaperContext,
+  questionIndex: number,
+  familyName: string,
+  cacheKey: string
+): Promise<FontFace> {
+  const token = resolveCurrentAuthToken();
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+  };
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
+  const res = await fetch("/api/exam/font", {
+    method: "POST",
+    headers,
+    body: JSON.stringify({
+      paper_id: paperContext.paperId,
+      paper: paperContext.paper,
+      paper_hash: paperContext.paperHash,
+      question_index: questionIndex,
+    }),
+  });
+
+  if (!res.ok) {
+    throw new Error(`HTTP_FONT_ERROR_${res.status}`);
+  }
+
+  const arrayBuffer = await res.arrayBuffer();
+  const face = new FontFace(familyName, arrayBuffer, {
+    weight: "normal",
+    style: "normal",
+    display: "block",
+  });
+  loadedFontCache.set(cacheKey, face);
+  document.fonts.add(face);
+  return await face.load();
+}
+
+function requestFontOverHttpOrUrl(
+  fontUrl: string | undefined,
+  familyName: string,
+  cacheKey: string,
+  paperContext?: WsFontPaperContext | null,
+  questionIndex?: number
+): Promise<FontFace> {
+  const existingPromise = fontLoadPromiseCache.get(cacheKey);
+  if (existingPromise) return existingPromise;
+
+  if (
+    paperContext &&
+    paperContext.paperId &&
+    Array.isArray(paperContext.paper) &&
+    typeof questionIndex === "number"
+  ) {
+    const loadPromise = fetchQuestionFontOverHttp(
+      paperContext,
+      questionIndex,
+      familyName,
+      cacheKey
+    ).catch((err) => {
+      fontLoadPromiseCache.delete(cacheKey);
+      throw err;
+    });
+    fontLoadPromiseCache.set(cacheKey, loadPromise);
+    return loadPromise;
+  }
 
   const face = new FontFace(familyName, `url("${fontUrl}")`, {
     weight: "normal",
@@ -36,18 +122,43 @@ export function prefetchObfuscatedFont(
   document.fonts.add(face);
   const loadPromise = face.load();
   fontLoadPromiseCache.set(cacheKey, loadPromise);
-  loadPromise.catch(() => {});
+  return loadPromise;
+}
+
+/**
+ * Requests and registers a per-question obfuscated TrueType font via an authenticated HTTP POST
+ * request (`POST /api/exam/font`, sending `paper_id`, `paper`, `paper_hash`, and `question_index`
+ * so the backend verifies the SHA-256 hash in the database before dynamically compiling and
+ * returning the binary TTF), and binds `--ue-obf-font` plus per-option visual CSS `order` rules
+ * via a Constructable Stylesheet (`document.adoptedStyleSheets`).
+ */
+export function prefetchObfuscatedFont(
+  fontUrl: string | undefined,
+  familyName: string | undefined,
+  paperContext?: WsFontPaperContext | null,
+  questionIndex?: number
+): void {
+  if (typeof window === "undefined" || !familyName || !("FontFace" in window)) {
+    return;
+  }
+  const cacheKey = buildFontCacheKey(fontUrl, familyName, paperContext, questionIndex);
+  if (!cacheKey || loadedFontCache.has(cacheKey) || fontLoadPromiseCache.has(cacheKey)) {
+    return;
+  }
+  requestFontOverHttpOrUrl(fontUrl, familyName, cacheKey, paperContext, questionIndex).catch(() => {});
 }
 
 export function useExternalObfuscatedFont(
   fontUrl: string | undefined,
   familyName: string | undefined,
   scopeId: string,
-  extraCssRules?: string
+  extraCssRules?: string,
+  paperContext?: WsFontPaperContext | null,
+  questionIndex?: number
 ): boolean {
-  const cacheKey = fontUrl && familyName ? `${familyName}::${fontUrl}` : "";
+  const cacheKey = buildFontCacheKey(fontUrl, familyName, paperContext, questionIndex);
   const [isFontReady, setIsFontReady] = React.useState<boolean>(() => {
-    if (!fontUrl || !familyName) return true;
+    if (!cacheKey || !familyName) return true;
     const existing = loadedFontCache.get(cacheKey);
     return existing?.status === "loaded";
   });
@@ -68,12 +179,12 @@ export function useExternalObfuscatedFont(
       sheet.replaceSync(`${fontRule}\n${extraCssRules || ""}`);
     }
 
-    if (!fontUrl || !familyName || !("FontFace" in window)) {
+    if (!cacheKey || !familyName || !("FontFace" in window)) {
       setIsFontReady(true);
       return;
     }
 
-    let face = loadedFontCache.get(cacheKey);
+    const face = loadedFontCache.get(cacheKey);
     if (face && face.status === "loaded") {
       setIsFontReady(true);
       return;
@@ -81,18 +192,13 @@ export function useExternalObfuscatedFont(
 
     setIsFontReady(false);
 
-    let loadPromise = fontLoadPromiseCache.get(cacheKey);
-    if (!face || !loadPromise) {
-      face = new FontFace(familyName, `url("${fontUrl}")`, {
-        weight: "normal",
-        style: "normal",
-        display: "block",
-      });
-      loadedFontCache.set(cacheKey, face);
-      document.fonts.add(face);
-      loadPromise = face.load();
-      fontLoadPromiseCache.set(cacheKey, loadPromise);
-    }
+    const loadPromise = requestFontOverHttpOrUrl(
+      fontUrl,
+      familyName,
+      cacheKey,
+      paperContext,
+      questionIndex
+    );
 
     loadPromise
       .then(() => {
@@ -109,7 +215,7 @@ export function useExternalObfuscatedFont(
     return () => {
       cancelled = true;
     };
-  }, [fontUrl, familyName, scopeId, extraCssRules, cacheKey]);
+  }, [fontUrl, familyName, scopeId, extraCssRules, cacheKey, paperContext, questionIndex]);
 
   return isFontReady;
 }
